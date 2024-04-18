@@ -1,0 +1,18 @@
+.grid-form-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 2rem;
+    width: min(100%, 850px);
+    grid-auto-flow: row;
+    margin-top: 2em;
+}
+
+.start-col-1 {
+    grid-column-start: 1;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}

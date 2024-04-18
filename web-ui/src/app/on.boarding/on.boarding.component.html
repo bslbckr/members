@@ -1,0 +1,49 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Neues Vereinsmitglied anlegen</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="form">
+            <div class="onboarding-container">
+                <mat-form-field id="name">
+                    <mat-label for="name-input">Vorname</mat-label>
+                    <input id="name-input" matInput  formControlName="firstName">
+                </mat-form-field>
+                <mat-form-field id="familyname">
+                    <mat-label for="familyname-input">Name</mat-label>
+                    <input id="familyname-input" matInput formControlName="name">
+                </mat-form-field>
+                <mat-form-field id="login">
+                    <mat-label for="login-input">Login</mat-label>
+                    <input id="login-input" matInput  formControlName="login">
+                </mat-form-field>
+                <mat-form-field id="email">
+                    <mat-label for="email-input">E-Mail</mat-label>
+                    <input id="email-input" matInput  formControlName="email">
+                </mat-form-field>
+
+                <mat-label for="isChild-input" >Neues Mitglied ist Junior?</mat-label>
+                <mat-slide-toggle formControlName="isChild" id="isChild-input" color="primary"></mat-slide-toggle>
+
+                <mat-form-field id="memberFirstName">
+                    <mat-label for="memberFirstName-input">Vorname Junior</mat-label>
+                    <input id="memberFirstName-input" matInput  formControlName="memberFirstName">
+                </mat-form-field>
+                <mat-form-field id="memberName">
+                    <mat-label for="memberName-input">Nachname Junior</mat-label>
+                    <input id="meberName-input" matInput  formControlName="memberName">
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-mini-fab color="primary"
+                aria-label="Neues Mitglied anlegen"
+                matTooltip="Neues Mitglied anlegen"
+                [disabled]="invalid$ | async"
+                (click)="send()">
+            <mat-icon svgIcon="svg-save"></mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>
+    

@@ -1,0 +1,10 @@
+ul.resource-list {
+    list-style: none;
+}
+ul.resource-list > li {
+    padding-top: 1.5ex;
+}
+a {
+    color: unset;
+    text-decoration:none;
+}

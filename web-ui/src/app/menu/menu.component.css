@@ -1,0 +1,7 @@
+mat-toolbar {
+    gap: 1em;
+}
+
+mat-toolbar a {
+    text-decoration: none;
+}

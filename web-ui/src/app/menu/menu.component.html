@@ -1,0 +1,7 @@
+<mat-toolbar>
+    <span>GUC Mitgliederverwaltung</span>
+    <mat-divider [vertical]="true"></mat-divider>
+    <a [routerLink]="'/start'">Start</a>
+    <mat-divider [vertical]="true"></mat-divider>
+    <a [routerLink]="'/onboarding'" *ngIf="hasOnboardingRole$ | async">On-Boarding</a>
+</mat-toolbar>

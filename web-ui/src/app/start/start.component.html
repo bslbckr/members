@@ -1,0 +1,13 @@
+<mat-card>
+    <mat-card-header><mat-card-title>Mitgliedsdaten ändern</mat-card-title></mat-card-header>
+    <mat-card-content>
+        <ul class="resource-list">
+            <li *ngFor="let user of users$ | async; index as idx">
+                <button mat-raised-button color="primary" (click)="selectIndex(idx)">
+                    {{user.name}}
+                </button>
+            </li>
+        </ul>
+    </mat-card-content>
+    <mat-card-footer>Du kannst hier nur diejenigen Mitgliedsdaten einsehen und bearbeiten, für die Du eine Berechtigung hast.</mat-card-footer>
+</mat-card>

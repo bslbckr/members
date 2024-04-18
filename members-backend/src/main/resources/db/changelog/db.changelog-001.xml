@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<databaseChangeLog
+   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+      http://www.liquibase.org/xml/ns/pro 
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+   <changeSet  author="bslbckr"  id="1">
+      <createTable tableName="resource_access">
+         <column  name="id"  type="BIGINT" >
+            <constraints  nullable="false"  primaryKey="true"  unique="true"/>
+         </column>
+         <column  name="member"  type="UUID">
+           <constraints nullable="false" />
+         </column>
+         <column name="identity" type="UUID">
+           <constraints nullable="false" />
+         </column>
+         <column name="role" type="VARCHAR(10)" />
+         <column name="type" type="TINYINT" />
+      </createTable>
+   </changeSet>
+   <changeSet author="bslbckr" id="2">
+     <createTable tableName="members">
+       <column name="id" type="UUID">
+         <constraints nullable="false" primaryKey="true" unique="true"
+                      />
+       </column>
+       <column name="given_name" type="VARCHAR(64)" />
+       <column name="name" type="VARCHAR(64)" />
+       <column name="entry_date" type="DATE" />
+       <column name="day_of_birth" type="DATE" />
+       <column name="gender" type="VARCHAR(6)" />
+       <column name="state" type="VARCHAR(11)" />
+       <column name="state_effective" type="DATE" />
+       <column name="dfv_number" type="INTEGER" />
+       <column name="dse" type="BOOLEAN" />
+       <column name="rabatt" type="BOOLEAN" />
+       <column name="street" type="VARCHAR(128)" />
+       <column name="zip_code" type="VARCHAR(5)" />
+       <column name="city" type="VARCHAR(64)" />
+       <column name="mobile" type="VARCHAR(24)" />
+       <column name="email" type="VARCHAR(128)" />
+       <column name="email_list" type="BOOLEAN" />
+       <column name="exit_date" type="DATE" />
+     </createTable>
+   </changeSet>
+   <changeSet author="bslbckr" id="4">
+     <sql dbms="mariadb">
+       alter table resource_access modify column identity binary(16);
+       alter table resource_access modify column member binary(16);
+       alter table members modify column id binary(16);
+       alter table members modify column dse bit not null;
+       alter table members modify column email_list bit not null;
+       alter table members modify column rabatt bit not null;
+     </sql>
+     </changeSet>
+   
+   <changeSet author="bslbckr" id="5">
+     <createSequence startValue="1" incrementBy="50"
+                     sequenceName="resource_access_SEQ" />
+   </changeSet>
+   <changeSet author="bslbckr" id="6" context="@test">
+     <insert tableName="resource_access">
+       <column name="member" valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')"/>
+       <column name="identity" valueComputed="UNHEX('df8ea85052a34856aea079361d48ff8c')" />
+       <column name="role" value="owner" />
+       <column name="type" value="0" />
+       <column name="id" valueComputed="NEXT VALUE FOR
+                                        resource_access_SEQ" />
+     </insert>
+   </changeSet>
+   <changeSet author="bslbckr" id="7">
+     <addColumn tableName="resource_access">
+       <column name="name" type="VARCHAR(128)" />
+     </addColumn>
+   </changeSet>
+   <changeSet author="bslbckr" id="8" context="@test">
+     <update tableName="resource_access">
+       <column name="name" value="Paul Test" />
+       <where>id=1</where>
+     </update>
+   </changeSet>
+   <changeSet author="bslbckr" id="9">
+     <addNotNullConstraint tableName="resource_access"
+                           columnName="name"
+                           columnDataType="VARCHAR(128)" />
+   </changeSet>
+   <changeSet author="bslbckr" id="10">
+     <createTable tableName="REVINFO">
+       <column name="REV" type="INTEGER" autoIncrement="true">
+         <constraints nullable="false" primaryKey="true"/>
+       </column>
+       <column name="REVTSTMP" type="BIGINT" />
+     </createTable>
+   </changeSet>
+      <changeSet author="bslbckr" id="11">
+     <createTable tableName="members_AUD">
+       <column name="id" type="UUID">
+         <constraints nullable="false" />
+       </column>
+       <column name="REV" type="INTEGER">
+         <constraints nullable="false" />
+       </column>
+       <column name="REVTYPE" type="TINYINT" />
+       <column name="given_name" type="VARCHAR(64)" />
+       <column name="name" type="VARCHAR(64)" />
+       <column name="entry_date" type="DATE" />
+       <column name="day_of_birth" type="DATE" />
+       <column name="gender" type="VARCHAR(6)" />
+       <column name="state" type="VARCHAR(11)" />
+       <column name="state_effective" type="DATE" />
+       <column name="dfv_number" type="INTEGER" />
+       <column name="dse" type="BOOLEAN" />
+       <column name="rabatt" type="BOOLEAN" />
+       <column name="street" type="VARCHAR(128)" />
+       <column name="zip_code" type="VARCHAR(5)" />
+       <column name="city" type="VARCHAR(64)" />
+       <column name="mobile" type="VARCHAR(24)" />
+       <column name="email" type="VARCHAR(128)" />
+       <column name="email_list" type="BOOLEAN" />
+       <column name="exit_date" type="DATE" />
+     </createTable>
+   </changeSet>
+   <changeSet author="bslbckr" id="12">
+     <addForeignKeyConstraint baseTableName="members_AUD"
+                              baseColumnNames="REV"
+                              referencedColumnNames="REV"
+                              referencedTableName="REVINFO"
+                              constraintName="FK_members_aud_REV_REVINFO_REV" />
+   </changeSet>
+   <changeSet author="bslbckr" id="13">
+     <sql dbms="mariadb">
+       alter table members_AUD modify column id binary(16) not null;
+       alter table members_AUD modify column dse bit not null;
+       alter table members_AUD modify column email_list bit not null;
+       alter table members_AUD modify column rabatt bit not null;
+     </sql>
+   </changeSet>
+   <changeSet author="bslbckr" id="14">
+     <insert tableName="members">
+       <column name="id" valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="berufstätig" />
+       <column name="state_effective" value="2020-1-1" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+     </insert>
+   </changeSet>
+   <changeSet author="bslbckr" id="15">
+     <addForeignKeyConstraint baseTableName="resource_access"
+                              baseColumnNames="member"
+                              referencedColumnNames="id"
+                              referencedTableName="members"
+                              constraintName="FK_members_aud_member_members_id" />
+   </changeSet>
+   <changeSet author="bslbckr" id="16">
+     <addPrimaryKey tableName="members_AUD" columnNames="id,REV"
+                    constraintName="PK_members_AUD_id_REV" />
+   </changeSet>
+   <changeSet author="bslbckr" id="17">
+     <addColumn tableName="members_AUD">
+       <column name="city_MOD" type="BIT" />
+       <column name="dayOfBirth_MOD" type="BIT" />
+       <column name="dfvNumber_MOD" type="BIT" />
+       <column name="dse_MOD" type="BIT" />
+       <column name="email_MOD" type="BIT" />
+       <column name="emailList_MOD" type="BIT" />
+       <column name="entryDate_MOD" type="BIT" />
+       <column name="exitDate_MOD" type="BIT" />
+       <column name="gender_MOD" type="BIT" />
+       <column name="givenName_MOD" type="BIT" />
+       <column name="mobile_MOD" type="BIT" />
+       <column name="name_MOD" type="BIT" />
+       <column name="rabatt_MOD" type="BIT" />
+       <column name="state_MOD" type="BIT" />
+       <column name="stateEffective_MOD" type="BIT" />
+       <column name="street_MOD" type="BIT" />
+       <column name="zipCode_MOD" type="BIT" />
+     </addColumn>
+   </changeSet>
+   <changeSet author="bslbckr" id="18">
+     <createTable tableName="email_update">
+       <column name="id" type="BIGINT" />
+       <column name="change" type="TINYINT" />
+       <column name="email_address" type="VARCHAR(255)" />
+       <column name="inserted_at" type="TIMESTAMP" />
+     </createTable>
+   </changeSet>
+   <changeSet author="bslbckr" id="19">
+     <createSequence startValue="1" incrementBy="50"
+                     sequenceName="email_update_SEQ" />
+   </changeSet>
+   <changeSet author="bslbckr" id="20">
+     <addNotNullConstraint columnName="id" columnDataType="BIGINT"
+                           tableName="email_update" />
+   </changeSet>
+   <changeSet author="bslbckr" id="21">
+     <addPrimaryKey columnNames="id" tableName="email_update" />
+   </changeSet>
+</databaseChangeLog>

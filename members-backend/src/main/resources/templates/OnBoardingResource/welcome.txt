@@ -1,0 +1,44 @@
+Hallo {firstname},
+
+für Dich wurde soeben ein Zugang zur Mitgliederverwaltung des
+Goldfingers Ultimate Club e.V. angelegt. Die Mitgliederverwaltung
+erlaubt es Dir selbständig, deine Daten und deine Mitgliedschaft
+zu bearbeiten. Bitte beachte, dass die eingetragenen korrekt
+sein müssen.
+
+Änderungen an deinen Kontaktdaten sind sofort wirksam, änderst Du
+hingegen Deinen Mitgliedsstatus, wird die Änderung erst zum
+nächsten Quartalswechsel wirksam. Eine Änderung am Mitgliedsstatus
+verändert auch den von Dir zu zahlenden Mitgliedsbeitrag. Bei Fragen
+dazu, wende Dich bitte an finanzen@goldfingers-potsdam.de.
+
+Deine Zugangsdaten lauten:
+
+Login: {login}
+Passwort: {password}
+
+Dein Passwort ist temporär und muss nach dem ersten erfolgreichen
+Login geändert werden. Das gewählte Passwort muss mindestens die
+folgenden Kriterien erfüllen:
+
+- Minimum 12 Zeichen
+- 1 Zahl
+- 1 Sonderzeichen
+- 1 Großbuchstaben
+- 1 Kleinbuchstaben
+- darf nicht Deinem Login oder deiner E-Mailadresse entsprechen
+
+Du erreichst die Mitgliederverwaltung unter:
+https://members.goldfingers-potsdam.de/
+
+Möchtest Du dein Passwort ändern, kannst Du das unter:
+https://login.goldfingers-potsdam.de/realms/guc/account
+
+Hast Du noch Fragen, dann schreib uns doch bitte eine Mail an:
+frisbee@goldfingers-potsdam.de
+oder sprich uns im Training an. Da wird bestimmt jemand sein, der
+Dir unmittelbar weiterhelfen kann oder der jemanden kennt ...
+
+Viele Grüße
+
+Der GUC

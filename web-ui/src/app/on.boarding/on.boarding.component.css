@@ -1,0 +1,30 @@
+.onboarding-container {
+    display: flex;
+    flex-direction: row-wrap;
+    flex-wrap: wrap;
+    gap: 2em 1em;
+}
+
+mat-form-field#name {
+    flex-grow: 2;
+    flex-shrink: 1;
+}
+
+mat-form-field#familyname {
+    flex-grow: 2;
+    flex-shrink: 1;
+}
+
+mat-form-field#login {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+mat-form-field#email {
+    flex-grow: 3;
+    flex-shrink: 1;
+}
+
+mat-form-field {
+    flex-basis: 22%;
+}

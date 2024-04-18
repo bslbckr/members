@@ -1,0 +1,139 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Mitgliedsdaten bearbeiten</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-expansion-panel *ngIf="masterDataUpdated$ | async">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon svgIcon="svg-bell" color="accent"></mat-icon>&nbsp;Hinweis
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Deine gespeicherten Daten stimmten nicht mit den Daten in deinem Account überein. Name, Vorname oder E-Mail wurden automatisch angepasst. Bitte speichere Deine Daten ab, damit wir die aktuellen Daten zur Verfügung haben.</p>
+        </mat-expansion-panel>
+
+        <form [formGroup]="forms">
+        <mat-stepper [orientation]="orientation" animationDuration="0ms">
+            <mat-step label="Stammdaten" formGroupName="master">
+                <div class="grid-form-container">
+                    <mat-form-field>
+                        <mat-label for="name">Vorname</mat-label>
+                        <input id="name" matInput readonly formControlName="name" value="name$ | async">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label for="lastName">Nachname</mat-label>
+                        <input id="lastName" matInput readonly formControlName="givenName">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label for="gender">Gender</mat-label>
+                        <mat-select id="gender" formControlName="gender">
+                            <mat-option value="male">männlich</mat-option>
+                            <mat-option value="female">weiblich</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label for="dayOfBirth">Geburtsdatum</mat-label>
+                        <input id="dayOfBirth" matInput [matDatepicker]="dobPicker" formControlName="dayOfBirth">
+                        <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dobPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field class="start-col-1">
+                        <mat-label for="entryDate">Eintrittsdatum</mat-label>
+                        <input id="entryDate" matInput readonly formControlName="entryDate">
+                    </mat-form-field>
+                    <div class="start-col-1 button-row">
+                        <button mat-raised-button matStepperNext color="primary">Weiter</button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step label="Status" formGroupName="status">
+                <div class="grid-form-container">
+                    <mat-form-field>
+                        <mat-label for="status">Status</mat-label>
+                        <mat-select id="status" formControlName="status">
+                            <mat-option value="passiv">passiv</mat-option>
+                            <mat-option value="jugendliche">Jugendliche</mat-option>
+                            <mat-option value="ermäßigt">ermäßigt</mat-option>
+                            <mat-option value="berufstätig">berufstätig</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label for="statusEffective">Erster Gültigkeitstag</mat-label>
+                        <mat-select id="statusEffective" formControlName="statusEffective">
+<!-- 
+                            <mat-option *ngFor="let allowedDate of allowedChangeDates" [value]="allowedDate.date">{{allowedDate.description}}</mat-option>
+                            -->
+                                     <mat-option [value]="allowedChangeDates[0].date">{{allowedChangeDates[0].description}}</mat-option>
+                                     <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[1].date">{{allowedChangeDates[1].description}}</mat-option>
+                                     <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[2].date">{{allowedChangeDates[2].description}}</mat-option>
+                                     <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[3].date">{{allowedChangeDates[3].description}}</mat-option>
+                               
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="start-col-1 button-row">
+                        <button mat-raised-button matStepperPrevious color="primary">Zurück</button>
+                        <button mat-raised-button matStepperNext color="primary">Weiter</button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step label="DFV" formGroupName="dfv">
+                <div class="grid-form-container">
+                    <mat-form-field>
+                        <mat-label for="dfvNumber">DFV-Nummer</mat-label>
+                        <input id="dfvNumber" matInput readonly type="number" formControlName="dfvNumber">
+                    </mat-form-field>
+                    <mat-slide-toggle class="start-col-1" formControlName="dse" color="primary">DFV Datenschutzerklärung</mat-slide-toggle>
+                    <mat-slide-toggle class="start-col-1" formControlName="discount" color="primary">Rabatt bei DFV-Partnern</mat-slide-toggle>
+                    <div class="start-col-1 button-row">
+                        <button mat-raised-button matStepperPrevious color="primary">Zurück</button>
+                        <button mat-raised-button matStepperNext color="primary">Weiter</button>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step label="Kontakt" formGroupName="contact">
+                <div class="grid-form-container">
+                    <mat-form-field>
+                        <mat-label for="street">Straße</mat-label>
+                        <input id="street" matInput formControlName="street">
+                    </mat-form-field>
+                    <mat-form-field [ngClass]="'start-col-1'">
+                        <mat-label for="zipCode">PLZ</mat-label>
+                        <input id="zipCode" matInput formControlName="zipCode">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label for="city">Ort</mat-label>
+                        <input id="city" matInput formControlName="city">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label for="phone">Telefonnummer</mat-label>
+                        <input id="phone" matInput formControlName="phone">
+                    </mat-form-field>
+                    <mat-form-field [ngClass]="'start-col-1'">
+                        <mat-label for="email">E-Mail</mat-label>
+                        <input id="email" matInput readonly type="email" formControlName="email">
+                    </mat-form-field>
+                    <mat-slide-toggle formControlName="emailList" color="primary">E-Mail-Verteiler</mat-slide-toggle>
+                    <div class="start-col-1 button-row" >
+                        <button mat-raised-button matStepperPrevious color="primary">Zurück</button>
+                    </div>
+                </div>
+            </mat-step>
+            
+        </mat-stepper>
+        </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-mini-fab color="primary" (click)="openCancellationDialog()"
+                aria-label="Kündigen" matTooltip ="Mitgliedschaft Kündgigen">
+            <mat-icon svgIcon="svg-cancel" ></mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" (click)="revert()"
+                aria-label="Änderungen zurücksetzen" matTooltip="Änderungen zurücksetzen">
+            <mat-icon svgIcon="svg-revert"></mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" [disabled]="invalid$ | async" (click)="update()"
+                aria-label="Änderungen speichern" matTooltip="Änderungen speichern">
+            <mat-icon svgIcon="svg-save"></mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>
