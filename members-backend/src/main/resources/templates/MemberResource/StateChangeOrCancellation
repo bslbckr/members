@@ -1,0 +1,13 @@
+Lieber Vorstand,
+
+das Vereinsmitglied {givenName} {name} hat
+{#if oldState is "ignored"}
+seine/ihre Mitgliedschaft zum {dateEffective} gekündigt.
+{#else}
+seinen/ihren Mitgliedsstatus mit Wirkung zum {dateEffective} vom
+Mitgliedsstatus {oldState} in den Mitgliedsstatus {newState}
+geändert.
+{/if}
+
+Viele Grüße
+eure Mitgliederverwaltung

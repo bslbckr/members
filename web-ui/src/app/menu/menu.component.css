@@ -5,3 +5,7 @@ mat-toolbar {
 mat-toolbar a {
     text-decoration: none;
 }
+
+.flex-align-right {
+    margin-left: auto;
+}

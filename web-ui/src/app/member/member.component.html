@@ -24,23 +24,24 @@
                         <mat-label for="lastName">Nachname</mat-label>
                         <input id="lastName" matInput readonly formControlName="givenName">
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-label for="gender">Gender</mat-label>
-                        <mat-select id="gender" formControlName="gender">
-                            <mat-option value="male">männlich</mat-option>
-                            <mat-option value="female">weiblich</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    
                     <mat-form-field>
                         <mat-label for="dayOfBirth">Geburtsdatum</mat-label>
                         <input id="dayOfBirth" matInput [matDatepicker]="dobPicker" formControlName="dayOfBirth">
                         <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
                         <mat-datepicker #dobPicker></mat-datepicker>
                     </mat-form-field>
-                    <mat-form-field class="start-col-1">
+                    <mat-form-field>
                         <mat-label for="entryDate">Eintrittsdatum</mat-label>
                         <input id="entryDate" matInput readonly formControlName="entryDate">
                     </mat-form-field>
+                    <mat-expansion-panel class="start-col-1 span-all-cols">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Erklärungen</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Die wenigsten Felder auf dieser Seite kannst Du bearbeiten. Sollte ein Fehler in Deinem Namen sein oder Du in der Zwischenzeit Deinen Namen geändert haben, dann kannst Du die Änderungen im Benutzer-Profil (Button recht oben) vornehmen. (Anschließend bitte noch einmal diese Seite öffnen).</p>
+                    </mat-expansion-panel>
+
                     <div class="start-col-1 button-row">
                         <button mat-raised-button matStepperNext color="primary">Weiter</button>
                     </div>
@@ -67,9 +68,16 @@
                                      <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[1].date">{{allowedChangeDates[1].description}}</mat-option>
                                      <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[2].date">{{allowedChangeDates[2].description}}</mat-option>
                                      <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[3].date">{{allowedChangeDates[3].description}}</mat-option>
-                               
+                                     
                         </mat-select>
                     </mat-form-field>
+                    <mat-expansion-panel class="start-col-1 span-all-cols">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Erklärungen</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Änderungen, die Du auf dieser Seite vornimmst, werden erst zum gewählten Termin gültig. Abhängig davon, wie Du Deinen Status änderst bekommst Du eine Erstattung vom GUC oder Du musst noch anteilige Beiträge bezahlen. Details dazu findest Du in der aktuellen <a href="https://www.goldfingers-potsdam.de/images/Verein/Beitragsordnung_GUC_Version7.pdf" target="_blank">Beitragsordnung</a>. Bei Fragen wende Dich gerne, bevor Du hier Änderungen vornimmst, an unseren <a href="mailto:finanzen@goldfingers-potsdam.de">Finanzer</a>.</p>
+                    </mat-expansion-panel>
+
                     <div class="start-col-1 button-row">
                         <button mat-raised-button matStepperPrevious color="primary">Zurück</button>
                         <button mat-raised-button matStepperNext color="primary">Weiter</button>
@@ -79,11 +87,26 @@
             <mat-step label="DFV" formGroupName="dfv">
                 <div class="grid-form-container">
                     <mat-form-field>
-                        <mat-label for="dfvNumber">DFV-Nummer</mat-label>
+                        <mat-label for="dfvNumber" matTooltip="Wird vom DFV vergeben und kann nicht verändert werden. Wird hier durch den Admin ergänzt">DFV-Nummer</mat-label>
                         <input id="dfvNumber" matInput readonly type="number" formControlName="dfvNumber">
                     </mat-form-field>
-                    <mat-slide-toggle class="start-col-1" formControlName="dse" color="primary">DFV Datenschutzerklärung</mat-slide-toggle>
-                    <mat-slide-toggle class="start-col-1" formControlName="discount" color="primary">Rabatt bei DFV-Partnern</mat-slide-toggle>
+                    <mat-form-field>
+                        <mat-label for="gender">Gender</mat-label>
+                        <mat-select id="gender" formControlName="gender" matTooltip="Angabe wird nur für die DFV-Meldung benötigt. Beim DFV wird darüber die Spielberechtigung für die Frauen-Divisionen und die gender-ratio bei Mixed bestimmt. Änderungen sind jeweils zu Beginn der Saison möglich.">
+                            <mat-option value="male">Male Matching Player</mat-option>
+                            <mat-option value="female">Female Matching Player</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-slide-toggle formControlName="dse" color="primary">DFV Datenschutzerklärung</mat-slide-toggle>
+                    <mat-label>Mit dem Anhaken dieses Punkts erkennt ihr die aktuell gültige <a href="https://www.frisbeesportverband.de/wp-content/uploads/2021/04/DFV-Datenschutzerklaerung_April2021.pdf" target="_blank" >Datenschutzerklärung des DFV</a> an.</mat-label>
+                    <mat-slide-toggle formControlName="discount" color="primary">Rabatt bei DFV-Partnern</mat-slide-toggle>
+                    <mat-expansion-panel class="start-col-1 span-all-cols">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Erklärungen</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Die Angabe, ob Du dich als FMP oder MMP siehst, ist ausschließlich für den DFV von Relevanz. In der Division Women dürfen nur FMP antreten, bei Mixed muss die gender-ratio beachtet werden. Aus diesem Grund müssen wir diese Information an den DFV melden. Änderungen hier werden <strong>nicht</strong> automatisch an den DFV übermittelt.</p>
+                    </mat-expansion-panel>
+
                     <div class="start-col-1 button-row">
                         <button mat-raised-button matStepperPrevious color="primary">Zurück</button>
                         <button mat-raised-button matStepperNext color="primary">Weiter</button>

@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { LoadMemberActions } from '../actions/load-member.actions';
 import { ModifyMemberActions } from '../actions/modify-member.actions';
@@ -43,7 +42,6 @@ export class MemberComponent implements OnInit {
         master: this.builder.nonNullable.group({
             name: ['', Validators.required],
             givenName: ['', Validators.required],
-            gender: ['', Validators.required],
             dayOfBirth: [new Date(), Validators.required],
             entryDate: [new Date(), Validators.required],
             exitDate: new FormControl<Date | null>(null)
@@ -55,7 +53,8 @@ export class MemberComponent implements OnInit {
         dfv: this.builder.nonNullable.group({
             dfvNumber: [0],
             dse: [false, Validators.required],
-            discount: [false, Validators.required]
+            discount: [false, Validators.required],
+            gender: ['', Validators.required],
         }),
         contact: this.builder.nonNullable.group({
             street: ['', Validators.required],
@@ -117,7 +116,6 @@ export class MemberComponent implements OnInit {
                 master: {
                     name: mem.name,
                     givenName: mem.givenName,
-                    gender: mem.gender,
                     entryDate: mem.entryDate,
                     dayOfBirth: mem.dayOfBirth,
                     exitDate: mem.exitDate
@@ -129,7 +127,8 @@ export class MemberComponent implements OnInit {
                 dfv: {
                     dfvNumber: mem.dfvNumber,
                     dse: mem.dse,
-                    discount: mem.dfvDiscount
+                    discount: mem.dfvDiscount,
+                    gender: mem.gender
                 },
                 contact: {
                     street: mem.street,
@@ -194,7 +193,7 @@ export class MemberComponent implements OnInit {
             id: this.memberId,
             name: raw.master.name,
             givenName: raw.master.givenName,
-            gender: raw.master.gender as "male" | "female",
+            gender: raw.dfv.gender as "male" | "female",
             dayOfBirth: raw.master.dayOfBirth,
             entryDate: raw.master.entryDate,
             exitDate: raw.master.exitDate,

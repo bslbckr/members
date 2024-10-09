@@ -11,6 +11,10 @@
     grid-column-start: 1;
 }
 
+.span-all-cols {
+    grid-column-end: -1;
+}
+
 .button-row {
     display: flex;
     flex-direction: row;

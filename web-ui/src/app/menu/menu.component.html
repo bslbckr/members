@@ -4,4 +4,9 @@
     <a [routerLink]="'/start'">Start</a>
     <mat-divider [vertical]="true"></mat-divider>
     <a [routerLink]="'/onboarding'" *ngIf="hasOnboardingRole$ | async">On-Boarding</a>
+    <a [href]="accountUrl" class="flex-align-right">
+        <button mat-mini-fab color="primary" aria-label="Benutzer-Profil">
+            <mat-icon svgIcon="svg-profile"></mat-icon>
+        </button>
+    </a>
 </mat-toolbar>

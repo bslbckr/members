@@ -3,6 +3,8 @@ package de.guc;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.time.LocalDate;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -39,7 +41,7 @@ import jakarta.ws.rs.core.MediaType;
 public class OnBoardingResource {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(OnBoardingResource.class);
-
+    private final static Pattern passwordPattern = Pattern.compile("(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\\Q!\"§$%&/()?#+*,.;:\\E])");
     private static record OnBoardingContext(String keycloakId, String password, String login, MemberEntity member, boolean memberIsChild) {
         OnBoardingContext(String keycloakId, String password, String login) {
             this(keycloakId, password, login, null, false);
@@ -108,7 +110,7 @@ public class OnBoardingResource {
                     member.mobile = pair.member.getMobile();
                     member.email = pair.member.getEmail();
                     member.emailList = pair.member.isEmailList();
-                    // TODO complete this
+
                     member.persist();
                     return pair.context.withMember(member);
                 })
@@ -170,13 +172,26 @@ public class OnBoardingResource {
         final CredentialRepresentation credentials = new CredentialRepresentation();
         credentials.setTemporary(true);
         credentials.setType(CredentialRepresentation.PASSWORD);
-        final String password = RandomStringUtils.randomAlphanumeric(16);
+        final String password = this.generateSecurePassword();
         credentials.setValue(password);
         ur.resetPassword(credentials);
         final var representation = ur.toRepresentation();
         return new OnBoardingContext(representation.getId(), password, representation.getUsername());
     }
 
+    private String generateSecurePassword() {
+        String password;
+        Matcher matcher;
+        //char[] symbols = new char[] {',','.',';',':','!','"','#','@','+','-','?'};
+        do {
+            password = //RandomStringUtils.randomAlphanumeric(16);//
+                //            RandomStringUtils.random(16, 0, symbols.length, true, true, symbols);
+                    RandomStringUtils.random(16,
+                            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!\"§$%&/()?#+*,.;:");
+            matcher = passwordPattern.matcher(password);
+        } while (!matcher.find());
+        return password;
+    }
     private UserRepresentation mapDto(OnBoardingDto d) {
         final UserRepresentation newUser = new UserRepresentation();
         newUser.setEnabled(true);

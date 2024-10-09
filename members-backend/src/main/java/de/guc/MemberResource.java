@@ -5,16 +5,19 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.reactive.NoCache;
 import org.jboss.resteasy.reactive.RestPath;
-
 
 import de.guc.dto.MemberDto;
 import de.guc.entities.EmailUpdateEntity;
 import de.guc.entities.MemberEntity;
 import de.guc.entities.ResourcesEntity;
 import io.quarkus.logging.Log;
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
+import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.annotation.Nonnull;
@@ -33,10 +36,34 @@ import jakarta.ws.rs.core.MediaType;
 @Path("v1/member")
 @Authenticated
 public class MemberResource {
-
+    /**
+     * StateChanged instance for a change of member state
+     */
+    private static TemplateInstance changedState(String givenName, String name, String oldState, String newState, String dateEffective) {
+        return new StateChangeOrCancellation(givenName, name, oldState, newState, dateEffective);
+    }
+    
+    /**
+     * StateChanged instance for a cancellation
+     */
+    private static TemplateInstance cancellation(String givenName, String name, String dateEffective) {
+        return new StateChangeOrCancellation(givenName, name, "ignored", "ignored", dateEffective);
+        }
+        
     @Inject
     JsonWebToken accessToken;
     @Inject ObjectMapper mapper;
+
+    @Inject Mailer mailer;
+
+    record StateChangeOrCancellation(String givenName,
+                        String name,
+                        String oldState,
+                        String newState,
+                        String dateEffective) implements TemplateInstance {};
+    
+    @ConfigProperty(name = "guc.member.mail.state-changed")
+    String toAddress;
     
     @GET
     @Path("{id}")
@@ -67,6 +94,7 @@ public class MemberResource {
         this.checkAuthorization(UUID.fromString(memberId), false);
         final var entityToUpdate = existingMember.get();
         this.checkEmailUpdate(entityToUpdate, member);
+        this.checkStateUpdate(entityToUpdate, member);
         this.updateMember(entityToUpdate, member);
         entityToUpdate.persistAndFlush();
         return MemberDto.fromEntity(entityToUpdate);
@@ -109,6 +137,27 @@ public class MemberResource {
        }
 
        updates.stream().forEach(e -> e.persist());
+    }
+
+    private void checkStateUpdate(@Nonnull MemberEntity member, @Nonnull MemberDto dto) {
+        if (member.state == null) {
+            // TODO handle freshly onboarded member, i.e. send apropriate mail to board
+        }
+        else if (!member.state.equals(dto.getState()) || (member.exitDate == null && dto.getExitDate() != null)) {
+            TemplateInstance mailBody;
+            String subject;
+            if (dto.getExitDate() == null) {
+                Log.infof("Member %1$s changed state from %2$s to %3$s", member.id, member.state, dto.getState());
+                mailBody = changedState(member.givenName, member.name, member.state, dto.getState(), dto.getStateEffective().toString());
+                subject = String.format("[GUC/Mitglieder] Statuswechsel %s %s", member.givenName, member.name);
+            } else {
+                Log.infof("Member %1$s cancelled its membership", member.id, member.state, dto.getState());
+                mailBody = cancellation(member.givenName, member.name, dto.getExitDate().toString());
+                subject = String.format("[GUC/Mitglieder] Kündigung %s %s", member.givenName, member.name);
+            }
+            final var mail = Mail.withText(this.toAddress, subject, mailBody.render());
+            this.mailer.send(mail);
+        }
     }
 
     private void updateMember(@Nonnull MemberEntity member, @Nonnull MemberDto dto) {

@@ -11,6 +11,8 @@ import { AuthConfigModule } from './auth/auth-config.module';
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from 'angular-auth-oidc-client';
 import { MatDividerModule } from '@angular/material/divider';
@@ -34,7 +36,9 @@ import { OnBoardingReducer } from './reducers/reducers';
         EffectsModule.forRoot([]),
         AuthConfigModule,
         MatToolbarModule,
-        MatDividerModule
+        MatDividerModule,
+        MatButtonModule,
+        MatIconModule
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'de-DE' },
