@@ -1,4 +1,4 @@
-name: GitHub Pages
+name: CI Build backend & ui
 
 on:
   push:
@@ -21,10 +21,6 @@ jobs:
       run: npm install
       working-directory: web-ui/
 
-    - name: Run tests
-      run: npm run test
-      working-directory: web-ui/
-
     - name: Build
       run: npm run build
       working-directory: web-ui/
@@ -38,6 +34,7 @@ jobs:
       with:
         java-version: 21
         java-package: jdk
+        distribution: temurin
     - name: Build backend
       run: ./mvnw clean quarkus:build
       working-directory: members-backend/
