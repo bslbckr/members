@@ -39,5 +39,5 @@ jobs:
         distribution: temurin
         
     - name: Build backend
-      run: ./mvnw clean quarkus:build
+      run: ./mvnw --no-transfer-progress clean quarkus:build
       working-directory: members-backend/
