@@ -27,7 +27,7 @@ export const MemberReducer = createReducer(
         storeSuccessful: undefined,
         masterDataUpdated: false
     })),
-    on(LoadMemberActions.loadLoadMembersFailure, (state, action) => state),
+    on(LoadMemberActions.loadLoadMembersFailure, (state, _) => state),
     on(ModifyMemberActions.revert, (state, _) => ({
         ...state, modifiedMember: {
             name: state.loadedMember?.name || '',
@@ -60,7 +60,7 @@ export const MemberReducer = createReducer(
         storeSuccessful: true
     })),
     on(LoadMemberActions.updateMemberFromUser, (state, action) => {
-        let res: MemberState = { ...state };
+        const res: MemberState = { ...state };
 
         if (state.modifiedMember) {
             res.modifiedMember = {

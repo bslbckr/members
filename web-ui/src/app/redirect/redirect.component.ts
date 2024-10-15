@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../authentication.service';
@@ -7,7 +7,7 @@ import { AuthenticationService } from '../authentication.service';
     templateUrl: './redirect.component.html',
     styleUrls: ['./redirect.component.css']
 })
-export class RedirectComponent implements OnInit {
+export class RedirectComponent implements OnInit, OnDestroy {
 
     readonly router = inject(Router);
     readonly foo = inject(ActivatedRoute);
@@ -22,6 +22,6 @@ export class RedirectComponent implements OnInit {
         this.paramSubscription?.unsubscribe();
     }
 
-    private readQueryParams(params: ParamMap) {
+    private readQueryParams(_: ParamMap) {
     }
 }

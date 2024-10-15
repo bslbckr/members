@@ -3,7 +3,7 @@ import { CanActivateFn } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { map } from 'rxjs';
 
-export const authenticatedGuard: CanActivateFn = (route, state) => {
+export const authenticatedGuard: CanActivateFn = (_route, _state) => {
     const service: OidcSecurityService = inject(OidcSecurityService);
     return service.isAuthenticated$.pipe(map(authRes => {
         if (authRes.isAuthenticated) {

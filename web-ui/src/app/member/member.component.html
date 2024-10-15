@@ -65,9 +65,9 @@
                             <mat-option *ngFor="let allowedDate of allowedChangeDates" [value]="allowedDate.date">{{allowedDate.description}}</mat-option>
                             -->
                                      <mat-option [value]="allowedChangeDates[0].date">{{allowedChangeDates[0].description}}</mat-option>
-                                     <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[1].date">{{allowedChangeDates[1].description}}</mat-option>
-                                     <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[2].date">{{allowedChangeDates[2].description}}</mat-option>
-                                     <mat-option *ngIf="onBoardingMode == false" [value]="allowedChangeDates[3].date">{{allowedChangeDates[3].description}}</mat-option>
+                                     <mat-option *ngIf="onBoardingMode === false" [value]="allowedChangeDates[1].date">{{allowedChangeDates[1].description}}</mat-option>
+                                     <mat-option *ngIf="onBoardingMode === false" [value]="allowedChangeDates[2].date">{{allowedChangeDates[2].description}}</mat-option>
+                                     <mat-option *ngIf="onBoardingMode === false" [value]="allowedChangeDates[3].date">{{allowedChangeDates[3].description}}</mat-option>
                                      
                         </mat-select>
                     </mat-form-field>

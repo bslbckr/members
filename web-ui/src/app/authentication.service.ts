@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
-import { KeycloakFlow, KeycloakInitOptions, KeycloakLoginOptions } from 'keycloak-js';
+import { KeycloakInitOptions, KeycloakLoginOptions } from 'keycloak-js';
 import { Observable, defer } from 'rxjs';
 
 
