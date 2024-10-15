@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-      "build": "ng build",
-      "release": "ng build --aot true --configuration production --build-optimizer true --common-chunk true --base-href / --output-hashing bundles --subresource-integrity true --allowed-common-js-dependencies 'base64-js, js-sha256' --source-map true",
+    "build": "ng build",
+    "release": "ng build --aot true --configuration production --build-optimizer true --common-chunk true --base-href / --output-hashing bundles --subresource-integrity true --allowed-common-js-dependencies 'base64-js, js-sha256' --source-map true",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -33,10 +34,18 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.5",
+    "@angular-eslint/builder": "17.5.3",
+    "@angular-eslint/eslint-plugin": "17.5.3",
+    "@angular-eslint/eslint-plugin-template": "17.5.3",
+    "@angular-eslint/schematics": "17.5.3",
+    "@angular-eslint/template-parser": "17.5.3",
     "@angular/cli": "^17.3.5",
     "@angular/compiler-cli": "^17.3.5",
     "@ngrx/schematics": "^17.2.0",
     "@types/jasmine": "~4.3.0",
+    "@typescript-eslint/eslint-plugin": "7.11.0",
+    "@typescript-eslint/parser": "7.11.0",
+    "eslint": "^8.57.0",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

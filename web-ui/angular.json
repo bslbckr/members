@@ -72,7 +72,7 @@
             },
             "development": {
               "proxyConfig": "src/proxy.conf.json",
-                "buildTarget": "guc-members:build:development"
+              "buildTarget": "guc-members:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -101,12 +101,22 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
     "schematicCollections": [
+      "@angular-eslint/schematics",
       "@ngrx/schematics"
     ]
   }
