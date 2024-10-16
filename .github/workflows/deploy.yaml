@@ -1,4 +1,6 @@
-name: Deploy Frontend 
+name: Deploy Frontend
+
+on: workflow_dispatch
 
 jobs:
   web-ui:
