@@ -22,27 +22,14 @@ jobs:
       run: npm run release
       working-directory: web-ui/
       
-    - name: Create archive
-      working-directory: web-ui/dist/guc-members
-      run: tar -cf guc-members-web-ui.tar index.html *.css *.js assets
-
     - name: Deploy archive
-      uses: appleboy/scp-action@master
+      working-directory: web-ui/dist/guc-members
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SCP_HOST }}
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.SSH_KEY }}
-        source: web-ui/dist/guc-members/guc-members-web-ui.tar
+        source: "web-ui/dist/guc-members/*.js,web-ui/dist/guc-members/index.html, web-ui/dist/guc-members/assets"
         target: ${{ secrets.DEPLOY_DEST_FOLDER }}
-
-    - name: Unpack archive on remote server
-      uses: appleboy/ssh-action@v1.1.0
-      with:
-        host: ${{ secrets.SCP_HOST }}
-        username: ${{ secrets.DEPLOY_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd ${{ secrets.DEPLOY_DEST_FOLDER }}
-          rm *.js
-          tar -xf guc-members-web-ui.tar --overwrite
-          rm guc-members-web-ui.tar 
+        strip_components: 3
+        overwrite: true
