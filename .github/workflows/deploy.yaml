@@ -23,7 +23,6 @@ jobs:
       working-directory: web-ui/
       
     - name: Deploy archive
-      working-directory: web-ui/dist/guc-members
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.SCP_HOST }}
