@@ -34,3 +34,15 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         source: web-ui/dist/guc-members/guc-members-web-ui.tar
         target: ${{ secrets.DEPLOY_DEST_FOLDER }}
+
+    - name: Unpack archive on remote server
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.SCP_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ${{ secrets.DEPLOY_DEST_FOLDER }}
+          rm *.js
+          tar -xf guc-members-web-ui.tar --overwrite
+          rm guc-members-web-ui.tar 
