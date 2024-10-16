@@ -33,4 +33,4 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.SSH_KEY }}
         source: web-ui/dist/guc-members/guc-members-web-ui.tar
-        destination: ${{ secrets.DEPLOY_DEST_FOLDER }}
+        target: ${{ secrets.DEPLOY_DEST_FOLDER }}
