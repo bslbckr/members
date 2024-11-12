@@ -55,7 +55,7 @@ public class MemberResource {
     @Inject ObjectMapper mapper;
 
     @Inject Mailer mailer;
-
+    
     record StateChangeOrCancellation(String givenName,
                         String name,
                         String oldState,
