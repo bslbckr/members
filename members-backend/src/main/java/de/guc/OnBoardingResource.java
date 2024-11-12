@@ -40,46 +40,57 @@ import jakarta.ws.rs.core.MediaType;
 @RolesAllowed("onboarding")
 public class OnBoardingResource {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OnBoardingResource.class);
-    private final static Pattern passwordPattern = Pattern.compile("(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\\Q!\"§$%&/()?#+*,.;:\\E])");
-    private static record OnBoardingContext(String keycloakId, String password, String login, MemberEntity member, boolean memberIsChild) {
-        OnBoardingContext(String keycloakId, String password, String login) {
-            this(keycloakId, password, login, null, false);
+        private final static Logger LOGGER = LoggerFactory.getLogger(OnBoardingResource.class);
+        private final static Pattern passwordPattern = Pattern
+                        .compile("(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\\Q!\"§$%&/()?#+*,.;:\\E])");
+
+        private static record OnBoardingContext(String keycloakId, String password, String login, MemberEntity member,
+                        boolean memberIsChild) {
+                OnBoardingContext(String keycloakId, String password, String login) {
+                        this(keycloakId, password, login, null, false);
+                }
+
+                OnBoardingContext withMember(MemberEntity member) {
+                        return this.withMember(member, false);
+                }
+
+                OnBoardingContext withMember(MemberEntity member, boolean isChild) {
+                        return new OnBoardingContext(this.keycloakId, this.password, login, member, isChild);
+                }
         }
-        OnBoardingContext withMember(MemberEntity member) {
-            return this.withMember(member, false);
+
+        private static record ImportPair(MemberWithLoginDto member, OnBoardingContext context) {
+        };
+
+        @Inject
+        Keycloak adminClient;
+        @Inject
+        Mailer mailer;
+
+        record welcome(String firstname, String login, String password) implements TemplateInstance {
+        };
+
+        record imported(String firstname, String login, String password) implements TemplateInstance {
+        };
+
+        @POST
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Produces(MediaType.APPLICATION_JSON)
+        @Transactional
+        public void OnBoardNewMember(@Valid OnBoardingDto newMember) {
+                var context = this.registerUserAtKeycloak(newMember);
+
+                context = this.storeNewMember(newMember, context);
+                this.storeAccessResource(context);
+
+                final var mailTemplate = new welcome(newMember.firstName(), newMember.login(), context.password());
+
+                final var mail = Mail.withText(newMember.email(),
+                                "Herzlich Willkommen beim Goldfingers Ultimate Club e.V.",
+                                mailTemplate.render());
+                this.mailer.send(mail);
+
         }
-
-        OnBoardingContext withMember(MemberEntity member, boolean isChild) {
-            return new OnBoardingContext(this.keycloakId, this.password, login, member, isChild);
-        }
-    }
-
-    private static record ImportPair(MemberWithLoginDto member, OnBoardingContext context){};
-    @Inject Keycloak adminClient;
-    @Inject Mailer mailer;
-    
-    record welcome(String firstname, String login, String password) implements TemplateInstance {};
-    record imported(String firstname, String login, String password) implements TemplateInstance {};
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public void OnBoardNewMember(@Valid OnBoardingDto newMember) {
-        var context = this.registerUserAtKeycloak(newMember);
-
-        context = this.storeNewMember(newMember, context);
-        this.storeAccessResource(context);
-
-        final var mailTemplate = new welcome(newMember.firstName(), newMember.login(), context.password());
-
-        final var mail = Mail.withText(newMember.email(),
-                                       "Herzlich Willkommen beim Goldfingers Ultimate Club e.V.",
-                                       mailTemplate.render());
-        this.mailer.send(mail);
-        
-    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -89,7 +100,11 @@ public class OnBoardingResource {
     public void ImportExistingMembers(@Valid @NotEmpty List<MemberWithLoginDto> importedMembers) {
         importedMembers.stream()
             .map(mwl -> {
-                    final OnBoardingDto dto = new OnBoardingDto(mwl.getGivenName(), mwl.getName(), mwl.getEmail(), mwl.getLogin(), false, "", "");
+                    final boolean isChild = mwl.isChild();
+                    final OnBoardingDto dto = new OnBoardingDto(isChild ? mwl.getParentFirstName() : mwl.getGivenName(),
+                                                                isChild ? mwl.getParentLastName() : mwl.getName(),
+                                                                mwl.getEmail(),
+                                                                mwl.getLogin(), isChild, "", "");
                     return new ImportPair(mwl, this.registerUserAtKeycloak(dto));
                 })
             .map(pair -> {
@@ -112,7 +127,7 @@ public class OnBoardingResource {
                     member.emailList = pair.member.isEmailList();
 
                     member.persist();
-                    return pair.context.withMember(member);
+                    return pair.context.withMember(member, pair.member.isChild());
                 })
             .map(ctxt -> {
                     this.storeAccessResource(ctxt);
@@ -124,84 +139,83 @@ public class OnBoardingResource {
                 })
             .forEach(mail -> this.mailer.send(mail));
     }
-    
-    private void storeAccessResource(OnBoardingContext ctxt) {
-        final var access = new ResourcesEntity();
-        access.identity = UUID.fromString(ctxt.keycloakId());
-        access.member = ctxt.member();
-        access.role = ctxt.memberIsChild() ? "PARENT" : "SELF";
-        access.rType = ResourceType.MEMBER;
-        access.name = ctxt.member().givenName;
-        access.persist();
-        
-    }
-    private OnBoardingContext storeNewMember(OnBoardingDto newMember, OnBoardingContext ctxt) {
-        final var member = new MemberEntity();
 
-        if (newMember.memberIsChild()) {
-            member.name = newMember.memberName();
-            member.givenName = newMember.memberFirstName();
-        } else {
-            member.name = newMember.name();
-            member.givenName = newMember.firstName();
+        private void storeAccessResource(OnBoardingContext ctxt) {
+                final var access = new ResourcesEntity();
+                access.identity = UUID.fromString(ctxt.keycloakId());
+                access.member = ctxt.member();
+                access.role = ctxt.memberIsChild() ? "PARENT" : "SELF";
+                access.rType = ResourceType.MEMBER;
+                access.name = ctxt.member().givenName;
+                access.persist();
+
         }
-        member.email = newMember.email();
-        member.entryDate = LocalDate.now();
-        member.persist();
 
-        if (!newMember.memberIsChild()) {
-            final var emailUpdate = new EmailUpdateEntity();
-            emailUpdate.emailAddress = newMember.email();
-            emailUpdate.change = EmailUpdateEntity.ChangeType.INSERT;
-            emailUpdate.persist();
+        private OnBoardingContext storeNewMember(OnBoardingDto newMember, OnBoardingContext ctxt) {
+                final var member = new MemberEntity();
+
+                if (newMember.memberIsChild()) {
+                        member.name = newMember.memberName();
+                        member.givenName = newMember.memberFirstName();
+                } else {
+                        member.name = newMember.name();
+                        member.givenName = newMember.firstName();
+                }
+                member.email = newMember.email();
+                member.entryDate = LocalDate.now();
+                member.persist();
+
+                if (!newMember.memberIsChild()) {
+                        final var emailUpdate = new EmailUpdateEntity();
+                        emailUpdate.emailAddress = newMember.email();
+                        emailUpdate.change = EmailUpdateEntity.ChangeType.INSERT;
+                        emailUpdate.persist();
+                }
+
+                return ctxt.withMember(member, newMember.memberIsChild());
         }
-        
-        return ctxt.withMember(member, newMember.memberIsChild());
-    }
 
-    private OnBoardingContext registerUserAtKeycloak(OnBoardingDto dto) {
-        final var ur = this.mapDto(dto);
-        final var userResource = this.adminClient.realm("guc").users();
-        final var response = userResource.create(ur);
-        final var userId = CreatedResponseUtil.getCreatedId(response);
-        final var loadedUser =  userResource.get(userId);
-        return this.setInitialPassword(loadedUser);
-    }
+        private OnBoardingContext registerUserAtKeycloak(OnBoardingDto dto) {
+                final var ur = this.mapDto(dto);
+                final var userResource = this.adminClient.realm("guc").users();
+                final var response = userResource.create(ur);
+                final var userId = CreatedResponseUtil.getCreatedId(response);
+                final var loadedUser = userResource.get(userId);
+                return this.setInitialPassword(loadedUser);
+        }
 
-    private OnBoardingContext setInitialPassword(UserResource ur) {
-        final CredentialRepresentation credentials = new CredentialRepresentation();
-        credentials.setTemporary(true);
-        credentials.setType(CredentialRepresentation.PASSWORD);
-        final String password = this.generateSecurePassword();
-        credentials.setValue(password);
-        ur.resetPassword(credentials);
-        final var representation = ur.toRepresentation();
-        return new OnBoardingContext(representation.getId(), password, representation.getUsername());
-    }
+        private OnBoardingContext setInitialPassword(UserResource ur) {
+                final CredentialRepresentation credentials = new CredentialRepresentation();
+                credentials.setTemporary(true);
+                credentials.setType(CredentialRepresentation.PASSWORD);
+                final String password = this.generateSecurePassword();
+                credentials.setValue(password);
+                ur.resetPassword(credentials);
+                final var representation = ur.toRepresentation();
+                return new OnBoardingContext(representation.getId(), password, representation.getUsername());
+        }
 
-    private String generateSecurePassword() {
-        String password;
-        Matcher matcher;
-        //char[] symbols = new char[] {',','.',';',':','!','"','#','@','+','-','?'};
-        do {
-            password = //RandomStringUtils.randomAlphanumeric(16);//
-                //            RandomStringUtils.random(16, 0, symbols.length, true, true, symbols);
-                    RandomStringUtils.random(16,
-                            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!\"§$%&/()?#+*,.;:");
-            matcher = passwordPattern.matcher(password);
-        } while (!matcher.find());
-        return password;
-    }
-    private UserRepresentation mapDto(OnBoardingDto d) {
-        final UserRepresentation newUser = new UserRepresentation();
-        newUser.setEnabled(true);
-        newUser.setFirstName(d.firstName());
-        newUser.setLastName(d.name());
-        newUser.setEmail(d.email());
-        newUser.setEmailVerified(false);
-        newUser.setUsername(d.login());
-        newUser.setGroups(Arrays.asList("GUC Members"));
-        LOGGER.info("built UserRepresentation");
-        return newUser;
-    }
+        private String generateSecurePassword() {
+                String password;
+                Matcher matcher;
+                do {
+                        password = RandomStringUtils.random(16,
+                                        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!\"§$%&/()?#+*,.;:");
+                        matcher = passwordPattern.matcher(password);
+                } while (!matcher.find());
+                return password;
+        }
+
+        private UserRepresentation mapDto(OnBoardingDto d) {
+                final UserRepresentation newUser = new UserRepresentation();
+                newUser.setEnabled(true);
+                newUser.setFirstName(d.firstName());
+                newUser.setLastName(d.name());
+                newUser.setEmail(d.email());
+                newUser.setEmailVerified(false);
+                newUser.setUsername(d.login());
+                newUser.setGroups(Arrays.asList("GUC Members"));
+                LOGGER.info("built UserRepresentation");
+                return newUser;
+        }
 }
