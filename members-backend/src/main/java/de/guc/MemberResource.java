@@ -61,6 +61,8 @@ public class MemberResource {
                         String oldState,
                         String newState,
                         String dateEffective) implements TemplateInstance {};
+
+    record NewMemberRegistered(String givenName, String name, String newState, String dateEffective, String email) implements TemplateInstance {};
     
     @ConfigProperty(name = "guc.member.mail.state-changed")
     String toAddress;
@@ -140,12 +142,14 @@ public class MemberResource {
     }
 
     private void checkStateUpdate(@Nonnull MemberEntity member, @Nonnull MemberDto dto) {
+        TemplateInstance mailBody;
+        String subject;
+
         if (member.state == null) {
-            // TODO handle freshly onboarded member, i.e. send apropriate mail to board
+             mailBody = new NewMemberRegistered(dto.getGivenName(), dto.getName(), dto.getState(), dto.getEntryDate().toString(), dto.getEmail());
+             subject = String.format("[GUC/Mitglieder] Neues Mitglied %s %s", dto.getGivenName(), dto.getName());
         }
         else if (!member.state.equals(dto.getState()) || (member.exitDate == null && dto.getExitDate() != null)) {
-            TemplateInstance mailBody;
-            String subject;
             if (dto.getExitDate() == null) {
                 Log.infof("Member %1$s changed state from %2$s to %3$s", member.id, member.state, dto.getState());
                 mailBody = changedState(member.givenName, member.name, member.state, dto.getState(), dto.getStateEffective().toString());
@@ -155,9 +159,11 @@ public class MemberResource {
                 mailBody = cancellation(member.givenName, member.name, dto.getExitDate().toString());
                 subject = String.format("[GUC/Mitglieder] Kündigung %s %s", member.givenName, member.name);
             }
-            final var mail = Mail.withText(this.toAddress, subject, mailBody.render());
-            this.mailer.send(mail);
+        } else {
+            return;
         }
+        final var mail = Mail.withText(this.toAddress, subject, mailBody.render());
+        this.mailer.send(mail);
     }
 
     private void updateMember(@Nonnull MemberEntity member, @Nonnull MemberDto dto) {
