@@ -1,5 +1,7 @@
 package de.guc;
 
+import io.quarkus.test.h2.H2DatabaseTestResource;
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 @TestHTTPEndpoint(ConfigurationResource.class)
+@QuarkusTestResource(H2DatabaseTestResource.class)
 public class ConfigurationResourceTest {
     
     @Test
@@ -34,6 +37,21 @@ public class ConfigurationResourceTest {
             .then()
             .statusCode(StatusCode.OK)
             .and().contentType(ContentType.JSON)
-            .and().body(Matchers.arrayWithSize(0));
+            .and().assertThat().body(Matchers.equalTo("[]"));
+            //.body(Matchers.emptyArray());
+    }
+
+    @Test
+    @TestSecurity(user="alice", roles="guc-members")
+    @OidcSecurity(claims = {
+            @Claim(key = "sub", value="df8ea850-52a3-4856-aea0-79361d48ff8c")
+        })
+    public void testGetConfiguration_Success() {
+        given().when().get("")
+            .then()
+            .statusCode(StatusCode.OK)
+            .and().contentType(ContentType.JSON)
+            .and().body("size()",Matchers.is(1))
+            .and().body(Matchers.containsString("8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d"));
     }
 }

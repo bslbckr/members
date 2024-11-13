@@ -63,7 +63,7 @@
                      sequenceName="resource_access_SEQ" />
    </changeSet>
    <changeSet author="bslbckr" id="6" context="@test">
-     <insert tableName="resource_access">
+     <insert tableName="resource_access" dbms="mariadb">
        <column name="member" valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')"/>
        <column name="identity" valueComputed="UNHEX('df8ea85052a34856aea079361d48ff8c')" />
        <column name="role" value="owner" />
@@ -71,6 +71,15 @@
        <column name="id" valueComputed="NEXT VALUE FOR
                                         resource_access_SEQ" />
      </insert>
+     <insert tableName="resource_access" dbms="h2">
+       <column name="member" value="8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d"/>
+       <column name="identity" value="df8ea850-52a3-4856-aea0-79361d48ff8c" />
+       <column name="role" value="owner" />
+       <column name="type" value="0" />
+       <column name="id" valueComputed="NEXT VALUE FOR
+                                        resource_access_SEQ" />
+     </insert>
+
    </changeSet>
    <changeSet author="bslbckr" id="7">
      <addColumn tableName="resource_access">
@@ -139,9 +148,29 @@
        alter table members_AUD modify column rabatt bit not null;
      </sql>
    </changeSet>
-   <changeSet author="bslbckr" id="14">
-     <insert tableName="members">
+   <changeSet author="bslbckr" id="14" context="@test">
+     <insert tableName="members" dbms="mariadb">
        <column name="id" valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="berufstätig" />
+       <column name="state_effective" value="2020-1-1" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+     </insert>
+     <insert tableName="members" dbms="h2">
+       <column name="id" value="8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d" />
        <column name="given_name" value="Paul" />
        <column name="name" value="Tester" />
        <column name="entry_date" value="2019-5-23" />
