@@ -173,7 +173,9 @@ public class MemberResource {
         member.dse = dto.isDse();
         member.email = dto.getEmail();
         member.emailList = dto.isEmailList();
-        member.exitDate = dto.getExitDate();
+        if (member.exitDate == null && dto.getExitDate() != null) {
+            member.exitDate = dto.getExitDate();
+        }
         member.gender = dto.getGender();
         member.givenName = dto.getGivenName();
         member.mobile = dto.getMobile();
