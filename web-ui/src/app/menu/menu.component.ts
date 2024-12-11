@@ -14,6 +14,8 @@ export class MenuComponent {
     private readonly store = inject(Store);
     private readonly sanitizer = inject(DomSanitizer);
     readonly hasOnboardingRole$ = this.store.select(UserSelectors.hasRole("onboarding"))
-        .pipe(takeUntilDestroyed());
+      .pipe(takeUntilDestroyed());
+  readonly hasBoardRole$ = this.store.select(UserSelectors.hasRole("board-member"))
+    .pipe(takeUntilDestroyed());
     readonly accountUrl = this.sanitizer.bypassSecurityTrustUrl(environment.auth.authority + "/account");
 }

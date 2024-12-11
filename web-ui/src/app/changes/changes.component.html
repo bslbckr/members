@@ -1,0 +1,16 @@
+<mat-card>
+    <mat-card-header>Änderungen des Mitgliedsstatus</mat-card-header>
+    <mat-card-content>
+<div class="changes-grid">
+    <span>Vorname</span><span>Name</span><span>alter Status</span><span>neuer Status</span><span>1. Gültigkeitstag</span><span>Änderungszeitpunkt</span>
+    <ng-container *ngFor="let change of changes$ | async">
+        <span>{{change.givenName}}</span>
+        <span>{{change.name}}</span>
+        <span>{{change.oldState}}</span>
+        <span>{{change.newState}}</span>
+        <span>{{change.stateEffective | date}}</span>
+        <span>{{change.changedAt | date }}</span>
+    </ng-container>
+</div>
+    </mat-card-content>
+</mat-card>

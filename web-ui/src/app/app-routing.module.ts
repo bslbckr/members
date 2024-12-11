@@ -18,6 +18,7 @@ const routes: Routes = [
         canActivateChild: [authenticatedGuard]
     },
     { path: 'onboarding', loadChildren: () => import('./on.boarding/on.boarding.module').then(m => m.OnBoardingModule) },
+    { path: 'changes', loadChildren: () => import('./changes/changes.module').then(m => m.ChangesModule) },
     {
         path: '**',
         component: AppComponent
