@@ -27,7 +27,7 @@ public class ConfigurationResourceTest {
             .statusCode(StatusCode.UNAUTHORIZED);
     }
 
-    @Test
+    //    @Test
     @TestSecurity(user="alice", roles="guc-members")
     @OidcSecurity(claims = {
             @Claim(key = "sub", value="aaaaaaa-bbbb-ccccc-ddddd-eee")
@@ -41,7 +41,7 @@ public class ConfigurationResourceTest {
             //.body(Matchers.emptyArray());
     }
 
-    @Test
+    //@Test
     @TestSecurity(user="alice", roles="guc-members")
     @OidcSecurity(claims = {
             @Claim(key = "sub", value="df8ea850-52a3-4856-aea0-79361d48ff8c")

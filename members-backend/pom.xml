@@ -172,5 +172,24 @@
         <quarkus.package.type>native</quarkus.package.type>
       </properties>
     </profile>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <property>
+          <name>dev</name>
+        </property>
+      </activation>
+      <build>
+        <defaultGoal>compile quarkus:dev</defaultGoal>
+        <resources>
+          <resource>
+            <directory>src/dev/resources</directory>
+          </resource>
+          <resource>
+            <directory>src/main/resources</directory>
+          </resource>
+        </resources>
+      </build>
+    </profile>
   </profiles>
 </project>
