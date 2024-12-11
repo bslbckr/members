@@ -241,4 +241,351 @@
    <changeSet author="bslbckr" id="21">
      <addPrimaryKey columnNames="id" tableName="email_update" />
    </changeSet>
+   <changeSet author="bslbckr" id="22" context="@test">
+     <insert tableName="REVINFO">
+       <column name="REVTSTMP" value="1730060770000" />
+     </insert>
+     <insert tableName="REVINFO">
+       <column name="REVTSTMP" value="1730064370000" />
+     </insert>
+     <insert tableName="REVINFO">
+       <column name="REVTSTMP" value="1730301620000" />
+     </insert>
+     <insert tableName="REVINFO">
+       <column name="REVTSTMP" value="1730748082000" />
+     </insert>
+   </changeSet>
+   <changeSet author="bslbckr" id="23" context="@test">
+     <insert tableName="members_AUD" dbms="mariadb">
+       <column name="id"
+               valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')"
+               />
+       <column name="REV" valueNumeric="1" />
+       <column name="REVTYPE" valueNumeric="0" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="berufstätig" />
+       <column name="state_effective" value="2020-1-1" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="1" />
+       <column name="dayOfBirth_MOD" valueNumeric="1"  />
+       <column name="dfvNumber_MOD" valueNumeric="1" />
+       <column name="dse_MOD" valueNumeric="1" />
+       <column name="email_MOD" valueNumeric="1" />
+       <column name="emailList_MOD" valueNumeric="1" />
+       <column name="entryDate_MOD" valueNumeric="1" />
+       <column name="exitDate_MOD" valueNumeric="1" />
+       <column name="gender_MOD" valueNumeric="1" />
+       <column name="givenName_MOD" valueNumeric="1" />
+       <column name="mobile_MOD" valueNumeric="1" />
+       <column name="name_MOD" valueNumeric="1" />
+       <column name="rabatt_MOD" valueNumeric="1" />
+       <column name="state_MOD" valueNumeric="1" />
+       <column name="stateEffective_MOD" valueNumeric="1" />
+       <column name="street_MOD" valueNumeric="1" />
+       <column name="zipCode_MOD" valueNumeric="1" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="h2">
+       <column name="id" value="8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d"
+               />
+       <column name="REV" valueNumeric="1" />
+       <column name="REVTYPE" valueNumeric="0" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="berufstätig" />
+       <column name="state_effective" value="2020-1-1" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="1" />
+       <column name="dayOfBirth_MOD" valueNumeric="1"  />
+       <column name="dfvNumber_MOD" valueNumeric="1" />
+       <column name="dse_MOD" valueNumeric="1" />
+       <column name="email_MOD" valueNumeric="1" />
+       <column name="emailList_MOD" valueNumeric="1" />
+       <column name="entryDate_MOD" valueNumeric="1" />
+       <column name="exitDate_MOD" valueNumeric="1" />
+       <column name="gender_MOD" valueNumeric="1" />
+       <column name="givenName_MOD" valueNumeric="1" />
+       <column name="mobile_MOD" valueNumeric="1" />
+       <column name="name_MOD" valueNumeric="1" />
+       <column name="rabatt_MOD" valueNumeric="1" />
+       <column name="state_MOD" valueNumeric="1" />
+       <column name="stateEffective_MOD" valueNumeric="1" />
+       <column name="street_MOD" valueNumeric="1" />
+       <column name="zipCode_MOD" valueNumeric="1" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="mariadb">
+       <column name="id"
+               valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')"
+               />
+       <column name="REV" value="2" />
+       <column name="REVTYPE" valueNumeric="1" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="passiv" />
+       <column name="state_effective" value="2024-12-31" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="0" />
+       <column name="dayOfBirth_MOD" valueNumeric="0"  />
+       <column name="dfvNumber_MOD" valueNumeric="0" />
+       <column name="dse_MOD" valueNumeric="0" />
+       <column name="email_MOD" valueNumeric="0" />
+       <column name="emailList_MOD" valueNumeric="0" />
+       <column name="entryDate_MOD" valueNumeric="0" />
+       <column name="exitDate_MOD" valueNumeric="0" />
+       <column name="gender_MOD" valueNumeric="0" />
+       <column name="givenName_MOD" valueNumeric="0" />
+       <column name="mobile_MOD" valueNumeric="0" />
+       <column name="name_MOD" valueNumeric="0" />
+       <column name="rabatt_MOD" valueNumeric="0" />
+       <column name="state_MOD" valueNumeric="1" />
+       <column name="stateEffective_MOD" valueNumeric="1" />
+       <column name="street_MOD" valueNumeric="0" />
+       <column name="zipCode_MOD" valueNumeric="0" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="h2">
+       <column name="id" value="8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d"
+               />
+       <column name="REV" value="2" />
+       <column name="REVTYPE" valueNumeric="1" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="passiv" />
+       <column name="state_effective" value="2024-12-31" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="0" />
+       <column name="dayOfBirth_MOD" valueNumeric="0"  />
+       <column name="dfvNumber_MOD" valueNumeric="0" />
+       <column name="dse_MOD" valueNumeric="0" />
+       <column name="email_MOD" valueNumeric="0" />
+       <column name="emailList_MOD" valueNumeric="0" />
+       <column name="entryDate_MOD" valueNumeric="0" />
+       <column name="exitDate_MOD" valueNumeric="0" />
+       <column name="gender_MOD" valueNumeric="0" />
+       <column name="givenName_MOD" valueNumeric="0" />
+       <column name="mobile_MOD" valueNumeric="0" />
+       <column name="name_MOD" valueNumeric="0" />
+       <column name="rabatt_MOD" valueNumeric="0" />
+       <column name="state_MOD" valueNumeric="1" />
+       <column name="stateEffective_MOD" valueNumeric="1" />
+       <column name="street_MOD" valueNumeric="0" />
+       <column name="zipCode_MOD" valueNumeric="0" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="mariadb">
+       <column name="id"
+               valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')"
+               />
+       <column name="REV" value="3" />
+       <column name="REVTYPE" valueNumeric="1" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="passiv" />
+       <column name="state_effective" value="2024-12-31" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdam" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="1" />
+       <column name="dayOfBirth_MOD" valueNumeric="0"  />
+       <column name="dfvNumber_MOD" valueNumeric="0" />
+       <column name="dse_MOD" valueNumeric="0" />
+       <column name="email_MOD" valueNumeric="0" />
+       <column name="emailList_MOD" valueNumeric="0" />
+       <column name="entryDate_MOD" valueNumeric="0" />
+       <column name="exitDate_MOD" valueNumeric="0" />
+       <column name="gender_MOD" valueNumeric="0" />
+       <column name="givenName_MOD" valueNumeric="0" />
+       <column name="mobile_MOD" valueNumeric="0" />
+       <column name="name_MOD" valueNumeric="0" />
+       <column name="rabatt_MOD" valueNumeric="0" />
+       <column name="state_MOD" valueNumeric="0" />
+       <column name="stateEffective_MOD" valueNumeric="0" />
+       <column name="street_MOD" valueNumeric="0" />
+       <column name="zipCode_MOD" valueNumeric="0" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="h2">
+       <column name="id" value="8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d"
+               />
+       <column name="REV" value="3" />
+       <column name="REVTYPE" valueNumeric="1" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="passiv" />
+       <column name="state_effective" value="2024-12-31" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdam" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="1" />
+       <column name="dayOfBirth_MOD" valueNumeric="0"  />
+       <column name="dfvNumber_MOD" valueNumeric="0" />
+       <column name="dse_MOD" valueNumeric="0" />
+       <column name="email_MOD" valueNumeric="0" />
+       <column name="emailList_MOD" valueNumeric="0" />
+       <column name="entryDate_MOD" valueNumeric="0" />
+       <column name="exitDate_MOD" valueNumeric="0" />
+       <column name="gender_MOD" valueNumeric="0" />
+       <column name="givenName_MOD" valueNumeric="0" />
+       <column name="mobile_MOD" valueNumeric="0" />
+       <column name="name_MOD" valueNumeric="0" />
+       <column name="rabatt_MOD" valueNumeric="0" />
+       <column name="state_MOD" valueNumeric="0" />
+       <column name="stateEffective_MOD" valueNumeric="0" />
+       <column name="street_MOD" valueNumeric="0" />
+       <column name="zipCode_MOD" valueNumeric="0" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="mariadb">
+       <column name="id"
+               valueComputed="UNHEX('8b3a2dfabcac4d3e8efabf9ed0abc04d')"
+               />
+       <column name="REV" value="4" />
+       <column name="REVTYPE" valueNumeric="1" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="berufstätig" />
+       <column name="state_effective" value="2025-06-30" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="0" />
+       <column name="dayOfBirth_MOD" valueNumeric="0"  />
+       <column name="dfvNumber_MOD" valueNumeric="0" />
+       <column name="dse_MOD" valueNumeric="0" />
+       <column name="email_MOD" valueNumeric="0" />
+       <column name="emailList_MOD" valueNumeric="0" />
+       <column name="entryDate_MOD" valueNumeric="0" />
+       <column name="exitDate_MOD" valueNumeric="0" />
+       <column name="gender_MOD" valueNumeric="0" />
+       <column name="givenName_MOD" valueNumeric="0" />
+       <column name="mobile_MOD" valueNumeric="0" />
+       <column name="name_MOD" valueNumeric="0" />
+       <column name="rabatt_MOD" valueNumeric="0" />
+       <column name="state_MOD" valueNumeric="1" />
+       <column name="stateEffective_MOD" valueNumeric="1" />
+       <column name="street_MOD" valueNumeric="0" />
+       <column name="zipCode_MOD" valueNumeric="0" />
+
+     </insert>
+     <insert tableName="members_AUD" dbms="h2">
+       <column name="id" value="8b3a2dfa-bcac-4d3e-8efa-bf9ed0abc04d"
+               />
+       <column name="REV" value="4" />
+       <column name="REVTYPE" valueNumeric="1" />
+       <column name="given_name" value="Paul" />
+       <column name="name" value="Tester" />
+       <column name="entry_date" value="2019-5-23" />
+       <column name="day_of_birth" value="2005-6-7" />
+       <column name="gender" value="male" />
+       <column name="state" value="berufstätig" />
+       <column name="state_effective" value="2025-06-30" />
+       <column name="dfv_number" value="123456" />
+       <column name="dse" valueBoolean="true" />
+       <column name="rabatt" valueBoolean="false" />
+       <column name="street" value="Nansenstraße 21" />
+       <column name="zip_code" value="14471" />
+       <column name="city" value="Potsdamn" />
+       <column name="mobile" value="+49(0)173/4467893" />
+       <column name="email" value="faul@paul.de" />
+       <column name="email_list" valueBoolean="true" />
+       <column name="exit_date" value="null" />
+       <column name="city_MOD" valueNumeric="0" />
+       <column name="dayOfBirth_MOD" valueNumeric="0"  />
+       <column name="dfvNumber_MOD" valueNumeric="0" />
+       <column name="dse_MOD" valueNumeric="0" />
+       <column name="email_MOD" valueNumeric="0" />
+       <column name="emailList_MOD" valueNumeric="0" />
+       <column name="entryDate_MOD" valueNumeric="0" />
+       <column name="exitDate_MOD" valueNumeric="0" />
+       <column name="gender_MOD" valueNumeric="0" />
+       <column name="givenName_MOD" valueNumeric="0" />
+       <column name="mobile_MOD" valueNumeric="0" />
+       <column name="name_MOD" valueNumeric="0" />
+       <column name="rabatt_MOD" valueNumeric="0" />
+       <column name="state_MOD" valueNumeric="1" />
+       <column name="stateEffective_MOD" valueNumeric="1" />
+       <column name="street_MOD" valueNumeric="0" />
+       <column name="zipCode_MOD" valueNumeric="0" />
+     </insert>
+   </changeSet>
 </databaseChangeLog>
