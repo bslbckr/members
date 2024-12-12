@@ -7,6 +7,7 @@ import de.guc.dto.StateChangeDto;
 import de.guc.services.HistoryService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -26,6 +27,7 @@ public class ChangeResource {
     @Path("state")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("board-member")
+    @Transactional
     public Collection<StateChangeDto> getStateChanges() {
         final var changes = this.service.stateChanges();
         return changes.stream().map(StateChangeDto::fromStateChange).toList();
