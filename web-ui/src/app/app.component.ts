@@ -7,6 +7,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { UserActions } from './actions/user.actions';
 import { Action } from '@ngrx/store/src/models';
 import { UserInfo } from './model/UserInfo';
+import { decode } from 'js-base64';
+
 const REVERT_ICON =
     `
 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -52,8 +54,10 @@ export class AppComponent implements OnInit, OnDestroy {
             .subscribe((loginResponse) => {
                 let action: Action;
                 if (loginResponse.isAuthenticated) {
-                    const accessToken = loginResponse.accessToken.split(".")[1];
-                    const parsedToken = JSON.parse(window.atob(accessToken)) as UserInfo;
+                  const accessToken = loginResponse.accessToken.split(".")[1];
+
+                  const decoded = decode(accessToken);
+                  const parsedToken = JSON.parse(decoded) as UserInfo;
                     action = UserActions.loggedIn({ user: parsedToken });
                 } else {
                     action = UserActions.loggedOut();
