@@ -2,9 +2,14 @@ Hallo {firstname},
 
 für Dich wurde soeben ein Zugang zur Mitgliederverwaltung des
 Goldfingers Ultimate Club e.V. angelegt. Die Mitgliederverwaltung
-erlaubt es Dir selbständig, deine Daten und deine Mitgliedschaft
+erlaubt es Dir, deine Daten und deine Mitgliedschaft selbstständig
 zu bearbeiten. Bitte beachte, dass die eingetragenen korrekt
-sein müssen.
+sein müssen. Es liegt in Deiner Verantwortung, die hinterlegten Daten
+aktuell zu halten.
+
+Bisher bist Du noch kein Mitglied des Goldfingers Ultimate Club. Das
+wirst Du, nachdem Du unter https://members.goldfingers-potsdam.de
+Deine Daten vollständig ausgefüllt hast.
 
 Änderungen an deinen Kontaktdaten sind sofort wirksam, änderst Du
 hingegen Deinen Mitgliedsstatus, wird die Änderung erst zum
