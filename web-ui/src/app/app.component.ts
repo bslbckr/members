@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Store } from '@ngrx/store';
+import { Store, Action } from '@ngrx/store';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Subject, takeUntil } from 'rxjs';
 import { UserActions } from './actions/user.actions';
-import { Action } from '@ngrx/store/src/models';
 import { UserInfo } from './model/UserInfo';
 import { decode } from 'js-base64';
 

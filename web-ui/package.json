@@ -22,8 +22,8 @@
     "@angular/platform-browser": "^18.2.13",
     "@angular/platform-browser-dynamic": "^18.2.13",
     "@angular/router": "^18.2.13",
-    "@ngrx/effects": "^17.2.0",
-    "@ngrx/store": "^17.2.0",
+    "@ngrx/effects": "^18.1.1",
+    "@ngrx/store": "^18.1.1",
     "angular-auth-oidc-client": "16.0.1",
     "date-fns": "^3.3.1",
     "js-base64": "^3.7.7",
@@ -31,7 +31,8 @@
     "keycloak-js": "^23.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.4"
+    "zone.js": "~0.14.4",
+    "@ngrx/operators": "^18.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",
@@ -42,7 +43,7 @@
     "@angular-eslint/template-parser": "19.0.2",
     "@angular/cli": "^18.2.12",
     "@angular/compiler-cli": "^18.2.13",
-    "@ngrx/schematics": "^17.2.0",
+    "@ngrx/schematics": "^18.1.1",
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/parser": "7.11.0",
