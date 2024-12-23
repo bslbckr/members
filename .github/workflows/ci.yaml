@@ -1,9 +1,7 @@
 name: CI Build backend & ui
 
 on:
-  push:
-    branches:
-    - main
+  push
 
 jobs:
   web-ui:
