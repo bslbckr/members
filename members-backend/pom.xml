@@ -6,7 +6,9 @@
   <artifactId>members-backend</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <url>https://github.com/bslbckr/members</url>
-  <scm><url>https://github.com/bslbckr/members</url></scm>
+  <scm>
+    <url>https://github.com/bslbckr/members</url>
+  </scm>
   <issueManagement>
     <url>https://github.com/bslbckr/members/issues</url>
   </issueManagement>
@@ -80,6 +82,10 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-openapi</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
