@@ -34,7 +34,9 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 @Path("v1/onboarding")
 @RolesAllowed("onboarding")
@@ -176,12 +178,30 @@ public class OnBoardingResource {
         }
 
         private OnBoardingContext registerUserAtKeycloak(OnBoardingDto dto) {
-                final var ur = this.mapDto(dto);
+
                 final var userResource = this.adminClient.realm("guc").users();
-                final var response = userResource.create(ur);
-                final var userId = CreatedResponseUtil.getCreatedId(response);
-                final var loadedUser = userResource.get(userId);
-                return this.setInitialPassword(loadedUser);
+                final var existingUsers = userResource.searchByEmail(dto.email(), true);
+                if (existingUsers.isEmpty()){
+                    // no user for given email exists. Thus, we create a new one.
+                    final var ur = this.mapDto(dto);
+                    final var response = userResource.create(ur);
+                    final var userId = CreatedResponseUtil.getCreatedId(response);
+                    final var loadedUser = userResource.get(userId);
+                    return this.setInitialPassword(loadedUser);
+                } else {
+                    // a user with the given email exists in keycloak.
+                    final var existingUser = existingUsers.get(0);
+                    final var resources = ResourcesEntity.resourcesForIdentity(existingUser.getId());
+                    final var existingUserIsMember = resources.stream().anyMatch(r -> "SELF".equals(r.role));
+                    if (dto.memberIsChild() || !existingUserIsMember) {
+                        existingUser.setEnabled(true);
+                        if (!existingUser.getGroups().contains("GUC Members")) {
+                            existingUser.getGroups().add("GUC Members");
+                        }
+                        return new OnBoardingContext(existingUser.getId(), "UNCHANGED", existingUser.getUsername());
+                    }
+                }
+                throw new WebApplicationException("User with email exists as member", Status.BAD_REQUEST);
         }
 
         private OnBoardingContext setInitialPassword(UserResource ur) {

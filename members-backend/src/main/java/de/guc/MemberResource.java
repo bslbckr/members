@@ -1,6 +1,7 @@
 package de.guc;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,7 @@ import org.jboss.resteasy.reactive.RestPath;
 import de.guc.dto.MemberDto;
 import de.guc.entities.EmailUpdateEntity;
 import de.guc.entities.MemberEntity;
+import de.guc.entities.MemberOverview;
 import de.guc.entities.ResourcesEntity;
 import io.quarkus.logging.Log;
 import io.quarkus.mailer.Mail;
@@ -21,6 +23,7 @@ import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -78,6 +81,14 @@ public class MemberResource {
         return dto;
     }
 
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("board-member")
+    public List<MemberOverview> getAllActiveMembers() {
+        return MemberEntity.activeMembers();
+    }
+    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

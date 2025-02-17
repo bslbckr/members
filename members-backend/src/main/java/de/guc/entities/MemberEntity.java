@@ -60,4 +60,9 @@ public class MemberEntity extends PanacheEntityBase {
         final LockModeType lmt = locked ? LockModeType.PESSIMISTIC_WRITE : LockModeType.NONE;
         return findByIdOptional(id, lmt); 
     }
+
+    public static List<MemberOverview> activeMembers() {
+        return find("where exitDate is null or exitDate >= ?", LocalDate.now().toString())
+            .project(MemberOverview.class).list();
+    }
 }
