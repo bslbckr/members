@@ -5,7 +5,8 @@ import { AuthenticationService } from '../authentication.service';
 
 @Component({
     templateUrl: './redirect.component.html',
-    styleUrls: ['./redirect.component.css']
+    styleUrls: ['./redirect.component.css'],
+    standalone: false
 })
 export class RedirectComponent implements OnInit, OnDestroy {
 

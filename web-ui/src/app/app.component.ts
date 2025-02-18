@@ -30,7 +30,8 @@ const USER_PROFILE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24px"
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'GUC Mitgliederverwaltung';

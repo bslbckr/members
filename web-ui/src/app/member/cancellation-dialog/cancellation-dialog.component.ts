@@ -7,7 +7,8 @@ import { Observable, distinctUntilChanged, map } from 'rxjs';
 @Component({
     selector: 'app-cancel-dialog',
     templateUrl: './cancellation-dialog.component.html',
-    styleUrls: ['./cancellation-dialog.component.css']
+    styleUrls: ['./cancellation-dialog.component.css'],
+    standalone: false
 })
 export class CancellationDialogComponent implements AfterViewInit {
     private readonly builder = inject(NonNullableFormBuilder);

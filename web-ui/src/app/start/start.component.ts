@@ -7,7 +7,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
     selector: 'app-start',
     templateUrl: './start.component.html',
-    styleUrls: ['./start.component.css']
+    styleUrls: ['./start.component.css'],
+    standalone: false
 })
 export class StartComponent implements OnInit {
 

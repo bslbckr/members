@@ -5,9 +5,10 @@ import { ChangeSelectors } from './state/changes.selector';
 
 
 @Component({
-  selector: 'app-changes',
-  templateUrl: './changes.component.html',
-  styleUrl: './changes.component.css'
+    selector: 'app-changes',
+    templateUrl: './changes.component.html',
+    styleUrl: './changes.component.css',
+    standalone: false
 })
 export class ChangesComponent implements OnInit {
 

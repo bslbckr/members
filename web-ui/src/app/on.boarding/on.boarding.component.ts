@@ -11,7 +11,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
     selector: 'app-on.boarding',
     templateUrl: './on.boarding.component.html',
-    styleUrls: ['./on.boarding.component.css']
+    styleUrls: ['./on.boarding.component.css'],
+    standalone: false
 })
 export class OnBoardingComponent {
 
