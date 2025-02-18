@@ -24,7 +24,7 @@
     "@angular/router": "^18.2.13",
     "@ngrx/effects": "^18.1.1",
     "@ngrx/store": "^18.1.1",
-    "angular-auth-oidc-client": "16.0.1",
+    "angular-auth-oidc-client": "19.0.0",
     "date-fns": "^3.3.1",
     "js-base64": "^3.7.7",
     "jwt-decode": "^4.0.0",
