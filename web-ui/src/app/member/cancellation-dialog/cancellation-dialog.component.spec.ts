@@ -8,8 +8,8 @@ describe('CancellationDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CancellationDialogComponent]
-    });
+    imports: [CancellationDialogComponent]
+});
     fixture = TestBed.createComponent(CancellationDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

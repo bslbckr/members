@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store, Action } from '@ngrx/store';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
@@ -7,6 +7,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { UserActions } from './actions/user.actions';
 import { UserInfo } from './model/UserInfo';
 import { decode } from 'js-base64';
+import { RouterOutlet } from '@angular/router';
+import { MenuComponent } from './menu/menu.component';
 
 const REVERT_ICON =
     `
@@ -31,7 +33,7 @@ const USER_PROFILE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24px"
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    standalone: false
+  imports: [RouterOutlet, MenuComponent]
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'GUC Mitgliederverwaltung';

@@ -1,14 +1,21 @@
 import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NonNullableFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Observable, distinctUntilChanged, map } from 'rxjs';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-cancel-dialog',
     templateUrl: './cancellation-dialog.component.html',
     styleUrls: ['./cancellation-dialog.component.css'],
-    standalone: false
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatSelect, NgFor, MatOption, MatSlideToggle, MatDialogActions, MatButton, AsyncPipe]
 })
 export class CancellationDialogComponent implements AfterViewInit {
     private readonly builder = inject(NonNullableFormBuilder);

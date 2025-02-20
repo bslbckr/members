@@ -8,8 +8,8 @@ describe('OnBoardingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [OnBoardingComponent]
-    });
+    imports: [OnBoardingComponent]
+});
     fixture = TestBed.createComponent(OnBoardingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
