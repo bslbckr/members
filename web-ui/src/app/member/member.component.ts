@@ -34,10 +34,8 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     selector: 'app-member',
     templateUrl: './member.component.html',
     styleUrls: ['./member.component.css'],
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
-  standalone:true,
-  providers: [ provideNativeDateAdapter() ]
-
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
+    providers: [provideNativeDateAdapter()]
 })
 export class MemberComponent implements OnInit {
 

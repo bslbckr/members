@@ -15,8 +15,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-cancel-dialog',
     templateUrl: './cancellation-dialog.component.html',
     styleUrls: ['./cancellation-dialog.component.css'],
-  imports: [MatDialogTitle, CdkScrollable, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatSelect, NgFor, MatOption, MatSlideToggle, MatDialogActions, MatButton, AsyncPipe],
-  standalone: true
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatSelect, NgFor, MatOption, MatSlideToggle, MatDialogActions, MatButton, AsyncPipe]
 })
 export class CancellationDialogComponent implements AfterViewInit {
     private readonly builder = inject(NonNullableFormBuilder);

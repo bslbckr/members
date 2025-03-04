@@ -13,8 +13,7 @@ import { UserSelectors } from '../selectors/user.selectors';
     selector: 'app-start',
     templateUrl: './start.component.html',
     styleUrls: ['./start.component.css'],
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgFor, MatButton, MatAnchor, MatCardFooter, AsyncPipe, RouterLink, NgIf],
-  standalone: true
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgFor, MatButton, MatAnchor, MatCardFooter, AsyncPipe, RouterLink, NgIf]
 })
 export class StartComponent implements OnInit {
 

@@ -5,12 +5,11 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-member-overview',
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, DatePipe],
-  templateUrl: './member-overview.component.html',
-  styleUrl: './member-overview.component.css',
-  providers: [ MemberOverviewService ]
+    selector: 'app-member-overview',
+    imports: [MatTableModule, MatPaginatorModule, DatePipe],
+    templateUrl: './member-overview.component.html',
+    styleUrl: './member-overview.component.css',
+    providers: [MemberOverviewService]
 })
 export class MemberOverviewComponent implements OnInit, AfterViewInit{
   private readonly service = inject(MemberOverviewService);
