@@ -5,11 +5,9 @@ import java.time.LocalDate;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
-public class MemberOverview {
-    public String givenName;
-    public String name;
-    public String state;
-    public LocalDate stateEffective;
-    public LocalDate entryDate;
-    public LocalDate exitDate;
-}
+public record MemberOverview (String givenName,
+                              String name,
+                              String state,
+                              LocalDate stateEffective,
+                              LocalDate entryDate,
+                              LocalDate exitDate) {}

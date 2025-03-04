@@ -8,8 +8,8 @@ describe('RedirectComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RedirectComponent]
-    });
+    imports: [RedirectComponent]
+});
     fixture = TestBed.createComponent(RedirectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

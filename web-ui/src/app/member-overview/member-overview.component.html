@@ -1,0 +1,40 @@
+<table mat-table [dataSource]="datasource">
+    <ng-container matColumnDef="givenName">
+      <th mat-header-cell *matHeaderCellDef> Vorname </th>
+      <td mat-cell *matCellDef="let element"> {{element.givenName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stateEffective">
+        <th mat-header-cell *matHeaderCellDef> Status seit </th>
+        <td mat-cell *matCellDef="let element"> {{element.stateEffective | date:'longDate'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="entryDate">
+        <th mat-header-cell *matHeaderCellDef> Eintrittsdatum </th>
+        <td mat-cell *matCellDef="let element"> {{element.entryDate | date:'longDate'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="exitDate">
+        <th mat-header-cell *matHeaderCellDef> Austrittsdatum </th>
+        <td mat-cell *matCellDef="let element"> {{element.exitDate | date:'longDate'}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[10, 20, 50]"
+               showFirstLastButtons
+               aria-label="Select page of periodic elements">
+</mat-paginator>
+

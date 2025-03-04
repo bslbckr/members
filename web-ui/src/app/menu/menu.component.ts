@@ -4,12 +4,17 @@ import { UserSelectors } from '../selectors/user.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { MatDivider } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    standalone: false
+    imports: [RouterModule, MatDivider, MatIconModule, MatToolbarModule, AsyncPipe, NgIf]
 })
 export class MenuComponent {
     private readonly store = inject(Store);
