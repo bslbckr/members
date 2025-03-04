@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "release": "ng build --aot true --configuration production --build-optimizer true --common-chunk true --base-href / --output-hashing bundles --subresource-integrity true --allowed-common-js-dependencies 'base64-js, js-sha256' --source-map true",
+    "release": "ng build --aot true --configuration production --optimization true --base-href / --output-hashing bundles --subresource-integrity true --allowed-common-js-dependencies 'base64-js, js-sha256' --source-map true",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
