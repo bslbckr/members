@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Store, Action } from '@ngrx/store';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
@@ -32,8 +32,9 @@ const USER_PROFILE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24px"
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-  imports: [RouterOutlet, MenuComponent]
+  styleUrls: ['./app.component.css'],
+  imports: [RouterOutlet, MenuComponent],
+  standalone: true
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'GUC Mitgliederverwaltung';
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly store = inject(Store);
 
     private readonly destroy$: Subject<void> = new Subject<void>();
-    constructor() {
+  constructor() {
         this.registry.addSvgIconLiteral('svg-revert', this.sanitizer.bypassSecurityTrustHtml(REVERT_ICON));
         this.registry.addSvgIconLiteral('svg-save', this.sanitizer.bypassSecurityTrustHtml(SAVE_ICON));
         this.registry.addSvgIconLiteral('svg-cancel', this.sanitizer.bypassSecurityTrustHtml(CANCEL_ICON));

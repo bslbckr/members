@@ -11,3 +11,22 @@
     </mat-card-content>
     <mat-card-footer>Du kannst hier nur diejenigen Mitgliedsdaten einsehen und bearbeiten, für die Du eine Berechtigung hast.</mat-card-footer>
 </mat-card>
+<mat-card *ngIf="hasBoardRole$ | async">
+    <mat-card-header><mat-card-title>Mitgliedsdaten anzeigen</mat-card-title></mat-card-header>
+    <mat-card-content>
+        <ul class="resource-list">
+            <li>
+        <a mat-raised-button
+           routerLink="/members"
+           color="primary"
+           target="_self">Alle Vereinsmitglieder</a>
+            </li>
+            <li>
+        <a mat-raised-button
+           routerLink="/changes"
+           color="primary"
+           target="_self">Änderungen</a>
+            </li>
+        </ul>
+    </mat-card-content>
+</mat-card>

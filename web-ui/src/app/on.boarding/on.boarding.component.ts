@@ -20,7 +20,8 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-on.boarding',
     templateUrl: './on.boarding.component.html',
     styleUrls: ['./on.boarding.component.css'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatSlideToggle, MatCardActions, MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatSlideToggle, MatCardActions, MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe],
+  standalone: true
 })
 export class OnBoardingComponent {
 

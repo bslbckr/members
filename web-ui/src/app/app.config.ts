@@ -8,15 +8,15 @@ import { provideEffects } from '@ngrx/effects';
 import { provideRouter, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { authenticatedGuard } from './authenticated.guard';
+import { hasRoleGuard } from './has-role.guard';
 import { AppComponent } from './app.component';
-import { authInterceptor, OidcSecurityService, PassedInitialConfig, provideAuth } from 'angular-auth-oidc-client';
+import { authInterceptor, PassedInitialConfig, provideAuth } from 'angular-auth-oidc-client';
 import { environment } from 'src/environments/environment';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { StartEffects } from './start/effects/start.effects';
 import { ResourceService } from './start/resource.service';
 import { MemberEffects } from './member/effects/member.effects';
 import { MemberService } from './member/member.service';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { OnboardingEffects } from './on.boarding/+state/onboarding.effects';
 import { OnBoardingService } from './on.boarding/on-boarding.service';
@@ -40,15 +40,15 @@ const routes: Routes = [
     path: 'member',
     loadComponent: () => import('./member/member.component').then(m => m.MemberComponent),
     canActivate: [authenticatedGuard],
-    providers: [
+    providers: [ 
       provideState({name: "member", reducer: MemberReducer}),
       provideEffects(MemberEffects),
-      provideNativeDateAdapter(),
       MemberService]
   },
   {
     path: 'onboarding',
     loadComponent: () => import('./on.boarding/on.boarding.component').then(m => m.OnBoardingComponent),
+    canActivate: [authenticatedGuard, hasRoleGuard('onboarding')],
     providers: [
       provideState({name:"onBoarding", reducer: OnBoardingReducer}),
       provideEffects(OnboardingEffects), OnBoardingService]
@@ -56,11 +56,17 @@ const routes: Routes = [
   {
     path: 'changes',
     loadComponent: () => import('./changes/changes.component').then(m => m.ChangesComponent),
+    canActivate: [authenticatedGuard, hasRoleGuard('board-member')],
     providers: [
       provideEffects(ChangesEffects),
       ChangeService,
       provideState({name: changes.changeReducerFeatureKey, reducer: changes.reducer})
     ]
+  },
+  {
+    path: 'members',
+    loadComponent: () => import('./member-overview/member-overview.component').then(m => m.MemberOverviewComponent),
+    canActivate: [authenticatedGuard, hasRoleGuard('board-member')]
   },
   {
     path: '**',

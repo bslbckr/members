@@ -13,8 +13,9 @@ import { AsyncPipe, NgIf } from '@angular/common';
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.css'],
-  imports: [RouterModule, MatDivider, MatIconModule, MatToolbarModule, AsyncPipe, NgIf]
+  styleUrls: ['./menu.component.css'],
+  imports: [RouterModule, MatDivider, MatIconModule, MatToolbarModule, AsyncPipe, NgIf],
+  standalone: true
 })
 export class MenuComponent {
     private readonly store = inject(Store);

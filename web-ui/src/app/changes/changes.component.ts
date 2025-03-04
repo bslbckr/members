@@ -10,7 +10,8 @@ import { NgFor, AsyncPipe, DatePipe } from '@angular/common';
     selector: 'app-changes',
     templateUrl: './changes.component.html',
     styleUrl: './changes.component.css',
-    imports: [MatCard, MatCardHeader, MatCardContent, NgFor, AsyncPipe, DatePipe]
+  imports: [MatCard, MatCardHeader, MatCardContent, NgFor, AsyncPipe, DatePipe],
+  standalone: true
 })
 export class ChangesComponent implements OnInit {
 
