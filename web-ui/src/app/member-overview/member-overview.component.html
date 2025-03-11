@@ -1,3 +1,8 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Mitgliederübersicht</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
 <table matSort mat-table [dataSource]="datasource">
     <ng-container matColumnDef="givenName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header > Vorname </th>
@@ -33,8 +38,25 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<mat-paginator [pageSizeOptions]="[10, 20, 50]"
-               showFirstLastButtons
-               aria-label="Select page of periodic elements">
-</mat-paginator>
+<mat-toolbar>
 
+        <mat-form-field subscriptSizing="dynamic">
+            <mat-label for="filter">Filtern</mat-label>
+            <input matInput type="text" #filterInput id="filer" />
+            <button matSuffix mat-icon-button aria-label="Filter zurücksetzen" (click)="filterReset()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <span class="example-spacer"></span>
+        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]"
+                       showFirstLastButtons
+                       aria-label="Mitglieder pro Seite"
+
+        >
+        </mat-paginator>
+        
+
+</mat-toolbar>
+
+    </mat-card-content>
+</mat-card>
