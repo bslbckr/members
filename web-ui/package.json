@@ -44,6 +44,7 @@
     "@angular/cli": "^19.2.0",
     "@angular/compiler-cli": "^19.2.0",
     "@ngrx/schematics": "^19.0.1",
+    "@storybook/angular": "^8.6.4",
     "@types/jasmine": "~5.1.6",
     "@typescript-eslint/eslint-plugin": "8.26.0",
     "@typescript-eslint/parser": "8.26.0",
@@ -54,6 +55,14 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "msw": "^2.7.3",
+    "msw-storybook-addon": "^2.0.4",
+    "storybook-addon-angular-router": "^1.10.1",
     "typescript": "~5.8.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "src"
+    ]
   }
 }
