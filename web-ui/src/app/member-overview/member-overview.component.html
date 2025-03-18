@@ -42,11 +42,14 @@
 
         <mat-form-field subscriptSizing="dynamic">
             <mat-label for="filter">Filtern</mat-label>
-            <input matInput type="text" #filterInput id="filer" />
+            <input matInput type="text" #filterInput id="filter" />
             <button matSuffix mat-icon-button aria-label="Filter zurücksetzen" (click)="filterReset()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
+        <button mat-icon-button aria-label="Export CSV" color="primary" (click)="downloadCsv()">
+            <mat-icon>download</mat-icon>
+        </button>
         <span class="example-spacer"></span>
         <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]"
                        showFirstLastButtons

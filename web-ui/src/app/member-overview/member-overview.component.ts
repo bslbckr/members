@@ -10,6 +10,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { GenericCsvService } from './generic-csv.service';
 
 
 @Component({
@@ -17,10 +18,11 @@ import { MatIcon } from '@angular/material/icon';
   imports: [MatTableModule, MatPaginatorModule, DatePipe, MatSortModule, MatCardModule, MatToolbar, MatInput, MatFormField, MatLabel, MatSuffix, MatIconButton, MatIcon],
     templateUrl: './member-overview.component.html',
     styleUrl: './member-overview.component.css',
-    providers: [MemberOverviewService]
+  providers: [MemberOverviewService, GenericCsvService]
 })
 export class MemberOverviewComponent implements OnInit, AfterViewInit{
   private readonly service = inject(MemberOverviewService);
+  private readonly csv = inject(GenericCsvService);
   readonly displayedColumns = ["givenName", "name", "entryDate", "state", "stateEffective", "exitDate"];
 
   readonly datasource = new MatTableDataSource<MemberOverview>();
@@ -57,4 +59,21 @@ export class MemberOverviewComponent implements OnInit, AfterViewInit{
     }));
   }
 
+  downloadCsv() {
+    const csvHeaders:{[key in keyof MemberOverview]:string}  = {
+      "givenName": "Vorname",
+      "name": "Nachname",
+      "entryDate": "Eintrittsdatum",
+      "exitDate": "Austrittsdatum",
+      "state": "Status",
+      "stateEffective": "Status seit"
+    };
+    const exportedCsv = this.csv.toCsv(this.datasource.filteredData, { header: csvHeaders, delimiter: ";"});
+    const blob = URL.createObjectURL(new Blob([exportedCsv]))
+    const anchor = document.createElement("a");
+    anchor.href = blob;
+    anchor.download = "GUC-Mitglieder.csv";
+    anchor.click();
+    URL.revokeObjectURL(blob);
+  }
 }
