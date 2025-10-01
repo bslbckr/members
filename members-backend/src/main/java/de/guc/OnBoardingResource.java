@@ -12,6 +12,7 @@ import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,9 +196,15 @@ public class OnBoardingResource {
                     final var existingUserIsMember = resources.stream().anyMatch(r -> "SELF".equals(r.role));
                     if (dto.memberIsChild() || !existingUserIsMember) {
                         existingUser.setEnabled(true);
-                        if (!existingUser.getGroups().contains("GUC Members")) {
+                        final var existingUserResource = userResource.get(existingUser.getId());
+                        final boolean isInMembersGroup = existingUserResource.groups()
+                            .stream()
+                            .map(GroupRepresentation::getName)
+                            .anyMatch(g -> "GUC Members".equals(g));
+                        if (!isInMembersGroup) {
                             existingUser.getGroups().add("GUC Members");
                         }
+                        existingUserResource.update(existingUser);
                         return new OnBoardingContext(existingUser.getId(), "UNCHANGED", existingUser.getUsername());
                     }
                 }
