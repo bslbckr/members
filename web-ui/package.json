@@ -58,7 +58,6 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "msw": "^2.7.3",
     "msw-storybook-addon": "^2.0.4",
-    "storybook-addon-angular-router": "^1.10.1",
     "typescript": "~5.8.2"
   },
   "msw": {
