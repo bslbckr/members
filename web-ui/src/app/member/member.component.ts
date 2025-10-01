@@ -6,7 +6,7 @@ import { ModifyMemberActions } from '../actions/modify-member.actions';
 import { FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreSelectors, MemberSelectors } from '../selectors/user.selector';
 import { StepperOrientation } from '@angular/cdk/stepper';
-import { filter, map, take, tap, withLatestFrom } from 'rxjs';
+import { filter, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Member } from '../model/Member';
 import { differenceInCalendarDays } from 'date-fns/fp';
@@ -17,7 +17,7 @@ import { CancellationDialogComponent, CancellationDialogData } from './cancellat
 import { ResourceSelectors } from '../selectors/resources.selectors';
 import { UserSelectors } from '../selectors/user.selectors';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgIf, NgClass, AsyncPipe, NgFor } from '@angular/common';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { MatStepper, MatStep, MatStepperNext, MatStepperPrevious } from '@angular/material/stepper';
@@ -29,12 +29,15 @@ import { MatSelect } from '@angular/material/select';
 import { MatOption, provideNativeDateAdapter } from '@angular/material/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { Router } from '@angular/router';
+
+declare type MembershipStates = "passiv" | "jugendliche" | "ermäßigt" | "berufstätig";
 
 @Component({
     selector: 'app-member',
     templateUrl: './member.component.html',
     styleUrls: ['./member.component.css'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgIf, NgFor, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
     providers: [provideNativeDateAdapter()]
 })
 export class MemberComponent implements OnInit {
@@ -43,11 +46,16 @@ export class MemberComponent implements OnInit {
     private readonly builder = inject(FormBuilder);
     private readonly breakpoint = inject(BreakpointObserver);
     private readonly snackBar = inject(MatSnackBar);
-    private readonly dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
+  private readonly router = inject(Router);
     private readonly selectedMemberId$ = this.store.select(ResourceSelectors.selectMemberId)
-        .pipe(takeUntilDestroyed());
+      .pipe(takeUntilDestroyed());
+  private readonly _youthMembershipAllowed$ = this.store.select(MemberSelectors.qualifiesForYouthMembership)
+    .pipe(takeUntilDestroyed());
     readonly masterDataUpdated$ = this.store.select(MemberSelectors.dataUpdated)
-        .pipe(takeUntilDestroyed());
+      .pipe(takeUntilDestroyed());
+  readonly membershipCancelled$ = this.store.select(MemberSelectors.membershipCancelled)
+    .pipe(takeUntilDestroyed());
     private readonly nextEndOfQuarter: Date[];
     private memberId: string = "";
     private isOnboarding = false;
@@ -123,6 +131,9 @@ export class MemberComponent implements OnInit {
                 control.reset(null);
             }
         });
+  private readonly _cancelled = this.membershipCancelled$
+    .pipe(filter(c => c === true))
+    .subscribe(_ => this.forms.disable());
 
     private readonly userChangedSub = this.store.select(MemberSelectors.selectMember)
         .pipe(takeUntilDestroyed(), filter(this.filterNullOrUndefined))
@@ -179,10 +190,13 @@ export class MemberComponent implements OnInit {
         });
 
     private readonly showSnackbarSuccess = this.store.select(StoreSelectors.success)
-        .pipe(takeUntilDestroyed(), filter(x => x))
-        .subscribe(_ => {
-            this.snackBar.open("Änderungen erfolgreich gespeichert", "Ok", { duration: 5000 });
-        });
+      .pipe(takeUntilDestroyed(),
+        filter(x => x),
+        switchMap(_ => {
+          const snackBarRef = this.snackBar.open("Änderungen erfolgreich gespeichert", "Ok", { duration: 5000 });
+          return snackBarRef.afterDismissed();
+        }))
+      .subscribe(_ => this.router.navigateByUrl("/start"));
     private readonly showSnackbarFailure = this.store.select(StoreSelectors.failure)
         .pipe(takeUntilDestroyed(), filter(x => x))
         .subscribe(_ => {
@@ -190,12 +204,11 @@ export class MemberComponent implements OnInit {
         });
 
     ngOnInit() {
-        //this.memberId = this.route.snapshot.paramMap.get('memberId') || '';
-        this.selectedMemberId$.pipe(filter(this.filterNullOrUndefined),
-            take(1),
-            tap(id => this.memberId = id))
-            .subscribe(id => this.store.dispatch(LoadMemberActions.loadLoadMembers({ memberId: id })));
-
+      this.selectedMemberId$.pipe(
+        filter(this.filterNullOrUndefined),
+        take(1),
+        tap(id => this.memberId = id))
+        .subscribe(id => this.store.dispatch(LoadMemberActions.loadLoadMembers({ memberId: id })));
     }
 
     private filterNullOrUndefined<T>(x: T | null | undefined): x is T {
@@ -212,7 +225,7 @@ export class MemberComponent implements OnInit {
             dayOfBirth: raw.master.dayOfBirth,
             entryDate: raw.master.entryDate,
             exitDate: raw.master.exitDate,
-            state: raw.status.status as "passiv" | "jugendliche" | "ermäßigt" | "berufstätig",
+          state: raw.status.status as MembershipStates,
             stateEffective: raw.status.statusEffective ?? new Date(),
             dfvNumber: raw.dfv.dfvNumber,
             dfvDiscount: raw.dfv.discount,
@@ -236,6 +249,15 @@ export class MemberComponent implements OnInit {
                 };
             });
     }
+
+  get allowedMembershipStates(): MembershipStates[] {
+    const youthMemberships:MembershipStates[] = ["passiv", "jugendliche"];
+    const adultMemberships:MembershipStates[] = ["passiv", "ermäßigt", "berufstätig"];
+    const dob = this.forms.getRawValue().master.dayOfBirth;
+    const year = new Date().getFullYear();
+    
+    return  dob != null && year - dob.getFullYear() <= 18 ? youthMemberships : adultMemberships;
+  }
 
     get onBoardingMode() { return this.isOnboarding; }
 

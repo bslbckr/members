@@ -8,6 +8,15 @@ const selectMemberData = createSelector(selectMemberFeature, state => state.modi
 const selectName = createSelector(selectMemberData, mem => mem?.name);
 const selectGivenName = createSelector(selectMemberData, mem => mem?.givenName);
 const selectDayOfBirth = createSelector(selectMemberData, mem => mem?.dayOfBirth);
+const selectQualifiesForYouthMembership = createSelector(selectDayOfBirth, dob => {
+  if (dob === undefined) {
+    return false;
+  }
+  const dayOfBirth = new Date(dob);
+  const yearOfBirth = dayOfBirth.getFullYear();
+  const year = new Date().getFullYear();
+  return year - yearOfBirth <= 18;
+});
 const selectEntryDate = createSelector(selectMemberData, mem => mem?.entryDate);
 const selectLoadedMember = createSelector(selectMemberFeature, state => state.loadedMember);
 const selectLoadedStatus = createSelector(selectLoadedMember, m => m?.state);
@@ -27,7 +36,7 @@ const selectIsUpdateNecessary = createSelector(ResourceSelectors.updateAllowed,
         }
         return false;
     });
-
+const selectMembershipIsCancelled = createSelector(selectMemberData, m => m?.exitDate !== null);
 const selectStoreSuccess = createSelector(selectMemberFeature, state => state.storeSuccessful);
 const selectStoreSucceeded = createSelector(selectStoreSuccess, state => state ?? false);
 const selectStoreFailed = createSelector(selectStoreSuccess, val => val === undefined ? false : val == false);
@@ -40,7 +49,9 @@ export const MemberSelectors = {
     selectMember: selectMemberData,
     selectLoadedStatus: selectLoadedStatus,
     updateNecessary: selectIsUpdateNecessary,
-    dataUpdated: selectUpdated
+    dataUpdated: selectUpdated,
+    membershipCancelled: selectMembershipIsCancelled,
+    qualifiesForYouthMembership: selectQualifiesForYouthMembership
 }
 
 export const StoreSelectors = {

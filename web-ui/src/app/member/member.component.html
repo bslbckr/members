@@ -11,6 +11,14 @@
             </mat-expansion-panel-header>
             <p>Deine gespeicherten Daten stimmten nicht mit den Daten in deinem Account überein. Name, Vorname oder E-Mail wurden automatisch angepasst. Bitte speichere Deine Daten ab, damit wir die aktuellen Daten zur Verfügung haben.</p>
         </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="membershipCancelled$ | async">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon svgIcon="svg-bell" color="accent"></mat-icon>&nbsp;Mitgliedschaft gekündigt
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Die Mitgliedschaft wurde gekündigt. Es können keine Änderungen an den Mitgliedsdaten vorgenommen werden.</p>
+        </mat-expansion-panel>
 
         <form [formGroup]="forms">
         <mat-stepper [orientation]="orientation" animationDuration="0ms">
@@ -52,10 +60,13 @@
                     <mat-form-field>
                         <mat-label for="status">Status</mat-label>
                         <mat-select id="status" formControlName="status">
+                            <mat-option *ngFor="let memberShip of allowedMembershipStates" [value]="memberShip">{{memberShip}}</mat-option>
+                            <!-- 
                             <mat-option value="passiv">passiv</mat-option>
                             <mat-option value="jugendliche">Jugendliche</mat-option>
                             <mat-option value="ermäßigt">ermäßigt</mat-option>
                             <mat-option value="berufstätig">berufstätig</mat-option>
+                            -->
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
