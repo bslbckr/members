@@ -73,5 +73,10 @@ export const MemberReducer = createReducer(
         }
         return res;
 
-    })
+    }),
+  on(ModifyMemberActions.navigateToStart, (state,action) => ({
+    ...state,
+    storeSuccessful: undefined,
+    storeErrorMessage: undefined
+  }))
 );

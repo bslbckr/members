@@ -132,8 +132,8 @@ export class MemberComponent implements OnInit {
             }
         });
   private readonly _cancelled = this.membershipCancelled$
-    .pipe(filter(c => c === true))
-    .subscribe(_ => this.forms.disable());
+    //    .pipe(filter(c => c === true))
+    .subscribe(cancelled => cancelled ? this.forms.disable() : this.forms.enable());
 
     private readonly userChangedSub = this.store.select(MemberSelectors.selectMember)
         .pipe(takeUntilDestroyed(), filter(this.filterNullOrUndefined))
@@ -196,7 +196,7 @@ export class MemberComponent implements OnInit {
           const snackBarRef = this.snackBar.open("Änderungen erfolgreich gespeichert", "Ok", { duration: 5000 });
           return snackBarRef.afterDismissed();
         }))
-      .subscribe(_ => this.router.navigateByUrl("/start"));
+      .subscribe(_ => this.store.dispatch(ModifyMemberActions.navigateToStart()));
     private readonly showSnackbarFailure = this.store.select(StoreSelectors.failure)
         .pipe(takeUntilDestroyed(), filter(x => x))
         .subscribe(_ => {
@@ -254,9 +254,10 @@ export class MemberComponent implements OnInit {
     const youthMemberships:MembershipStates[] = ["passiv", "jugendliche"];
     const adultMemberships:MembershipStates[] = ["passiv", "ermäßigt", "berufstätig"];
     const dob = this.forms.getRawValue().master.dayOfBirth;
+    const parsedDob = dob != null ? new Date(dob) : null;
     const year = new Date().getFullYear();
     
-    return  dob != null && year - dob.getFullYear() <= 18 ? youthMemberships : adultMemberships;
+    return  parsedDob != null && year - parsedDob.getFullYear() <= 18 ? youthMemberships : adultMemberships;
   }
 
     get onBoardingMode() { return this.isOnboarding; }
