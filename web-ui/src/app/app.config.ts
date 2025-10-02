@@ -1,5 +1,6 @@
 import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideStore, provideState } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { UserReducer } from './reducers/user.reducer';
 import { ResourceReducer } from './reducers/resource.reducer';
 import { MemberReducer } from './reducers/member.reducer';
@@ -100,6 +101,7 @@ const authConfig: PassedInitialConfig = {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideStore({ "user": UserReducer }),
+    provideStoreDevtools(),
     provideEffects([]),
     provideRouter(routes),
     provideAuth(authConfig),
