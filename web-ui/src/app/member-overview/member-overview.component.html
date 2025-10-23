@@ -55,6 +55,9 @@
         <button mat-icon-button aria-label="Export CSV" color="primary" (click)="downloadCsv()">
             <mat-icon>download</mat-icon>
         </button>
+        <button mat-icon-button aria-label="Email an Vereinsmitglieder" (click)="sendEmail()">
+            <mat-icon>email</mat-icon>
+        </button>
         <span class="example-spacer"></span>
         <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]"
                        showFirstLastButtons

@@ -1,0 +1,19 @@
+
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="form">
+
+            <mat-form-field>
+                <mat-label>Betreff</mat-label>
+                <input matInput formControlName="subject" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Body</mat-label>
+                <textarea matInput formControlName="body"></textarea>
+            </mat-form-field>
+        </form>
+        <mat-toolbar>
+            <button (click)="sendMail()">senden</button><button (click)="cancel()">Abbrechen</button>
+        </mat-toolbar>
+    </mat-card-content>
+</mat-card>

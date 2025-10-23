@@ -11,6 +11,8 @@ import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/i
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { GenericCsvService } from './generic-csv.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SendMailComponent } from './send-mail/send-mail.component';
 
 
 @Component({
@@ -34,6 +36,8 @@ import { GenericCsvService } from './generic-csv.service';
 export class MemberOverviewComponent implements OnInit, AfterViewInit{
   private readonly service = inject(MemberOverviewService);
   private readonly csv = inject(GenericCsvService);
+  private readonly dialogSvc = inject(MatDialog);
+
   readonly displayedColumns = ["givenName", "name", "entryDate", "state", "email", "stateEffective", "exitDate"];
 
   readonly datasource = new MatTableDataSource<MemberOverview>();
@@ -87,5 +91,9 @@ export class MemberOverviewComponent implements OnInit, AfterViewInit{
     anchor.download = "GUC-Mitglieder.csv";
     anchor.click();
     URL.revokeObjectURL(blob);
+  }
+
+  sendEmail() {
+    this.dialogSvc.open(SendMailComponent);
   }
 }
