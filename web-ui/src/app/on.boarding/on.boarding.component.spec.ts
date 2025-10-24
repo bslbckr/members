@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OnBoardingComponent } from './on.boarding.component';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('OnBoardingComponent', () => {
   let component: OnBoardingComponent;
@@ -8,7 +9,8 @@ describe('OnBoardingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [OnBoardingComponent]
+      providers: [provideMockStore()],
+      imports: [OnBoardingComponent] 
 });
     fixture = TestBed.createComponent(OnBoardingComponent);
     component = fixture.componentInstance;

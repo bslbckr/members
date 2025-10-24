@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StartComponent } from './start.component';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('StartComponent', () => {
   let component: StartComponent;
@@ -8,8 +9,9 @@ describe('StartComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [StartComponent]
-});
+      providers: [provideMockStore()],
+      imports: [StartComponent]
+    });
     fixture = TestBed.createComponent(StartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
