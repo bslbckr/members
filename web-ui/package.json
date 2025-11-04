@@ -8,6 +8,7 @@
     "release": "ng build --aot true --configuration production --optimization true --base-href / --output-hashing bundles --subresource-integrity true --allowed-common-js-dependencies 'base64-js, js-sha256' --source-map true",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "ng test --watch false --browsers ChromeHeadless --progress true",
     "lint": "ng lint"
   },
   "private": true,
