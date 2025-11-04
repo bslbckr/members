@@ -14,10 +14,10 @@ import { GenericCsvService } from './generic-csv.service';
 
 
 @Component({
-    selector: 'app-member-overview',
+  selector: 'app-member-overview',
   imports: [MatTableModule, MatPaginatorModule, DatePipe, MatSortModule, MatCardModule, MatToolbar, MatInput, MatFormField, MatLabel, MatSuffix, MatIconButton, MatIcon],
-    templateUrl: './member-overview.component.html',
-    styleUrl: './member-overview.component.css',
+  templateUrl: './member-overview.component.html',
+  styleUrl: './member-overview.component.css',
   providers: [MemberOverviewService, GenericCsvService]
 })
 export class MemberOverviewComponent implements OnInit, AfterViewInit{

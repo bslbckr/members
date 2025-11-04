@@ -26,8 +26,8 @@ export const OnBoardingReducer = createReducer(
         ...state,
         onBoardingSuccessful: true,
         errorMessage: null
-    }))
-
+    })),
+  on(onBoardingActions.start, state => initialState)
 );
 
 
