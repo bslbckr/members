@@ -67,7 +67,7 @@ public class MemberEntity extends PanacheEntityBase {
     }
 
     public static List<String> activeMemberEmails() {
-        return find("select m.email from MemberEntity m where m.exitDate is null m.exitDate >= ?1",
+        return find("select m.email from MemberEntity m where m.exitDate is null or m.exitDate >= ?1",
                     LocalDate.now())
             .project(String.class).list();
     }
