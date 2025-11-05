@@ -27,8 +27,8 @@
               "src/silent-renew.html"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.css"
+//              "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.scss"
             ],
             "scripts": [],
             "browser": "src/main.ts"
@@ -96,8 +96,8 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.css"
+  //            "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.scss"
             ],
             "scripts": [],
             "karmaConfig": "karma.conf.js"
@@ -143,7 +143,8 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "type": "component"
+        "type": "component",
+        "styleext":"scss"
     },
     "@schematics/angular:directive": {
       "type": "directive"
