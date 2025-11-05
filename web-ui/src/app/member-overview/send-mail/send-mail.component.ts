@@ -3,15 +3,24 @@ import { SendMailService } from './send-mail.service';
 import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {map, Observable} from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { AsyncPipe } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
-  imports: [FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatToolbarModule],
+  imports: [FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatExpansionModule,
+    AsyncPipe],
   templateUrl: './send-mail.component.html',
-  styles: ``,
+  styles: `form {display: flex; flex-direction: column;} mat-expansion-panel {margin-bottom: 1em;}`,
   providers: [SendMailService]
 })
 export class SendMailComponent {

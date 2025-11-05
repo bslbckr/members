@@ -7,7 +7,7 @@ import { Observable, map, first } from 'rxjs';
 export class SendMailService {
 
   private readonly http = inject(HttpClient);
-  private readonly sendUrl: string = 'api/v1/email/';
+  private readonly sendUrl: string = '/api/v1/email/';
 
   send(subject: string, body: string):Observable<boolean>  {
     return this.http.post(this.sendUrl,
