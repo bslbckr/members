@@ -52,10 +52,16 @@
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
-        <button mat-icon-button aria-label="Export CSV" color="primary" (click)="downloadCsv()">
+        <button mat-mini-fab="filled"
+                aria-label="Export CSV"
+                (click)="downloadCsv()"
+                matTooltip="Mitgliedsdaten als CSV exportieren">
             <mat-icon>download</mat-icon>
         </button>
-        <button mat-icon-button aria-label="Email an Vereinsmitglieder" (click)="sendEmail()">
+        <button mat-mini-fab
+                aria-label="Email an Vereinsmitglieder"
+                (click)="sendEmail()"
+                matTooltip="Email an Vereinsmitglieder senden">
             <mat-icon>email</mat-icon>
         </button>
         <span class="example-spacer"></span>
