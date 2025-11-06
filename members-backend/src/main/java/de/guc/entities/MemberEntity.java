@@ -62,7 +62,7 @@ public class MemberEntity extends PanacheEntityBase {
     }
 
     public static List<MemberOverview> activeMembers() {
-        return find("select m.givenName, m.name, m.state, m.stateEffective, m.entryDate, m.exitDate from MemberEntity m where m.exitDate is null or m.exitDate >= ?1", LocalDate.now())
+        return find("select m.givenName, m.name, m.state, m.email, m.stateEffective, m.entryDate, m.exitDate from MemberEntity m where m.exitDate is null or m.exitDate >= ?1", LocalDate.now())
             .project(MemberOverview.class).list();
     }
 }
