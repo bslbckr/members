@@ -19,6 +19,11 @@
         <td mat-cell *matCellDef="let element"> {{element.state}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="stateEffective">
         <th mat-header-cell *matHeaderCellDef> Status seit </th>
         <td mat-cell *matCellDef="let element"> {{element.stateEffective | date:'longDate'}} </td>

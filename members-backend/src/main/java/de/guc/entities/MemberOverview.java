@@ -8,6 +8,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 public record MemberOverview (String givenName,
                               String name,
                               String state,
+                              String email,
                               LocalDate stateEffective,
                               LocalDate entryDate,
                               LocalDate exitDate) {}

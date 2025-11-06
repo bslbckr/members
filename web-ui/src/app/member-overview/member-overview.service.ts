@@ -6,8 +6,9 @@ export interface MemberOverview {
   givenName: string;
   name: string;
   state: string;
+  email: string;
   stateEffective: Date;
-   entryDate: Date;
+  entryDate: Date;
   exitDate: Date;
 }
 

@@ -15,7 +15,18 @@ import { GenericCsvService } from './generic-csv.service';
 
 @Component({
   selector: 'app-member-overview',
-  imports: [MatTableModule, MatPaginatorModule, DatePipe, MatSortModule, MatCardModule, MatToolbar, MatInput, MatFormField, MatLabel, MatSuffix, MatIconButton, MatIcon],
+  imports: [MatTableModule,
+    MatPaginatorModule,
+    DatePipe,
+    MatSortModule,
+    MatCardModule,
+    MatToolbar,
+    MatInput,
+    MatFormField,
+    MatLabel,
+    MatSuffix,
+    MatIconButton,
+    MatIcon],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.css',
   providers: [MemberOverviewService, GenericCsvService]
@@ -23,7 +34,7 @@ import { GenericCsvService } from './generic-csv.service';
 export class MemberOverviewComponent implements OnInit, AfterViewInit{
   private readonly service = inject(MemberOverviewService);
   private readonly csv = inject(GenericCsvService);
-  readonly displayedColumns = ["givenName", "name", "entryDate", "state", "stateEffective", "exitDate"];
+  readonly displayedColumns = ["givenName", "name", "entryDate", "state", "email", "stateEffective", "exitDate"];
 
   readonly datasource = new MatTableDataSource<MemberOverview>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -63,6 +74,7 @@ export class MemberOverviewComponent implements OnInit, AfterViewInit{
     const csvHeaders:{[key in keyof MemberOverview]:string}  = {
       "givenName": "Vorname",
       "name": "Nachname",
+      "email": "E-Mail",
       "entryDate": "Eintrittsdatum",
       "exitDate": "Austrittsdatum",
       "state": "Status",
