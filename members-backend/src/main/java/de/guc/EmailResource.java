@@ -1,9 +1,8 @@
 package de.guc;
 
-import java.util.stream.Collectors;
-
 import de.guc.dto.EmailDto;
 import de.guc.entities.MemberEntity;
+import io.quarkus.logging.Log;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import io.quarkus.security.Authenticated;
@@ -25,12 +24,16 @@ public class EmailResource {
     @RolesAllowed("board-member")
     @Consumes(MediaType.APPLICATION_JSON)
     public void send(@Valid EmailDto email) {
+        Log.infof("Start sending mail with subjet: %s", email.getSubject());
         final var emails = MemberEntity.activeMemberEmails();
+        Log.infof("Sending mail to %d receipients", emails.size());
         final var mails = emails.stream()
             .map(receipient -> Mail.withText(receipient,
                                              email.getSubject(),
                                              email.getBody()))
             .toArray(Mail[]::new);
+        Log.debug("Built all mails. Start sending them");
         this.mailer.send(mails);
+        Log.debug("Sending all mails completed.");
     }
 }
