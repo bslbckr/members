@@ -21,7 +21,7 @@ public class EmailResource {
     @Inject Mailer mailer;
     
     @POST
-    @RolesAllowed("board-member")
+    @RolesAllowed(Constants.ROLE_BOARD_MEMBER)
     @Consumes(MediaType.APPLICATION_JSON)
     public void send(@Valid EmailDto email) {
         Log.infof("Start sending mail with subjet: %s", email.getSubject());

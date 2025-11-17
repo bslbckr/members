@@ -39,7 +39,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
 
 @Path("v1/onboarding")
-@RolesAllowed("onboarding")
+@RolesAllowed(Constants.ROLE_ON_BOARDING)
 public class OnBoardingResource {
 
     // private final static Logger LOGGER =
@@ -202,10 +202,10 @@ public class OnBoardingResource {
                 final boolean isInMembersGroup = existingUserResource.groups()
                     .stream()
                     .map(GroupRepresentation::getName)
-                    .anyMatch(g -> "GUC Members".equals(g));
+                    .anyMatch(g -> Constants.GROUP_GUC_MEMBERS.equals(g));
                 if (!isInMembersGroup) {
                     Log.info("added existing user to GUC Members group");
-                    existingUser.getGroups().add("GUC Members");
+                    existingUser.getGroups().add(Constants.GROUP_GUC_MEMBERS);
                 }
                 existingUserResource.update(existingUser);
                 return new OnBoardingContext(existingUser.getId(), "UNCHANGED",
