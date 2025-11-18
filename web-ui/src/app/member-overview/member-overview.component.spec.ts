@@ -8,6 +8,9 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import {MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
+import { provideHttpClient } from '@angular/common/http';
+import { SendMailService } from './send-mail/send-mail.service';
+
 describe('MemberOverviewComponent', () => {
   let component: MemberOverviewComponent;
   let fixture: ComponentFixture<MemberOverviewComponent>;
@@ -15,7 +18,7 @@ describe('MemberOverviewComponent', () => {
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
-      providers: [{provide: MATERIAL_ANIMATIONS, useValue: {animationsDisabled: true}}],
+      providers: [{provide: MATERIAL_ANIMATIONS, useValue: {animationsDisabled: true}}, provideHttpClient()],
       imports: [MemberOverviewComponent]
     }).overrideProvider(MemberOverviewService,
       {useValue: {
@@ -24,6 +27,8 @@ describe('MemberOverviewComponent', () => {
         }
       }
       })
+      .overrideProvider(SendMailService, {useValue: {
+        sendMail(subject: string, body: string){}}})
       .compileComponents();
 
     fixture = TestBed.createComponent(MemberOverviewComponent);
@@ -47,4 +52,5 @@ describe('MemberOverviewComponent', () => {
     const dialog = await loader.getAllHarnesses(MatDialogHarness);
     expect(dialog).toHaveSize(1);
   });
+
 });
