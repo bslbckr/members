@@ -8,9 +8,12 @@ import { debounceTime, distinctUntilChanged, fromEvent, tap } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
-import { MatIconButton } from '@angular/material/button';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { GenericCsvService } from './generic-csv.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SendMailComponent } from './send-mail/send-mail.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 @Component({
@@ -26,7 +29,9 @@ import { GenericCsvService } from './generic-csv.service';
     MatLabel,
     MatSuffix,
     MatIconButton,
-    MatIcon],
+    MatIcon,
+    MatMiniFabButton,
+    MatTooltip],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.css',
   providers: [MemberOverviewService, GenericCsvService]
@@ -34,6 +39,8 @@ import { GenericCsvService } from './generic-csv.service';
 export class MemberOverviewComponent implements OnInit, AfterViewInit{
   private readonly service = inject(MemberOverviewService);
   private readonly csv = inject(GenericCsvService);
+  private readonly dialogSvc = inject(MatDialog);
+
   readonly displayedColumns = ["givenName", "name", "entryDate", "state", "email", "stateEffective", "exitDate"];
 
   readonly datasource = new MatTableDataSource<MemberOverview>();
@@ -87,5 +94,9 @@ export class MemberOverviewComponent implements OnInit, AfterViewInit{
     anchor.download = "GUC-Mitglieder.csv";
     anchor.click();
     URL.revokeObjectURL(blob);
+  }
+
+  sendEmail() {
+    this.dialogSvc.open(SendMailComponent);
   }
 }

@@ -4,10 +4,14 @@ import { AppComponent } from './app.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import {of} from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [provideMockStore(), {provide: OidcSecurityService, useValue: { checkAuth() {return of( true);}}}],
+    providers: [provideMockStore(),
+      {provide: OidcSecurityService, useValue: { checkAuth() {return of( true);}}},
+      provideHttpClient()
+    ],
     imports: [RouterTestingModule, AppComponent]
 }));
 

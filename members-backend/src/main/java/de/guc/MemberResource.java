@@ -84,7 +84,7 @@ public class MemberResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed("board-member")
+    @RolesAllowed(Constants.ROLE_BOARD_MEMBER)
     public List<MemberOverview> getAllActiveMembers() {
         return MemberEntity.activeMembers();
     }

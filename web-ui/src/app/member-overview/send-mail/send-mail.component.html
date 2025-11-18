@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>E-Mail an aktuelle Vereinsmitglieder</h2>
+<mat-dialog-content>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Hinweise
+        </mat-expansion-panel-header>
+        
+            <ul>
+                <li>Es findet keine Ersetzung von Platzhaltern statt</li>
+                <li>Es werden keine pers&ouml;nlichen Daten der Mitglieder erg&auml;nzt</li>
+                <li>Die Mitglieder k&ouml;nnen Dir nicht direkt auf Deine Nachricht antworten</li>
+                <li>Die Mitglieder sehen <strong>nicht</strong> wer die Nachricht abgeschickt hat</li>
+            </ul>
+        
+    </mat-expansion-panel>
+        <form [formGroup]="form">
+
+            <mat-form-field>
+                <mat-label>Betreff</mat-label>
+                <input matInput formControlName="subject" type="text" tabindex="1">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Body</mat-label>
+                <textarea matInput formControlName="body" tabindex="2"></textarea>
+            </mat-form-field>
+        </form>
+        <mat-dialog-actions>
+            <button mat-raised-button (click)="cancel()" tabindex="4">Abbrechen</button>
+            <button mat-raised-button [disabled]="invalid$ | async" (click)="sendMail()" tabindex="3">Senden</button>
+        </mat-dialog-actions>
+
+</mat-dialog-content>
