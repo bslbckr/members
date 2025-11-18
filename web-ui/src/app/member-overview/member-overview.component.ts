@@ -11,7 +11,7 @@ import { MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/i
 import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { GenericCsvService } from './generic-csv.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SendMailComponent } from './send-mail/send-mail.component';
 import { MatTooltip } from '@angular/material/tooltip';
 
