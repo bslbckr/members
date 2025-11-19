@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.hibernate.envers.Audited;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.panache.common.Sort;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -70,5 +71,12 @@ public class MemberEntity extends PanacheEntityBase {
         return find("select m.email from MemberEntity m where m.exitDate is null or m.exitDate >= ?1",
                     LocalDate.now())
             .project(String.class).list();
+    }
+
+    public static List<EntryOrCancellation> entriesSinceDate(LocalDate date) {
+        return find("select m.givenName, m.name, m.entryDate from MemberEntity m where m.entryDate >= ?1",
+            Sort.ascending("entryDate"),
+            date)
+            .project(EntryOrCancellation.class).list();
     }
 }
