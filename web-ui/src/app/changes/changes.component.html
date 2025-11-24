@@ -1,35 +1,35 @@
 <mat-card>
-    <mat-card-header>Änderungen des Mitgliedsstatus</mat-card-header>
-    <mat-card-content>
-        <div class="changes-grid">
-            <span>Vorname</span><span>Name</span><span>alter Status</span><span>neuer Status</span><span>1. Gültigkeitstag</span><span>Änderungszeitpunkt</span>
-            <ng-container *ngFor="let change of changes$.value()">
-                <span>{{change.givenName}}</span>
-                <span>{{change.name}}</span>
-                <span>{{change.oldState}}</span>
-                <span>{{change.newState}}</span>
-                <span>{{change.stateEffective | date}}</span>
-                <span>{{change.changedAt | date }}</span>
-            </ng-container>
-        </div>
-        <h2>Eintritte</h2>
-        <div class="changes-grid">
-            <span>Vorname</span><span>Name</span><span>Eintrittsdatum</span>
-            <ng-container *ngFor="let entry of entries.value()">
-                <span>{{entry.givenName}}</span>
-                <span>{{entry.name}}</span>
-                <span>{{entry.date | date}}</span>
-            </ng-container>
-        </div>
-        <h2>Kündigungen</h2>
-        <div class="changes-grid" >
-            <span>Vorname</span><span>Name</span><span>Austrittsdatum</span>
-            <ng-container *ngFor="let entry of cancellations.value()">
-                <span>{{entry.givenName}}</span>
-                <span>{{entry.name}}</span>
-                <span>{{entry.date | date}}</span>
-            </ng-container>
+  <mat-card-header>Änderungen des Mitgliedsstatus</mat-card-header>
+  <mat-card-content>
+    <div class="changes-grid">
+      <span>Vorname</span><span>Name</span><span>alter Status</span><span>neuer Status</span><span>1. Gültigkeitstag</span><span>Änderungszeitpunkt</span>
+      @for (change of changes$.value(); track change) {
+        <span>{{change.givenName}}</span>
+        <span>{{change.name}}</span>
+        <span>{{change.oldState}}</span>
+        <span>{{change.newState}}</span>
+        <span>{{change.stateEffective | date}}</span>
+        <span>{{change.changedAt | date }}</span>
+      }
+    </div>
+    <h2>Eintritte</h2>
+    <div class="entries-grid">
+      <span>Vorname</span><span>Name</span><span>Eintrittsdatum</span>
+      @for (entry of entries.value(); track entry) {
+        <span>{{entry.givenName}}</span>
+        <span>{{entry.name}}</span>
+        <span>{{entry.date | date}}</span>
+      }
+    </div>
+    <h2>Kündigungen</h2>
+    <div class="entries-grid" >
+      <span>Vorname</span><span>Name</span><span>Austrittsdatum</span>
+      @for (entry of cancellations.value(); track entry) {
+        <span>{{entry.givenName}}</span>
+        <span>{{entry.name}}</span>
+        <span>{{entry.date | date}}</span>
+      }
 
-        </div>
-    </mat-card-content>
+    </div>
+  </mat-card-content>
 </mat-card>

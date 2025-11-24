@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
-import { NgFor, AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangeService } from './change.service';
 
 
@@ -8,7 +8,7 @@ import { ChangeService } from './change.service';
     selector: 'app-changes',
     templateUrl: './changes.component.html',
     styleUrl: './changes.component.css',
-    imports: [MatCard, MatCardHeader, MatCardContent, NgFor, AsyncPipe, DatePipe]
+    imports: [MatCard, MatCardHeader, MatCardContent, DatePipe]
 })
 export class ChangesComponent {
 
