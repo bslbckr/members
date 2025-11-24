@@ -11,10 +11,9 @@ import { ChangeService } from './change.service';
     imports: [MatCard, MatCardHeader, MatCardContent, DatePipe]
 })
 export class ChangesComponent {
-
   private readonly changeSvc = inject(ChangeService);
+  
   readonly changes$ = this.changeSvc.getChanges();
   readonly entries = this.changeSvc.getEntries();
   readonly cancellations = this.changeSvc.getCancellations();
-
 }

@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChangesComponent } from './changes.component';
-import { provideMockStore } from '@ngrx/store/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ChangeService } from './change.service';
 
 describe('ChangesComponent', () => {
   let component: ChangesComponent;
@@ -9,7 +11,7 @@ describe('ChangesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideMockStore()],
+      providers: [ChangeService, provideHttpClient(), provideHttpClientTesting()],
       imports: [ChangesComponent]
     })
     .compileComponents();
