@@ -3,6 +3,7 @@ package de.guc.services;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,14 +82,17 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     public List<EntryOrCancellation> cancellations(LocalDate after) {
+        Log.infof("Querying cancellations after %tF", after);
         final AuditReader ar = AuditReaderFactory.get(this.entityManager);
-        final var list = (List<Object[]>) ar.createQuery().forRevisionsOfEntityWithChanges(MemberEntity.class, false)
+        final long epochSecond = after.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+	final var list = (List<Object[]>) ar.createQuery().forRevisionsOfEntityWithChanges(MemberEntity.class, false)
             .add(AuditEntity.and(AuditEntity.property("exitDate").isNotNull(),
                 AuditEntity.property("exitDate").hasChanged()))
-            .add(AuditEntity.revisionProperty("timestamp").ge(after))
+            .add(AuditEntity.revisionProperty("timestamp").ge(epochSecond))
             .addOrder(AuditEntity.revisionNumber().asc())
             .getResultList();
 
+        Log.infof("Found %d cancellations since %tF", list.size(), after);
         return list.stream()
             .map(HistoryServiceImpl::toResult)
             .map(er -> new EntryOrCancellation(er.entity().name,
