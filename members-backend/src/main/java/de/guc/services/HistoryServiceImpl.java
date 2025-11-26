@@ -3,10 +3,10 @@ package de.guc.services;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,6 +17,7 @@ import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
 
+import de.guc.entities.EntryOrCancellation;
 import de.guc.entities.MemberEntity;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.RequestScoped;
@@ -78,6 +79,26 @@ public class HistoryServiceImpl implements HistoryService {
         }
         Log.info(String.format("returning %d state changes", result.size()));
         return result;
+    }
+
+    public List<EntryOrCancellation> cancellations(LocalDate after) {
+        Log.infof("Querying cancellations after %tF", after);
+        final AuditReader ar = AuditReaderFactory.get(this.entityManager);
+        final long epochSecond = after.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+	final var list = (List<Object[]>) ar.createQuery().forRevisionsOfEntityWithChanges(MemberEntity.class, false)
+            .add(AuditEntity.and(AuditEntity.property("exitDate").isNotNull(),
+                AuditEntity.property("exitDate").hasChanged()))
+            .add(AuditEntity.revisionProperty("timestamp").ge(epochSecond))
+            .addOrder(AuditEntity.revisionNumber().asc())
+            .getResultList();
+
+        Log.infof("Found %d cancellations since %tF", list.size(), after);
+        return list.stream()
+            .map(HistoryServiceImpl::toResult)
+            .map(er -> new EntryOrCancellation(er.entity().name,
+                er.entity().givenName,
+                er.entity().exitDate))
+                .toList();
     }
 
     private static int compareAuditResults(EnversResult<MemberEntity> a, EnversResult<MemberEntity> b) {

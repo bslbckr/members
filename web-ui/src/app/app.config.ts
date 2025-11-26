@@ -21,9 +21,7 @@ import { MemberService } from './member/member.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { OnboardingEffects } from './on.boarding/+state/onboarding.effects';
 import { OnBoardingService } from './on.boarding/on-boarding.service';
-import { ChangesEffects } from './changes/state/changes.effects';
 import { ChangeService } from './changes/change.service';
-import * as changes from './changes/state/change.reducer.reducer';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -59,9 +57,7 @@ const routes: Routes = [
     loadComponent: () => import('./changes/changes.component').then(m => m.ChangesComponent),
     canActivate: [authenticatedGuard, hasRoleGuard('board-member')],
     providers: [
-      provideEffects(ChangesEffects),
-      ChangeService,
-      provideState({name: changes.changeReducerFeatureKey, reducer: changes.reducer})
+      ChangeService
     ]
   },
   {
