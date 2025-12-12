@@ -31,6 +31,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.registry.addSvgIcon('svg-cancel', this.sanitizer.bypassSecurityTrustResourceUrl("assets/cancel.svg"));
     this.registry.addSvgIcon('svg-bell', this.sanitizer.bypassSecurityTrustResourceUrl("assets/bell.svg"));
     this.registry.addSvgIcon('svg-profile', this.sanitizer.bypassSecurityTrustResourceUrl("assets/userProfile.svg"));
+    this.registry.addSvgIcon('svg-edit', this.sanitizer.bypassSecurityTrustResourceUrl("assets/edit_document.svg"));
+    this.registry.addSvgIcon('svg-factCheck', this.sanitizer.bypassSecurityTrustResourceUrl("assets/fact_check.svg"));
+    this.registry.addSvgIcon('svg-send', this.sanitizer.bypassSecurityTrustResourceUrl("assets/send.svg"));
+    this.registry.addSvgIcon('svg-celebration', this.sanitizer.bypassSecurityTrustResourceUrl("assets/celebration.svg"));
     }
     ngOnInit() {
         this.oidcService.checkAuth()

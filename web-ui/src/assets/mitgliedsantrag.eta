@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta http-equiv="Content-Type"
+              content="text/html; charset=utf-8"/>
+        <title>Mitgliedsantrag Goldfingers Ultimate Club e.V.</title>
+        <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+        <style type="text/css">
+         * {margin:0; padding:0; text-indent:0; }
+         body {
+             padding: 11pt;
+             color: black;
+             font-family: Tahoma, sans-serif;
+             font-style: normal;
+             font-weight: normal;
+             text-decoration: none;
+             font-size: 9pt;
+         }
+         .s1 { font-size: 18pt; }
+         .s2 { font-size: 11pt; }
+         .s3 { font-size: 12pt; }
+         .s4 { font-size: 10pt; }
+         h1 { font-weight: bold; font-size: 12pt; }
+         p { margin:0pt; }
+         .s9 { 10pt; }
+         .s10 { font-size: 8pt; }
+         h2 { font-weight: bold; font-size: 10pt; }
+         .a, a { color: #00F; text-decoration: underline; font-size: 9pt; }
+         li {display: block; }
+         #l1 {padding-left: 0pt; }
+         #l1> li>*:first-child:before {content: " ";
+             font-family:Wingdings; }
+         .letterhead {
+             display: flex;
+             flex-direction: row;
+             width: 100%;
+             padding-bottom: 4em;
+
+         }
+         .letterhead-item {
+             flex: 50%;
+         }
+         #letterhead-address {
+             align-self: flex-start;
+         }
+         .logo {
+             float: right
+         }
+         .member-data {
+             display: grid;
+             width: 75%;
+             grid-template-columns: 1fr 1fr;
+             grid-row-gap: 2ex;
+         }
+         ul#checkbox-list > li::before {
+             display: inline-block;
+             border: black solid 1pt;
+             border-radius: 3px;
+             content: ' ';
+             width: 1em;
+             height: 10pt;
+             margin-right: 1em;
+         }
+         ul#checkbox-list:first-child {
+             padding-top: 0.5em;
+         }
+
+         ul#checkbox-list {line-height: 2em}
+         div#banking-info {
+             font-weight:bold; font-size: 10pt;
+         }
+         .signature {
+             display: inline-block;
+             border-top-color: black;
+             border-top-style: solid;
+             border-top-width: 1pt;
+         }
+         @media print {
+             @page {
+                 size: A4 portrait;
+                 margin: 20mm;
+             }
+             a { color: black;}
+         }
+        </style>
+    </head>
+    <body>
+        <div>
+            <img width="130" height="120" class="logo"
+                 src="data:image/jpg;base64,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"/>
+            <h1 class="s1" style="padding-top: 5pt;text-indent: 0pt;line-height:
+                       22pt;text-align: left;">
+                Antrag auf Mitgliedschaft
+            </h1>
+            <p class="s2" style="text-indent:
+                      0pt;line-height: 13pt;text-align: left;">
+                im Goldfingers Ultimate Club e.V.
+            </p>
+        </div>
+        <div class="letterhead">
+            <div id="letterhead-address">
+                <p class="s3 letterhead-item" style="text-indent:
+                          0pt;line-height: 140%;text-align: left;">
+                    Goldfingers Ultimate Club e.V.
+                </p>
+                <p class="s3 letterhead-item">Kastanienallee 31</p>
+                <p class="s3 letterhead-item" style="text-indent: 0pt;text-align: left;">
+                    14471 Potsdam
+                </p>
+            </div>
+            <div style="flex-grow: 1"></div>
+            <div class="letterhead-links">
+                <p class="letterhead-item" style="text-indent: 0pt;text-align: right;">
+                    <a href="mailto:frisbee@goldfingers-potsdam.de"
+                       class="s4">frisbee@goldfingers-potsdam.de</a>
+                </p>
+                <p class="letterhead-item" style="text-indent: 0pt;text-align: right;">
+                    <a href="https://www.goldfingers-potsdam.de/"
+                       class="s4">https://www.goldfingers-potsdam.de/</a>
+                </p>
+            </div>
+        </div>
+        <h2 stlye="padding-top: 3em;">Angaben zum Mitglied</h2>
+        <div class="member-data" style="padding-top: 8pt">
+
+            <span>Name: <%= it.firstName %></span>
+            <span>Vorname: <%= it.name %></span>
+
+            <span>E-Mail: <%= it.email %></span>
+        </div>
+        <% if(it.isChild) { %>
+        <p style="padding-top: 8pt">Bei minderjährigen Mitgliedern bitte Namen und Vornamen eines Elternteils angeben.</p>
+        <div class="member-data" style="padding-top: 8pt">
+
+            <span>Name: <%= it.parentFirstName %></span>
+            <span>Vorname: <%= it.parentName %></span>
+        </div>
+        <% } %>
+        <p class="s10"
+           style="padding-top:
+                  9pt;text-indent:
+                  0pt;text-align:
+                  left;">Die
+            vorstehenden personenbezogenen Daten werden durch den Verein zur
+            Erfüllung satzungsgemäßer Aufgaben elektronisch verarbeitet und
+            gespeichert. Eine Weiterreichung an Dritte findet nicht
+            statt.
+        </p>
+        <p class="s9" style="padding-top: 8pt;text-indent: 0pt;text-align:
+                  left;">Zahlung des Mitgliedsbeitrages
+            bitte per Überweisung bzw. Dauerauftrag
+            an:
+        </p>
+        <div id="banking-info">
+            <p style="padding-top: 5pt;text-indent:
+                      0pt;text-align: left;">Goldfingers Ultimate Club
+                e.V.</p>
+            <p style="padding-top: 6pt;text-indent:
+                      0pt;text-align: left;">Mittelbrandenburgische
+                Sparkasse (MBS) Potsdam</p>
+            <p style="text-indent:
+                      0pt;text-align:
+                      left;">IBAN:
+                DE53 1605 0000 3517 0074 62   BIC-/SWIFT-Code:
+                WELADED1PMB</p>
+            <p style="padding-top:
+                      5pt;text-indent:
+                      0pt;text-align:
+                      left;">Verwendungszweck:
+                Name, Vorname + „Mitgliedsbeitrag GUC
+                e.V. &lt;Jahr&gt;“</p>
+        </div>
+        <p class="s10" style="padding-top:
+                  6pt;text-indent:
+                  0pt;text-align:
+                  left;">Die <u>Kündigung
+            der Mitgliedschaft</u> ist mit zweiwöchiger Frist zum jeweiligen
+            Quartalsende - während der vierwöchigen Schnuppertrainingsphase auch
+            fristlos – über das Mitgliederportal möglich.
+        </p>
+        <p style="padding-top: 8pt">Mit meiner Unterschrift bestätige ich die Korrektheit der
+            gemachten Angaben und die nachfolgend genannten Dokumente zur
+            Kenntnis genommen zu haben.<br />
+            <ul id="checkbox-list">
+                <li>Die Satzung des Goldfingers Ultimate Club e.V. in ihrer aktuell gültigen Fassung</li>
+                <li>Die Beitragsordnung des Goldfingers Ultimate Club e.V.</li>
+            </ul>
+            Mir ist bekannt, dass die Anmeldung erst dann abgeschlossen ist, wenn alle Mitgliedsdaten vollständig im
+            Mitgliederportal eingegebn sind.
+        </p>
+        <p style="padding-top: 80pt;">
+            <span class="signature" style="width: 6cm;">Ort,
+                Datum</span>
+            <span class="signature"
+                  style="width:8cm;margin-left:2em;">Unterschrift <% if (it.isChild) {
+                %>Erziehungsberechtigter <% } else { %>Mitglied<% } %></span>
+        </p>
+    </body>
+</html>

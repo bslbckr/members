@@ -1,1 +1,63 @@
-<p>application works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Mitgliedsantrag</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>Vielen Dank, dass Du Mitglied beim Goldfingers Ultimate Club e.V. werden m&ouml;chtest!</p>
+        <p>Auf dem Weg zur Mitgliedschaft sind die folgenden Schritte notwendig:</p>
+        <mat-stepper #stepper orientation="vertical" linear="true" animationDuration="300">
+            <mat-step state="apply">
+                <ng-template matStepLabel>Antrag ausf&uuml;llen</ng-template>
+                <form [formGroup]="form">
+                    <mat-form-field>
+                        <mat-label>Vorname</mat-label>
+                        <input matInput formControlName="firstName" >
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                    <mat-form-field class="span-form">
+                        <mat-label>E-Mail</mat-label>
+                        <input matInput type="email" formControlName="email">
+                    </mat-form-field>
+                    <mat-slide-toggle formControlName="isChild">Neues Mitglied ist minderj&auml;hrig</mat-slide-toggle>
+                    
+                    <mat-form-field class="start-first">
+                        <mat-label>Vorname</mat-label>
+                        <input matInput formControlName="parentFirstName">
+                        <mat-hint>Vorname Erziehungsberechtiger</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="parentName">
+                        <mat-hint>Name Erziehungsberechtiger</mat-hint>
+                    </mat-form-field>
+                </form>
+                <button matButton="filled"
+                        color="primary"
+                        [disabled]="invalid$ | async"
+                        (click)="renderApplication()">Antrag drucken</button>
+
+            </mat-step>
+            <mat-step state="submit">
+                <ng-template matStepLabel>Antrag abgeben</ng-template>
+                <p>In einem der n&auml;chsten Trainings kannst Du Deinen Antrag abgeben. Gerne kannst Du den Antrag aber auch per <a href="mailto:frisbee@goldfingers-potsdam.de">Mail</a> an den Verein schicken.</p>
+                
+            </mat-step>
+            <mat-step state="complete">
+                <ng-template matStepLabel>Mitgliedsdaten im Mitgliederportal vervollst&auml;ndigen</ng-template>
+                <p>Sobald wir Deinen Antrag erhalten haben, richten wir Deinen Zugang zum Mitgliederportal ein. Du erh&auml;st eine E-Mail, sobald das erledigt ist. Anschlie&szlig;end musst Du ein Passwort f&uuml;r deinen Account ausw&auml;hlen (Details stehen in der E-Mail) und nach der ersten erfolgreichen Anmeldung Deine Daten vervollst&auml;ndigen.</p>
+            </mat-step>
+            <mat-step state="celebrate">
+                <ng-template matStepLabel>Du bist Mitglied!</ng-template>
+                <p>Herzlich Willkommen, bei den Goldfingers!</p>
+            </mat-step>
+            <ng-template matStepperIcon="apply"><mat-icon svgIcon="svg-edit"></mat-icon></ng-template>
+            <ng-template matStepperIcon="complete"><mat-icon svgIcon="svg-factCheck"></mat-icon></ng-template>
+            <ng-template matStepperIcon="submit"><mat-icon svgIcon="svg-send"></mat-icon></ng-template>
+            <ng-template matStepperIcon="celebrate"><mat-icon svgIcon="svg-celebration"></mat-icon></ng-template>
+        </mat-stepper>
+        
+    </mat-card-content>
+</mat-card>
