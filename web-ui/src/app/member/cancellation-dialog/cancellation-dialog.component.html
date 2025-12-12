@@ -1,20 +1,22 @@
 <h2 mat-dialog-title>Mitgliedschaft kündigen?</h2>
 <mat-dialog-content>
-    <form [formGroup]="cancellationGroup">
+  <form [formGroup]="cancellationGroup">
     <mat-form-field>
-        <mat-label>Zu welchem Datum möchtest Du kündigen?</mat-label>
-        <mat-select formControlName="selectedIndex">
-            <mat-option *ngFor="let date of dialogData.allowedCancellationDate; index as i" value="{{i}}">{{date.toLocaleDateString('de-DE')}}</mat-option>
-        </mat-select>
+      <mat-label>Zu welchem Datum möchtest Du kündigen?</mat-label>
+      <mat-select formControlName="selectedIndex">
+        @for (date of dialogData.allowedCancellationDate; track date; let i = $index) {
+          <mat-option value="{{i}}">{{date.toLocaleDateString('de-DE')}}</mat-option>
+        }
+      </mat-select>
     </mat-form-field>
 
     <mat-slide-toggle formControlName="cancellationConfirmed" color="primary"
-                      >
-        Wirklich kündigen?
+      >
+      Wirklich kündigen?
     </mat-slide-toggle>
-    </form>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-raised-button (click)="cancel()">Abbrechen</button>
-    <button mat-raised-button (click)="ok()" [disabled]="groupInvalid$ | async">Kündigen</button>
+  <button mat-raised-button (click)="cancel()">Abbrechen</button>
+  <button mat-raised-button (click)="ok()" [disabled]="groupInvalid$ | async">Kündigen</button>
 </mat-dialog-actions>

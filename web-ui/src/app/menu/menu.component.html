@@ -1,13 +1,17 @@
 <mat-toolbar>
-    <span>GUC Mitgliederverwaltung</span>
-    <mat-divider [vertical]="true"></mat-divider>
-    <a [routerLink]="'/start'">Start</a>
-    <mat-divider [vertical]="true"></mat-divider>
-    <a [routerLink]="'/onboarding'" *ngIf="hasOnboardingRole$ | async">On-Boarding</a>
-    <a [routerLink]="'/changes'" *ngIf="hasBoardRole$ | async">Änderungen</a>
-    <a [href]="accountUrl" class="flex-align-right">
-        <button mat-mini-fab color="primary" aria-label="Benutzer-Profil">
-            <mat-icon svgIcon="svg-profile"></mat-icon>
-        </button>
-    </a>
+  <span>GUC Mitgliederverwaltung</span>
+  <mat-divider [vertical]="true"></mat-divider>
+  <a [routerLink]="'/start'">Start</a>
+  <mat-divider [vertical]="true"></mat-divider>
+  @if (hasOnboardingRole$ | async) {
+    <a [routerLink]="'/onboarding'">On-Boarding</a>
+  }
+  @if (hasBoardRole$ | async) {
+    <a [routerLink]="'/changes'">Änderungen</a>
+  }
+  <a [href]="accountUrl" class="flex-align-right">
+    <button mat-mini-fab color="primary" aria-label="Benutzer-Profil">
+      <mat-icon svgIcon="svg-profile"></mat-icon>
+    </button>
+  </a>
 </mat-toolbar>

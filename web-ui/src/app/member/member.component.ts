@@ -17,7 +17,7 @@ import { CancellationDialogComponent, CancellationDialogData } from './cancellat
 import { ResourceSelectors } from '../selectors/resources.selectors';
 import { UserSelectors } from '../selectors/user.selectors';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
-import { NgIf, NgClass, AsyncPipe, NgFor } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { MatStepper, MatStep, MatStepperNext, MatStepperPrevious } from '@angular/material/stepper';
@@ -37,7 +37,7 @@ declare type MembershipStates = "passiv" | "jugendliche" | "ermäßigt" | "beruf
     selector: 'app-member',
     templateUrl: './member.component.html',
     styleUrls: ['./member.component.css'],
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgIf, NgFor, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
+  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
     providers: [provideNativeDateAdapter()]
 })
 export class MemberComponent implements OnInit {

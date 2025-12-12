@@ -5,7 +5,7 @@ import { ResourceActions } from '../actions/resource.actions';
 import { ResourceSelectors } from '../selectors/resources.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatButton, MatAnchor } from '@angular/material/button';
 import { UserSelectors } from '../selectors/user.selectors';
 
@@ -13,7 +13,7 @@ import { UserSelectors } from '../selectors/user.selectors';
     selector: 'app-start',
     templateUrl: './start.component.html',
     styleUrls: ['./start.component.css'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgFor, MatButton, MatAnchor, MatCardFooter, AsyncPipe, RouterLink, NgIf]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatButton, MatAnchor, MatCardFooter, AsyncPipe, RouterLink]
 })
 export class StartComponent implements OnInit {
 
