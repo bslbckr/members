@@ -8,13 +8,13 @@ import { RouterModule } from '@angular/router';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    imports: [RouterModule, MatDivider, MatIconModule, MatToolbarModule, AsyncPipe, NgIf]
+    imports: [RouterModule, MatDivider, MatIconModule, MatToolbarModule, AsyncPipe]
 })
 export class MenuComponent {
     private readonly store = inject(Store);
