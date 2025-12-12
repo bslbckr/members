@@ -66,6 +66,10 @@ const routes: Routes = [
     canActivate: [authenticatedGuard, hasRoleGuard('board-member')]
   },
   {
+    path: 'application',
+    loadComponent: () => import('./application/application.component').then(m => m.ApplicationComponent),
+  },
+  {
     path: '**',
     component: AppComponent
   }];
