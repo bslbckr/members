@@ -193,7 +193,7 @@
                 Datum</span>
             <span class="signature"
                   style="width:8cm;margin-left:2em;">Unterschrift <% if (it.isChild) {
-                %>Erziehungsberechtigter <% } else { %>Mitglied<% } %></span>
+                %>Erziehungsberechtigte:r <% } else { %>Mitglied<% } %></span>
         </p>
     </body>
 </html>
