@@ -123,8 +123,8 @@
         <h2 stlye="padding-top: 3em;">Angaben zum Mitglied</h2>
         <div class="member-data" style="padding-top: 8pt">
 
-            <span>Name: <%= it.firstName %></span>
-            <span>Vorname: <%= it.name %></span>
+            <span>Vorname: <%= it.firstName %></span>
+            <span>Name: <%= it.name %></span>
 
             <span>E-Mail: <%= it.email %></span>
         </div>
@@ -132,8 +132,8 @@
         <p style="padding-top: 8pt">Bei minderjährigen Mitgliedern bitte Namen und Vornamen eines Elternteils angeben.</p>
         <div class="member-data" style="padding-top: 8pt">
 
-            <span>Name: <%= it.parentFirstName %></span>
-            <span>Vorname: <%= it.parentName %></span>
+            <span>Vorname: <%= it.parentFirstName %></span>
+            <span>Name: <%= it.parentName %></span>
         </div>
         <% } %>
         <p class="s10"
@@ -186,7 +186,7 @@
                 <li>Die Beitragsordnung des Goldfingers Ultimate Club e.V.</li>
             </ul>
             Mir ist bekannt, dass die Anmeldung erst dann abgeschlossen ist, wenn alle Mitgliedsdaten vollständig im
-            Mitgliederportal eingegebn sind.
+            Mitgliederportal eingegeben sind.
         </p>
         <p style="padding-top: 80pt;">
             <span class="signature" style="width: 6cm;">Ort,
