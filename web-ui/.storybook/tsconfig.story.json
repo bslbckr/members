@@ -1,8 +1,0 @@
-{
-    "extends": "../tsconfig.json",
-    "files": ["./main.ts", "./preview.ts"],
-    "include":[
-        "*.ts",
-        "../**/*.stories.ts"
-    ]
-}
