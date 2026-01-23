@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Store } from '@ngrx/store';
 import { LoadMemberActions } from '../actions/load-member.actions';
@@ -6,7 +6,7 @@ import { ModifyMemberActions } from '../actions/modify-member.actions';
 import { FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreSelectors, MemberSelectors } from '../selectors/user.selector';
 import { StepperOrientation } from '@angular/cdk/stepper';
-import { filter, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Member } from '../model/Member';
 import { differenceInCalendarDays } from 'date-fns/fp';
@@ -17,282 +17,338 @@ import { CancellationDialogComponent, CancellationDialogData } from './cancellat
 import { ResourceSelectors } from '../selectors/resources.selectors';
 import { UserSelectors } from '../selectors/user.selectors';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe, JsonPipe } from '@angular/common';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { MatStepper, MatStep, MatStepperNext, MatStepperPrevious } from '@angular/material/stepper';
-import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
 import { MatButton, MatMiniFabButton } from '@angular/material/button';
 import { MatSelect } from '@angular/material/select';
-import { MatOption, provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatOption } from '@angular/material/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { Router } from '@angular/router';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { de } from 'date-fns/locale';
 
 declare type MembershipStates = "passiv" | "jugendliche" | "ermäßigt" | "berufstätig";
 
 @Component({
-    selector: 'app-member',
-    templateUrl: './member.component.html',
-    styleUrls: ['./member.component.css'],
-  imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, FormsModule, ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatStepperNext, MatSelect, MatOption, MatStepperPrevious, MatTooltip, MatSlideToggle, NgClass, MatCardActions, MatMiniFabButton, AsyncPipe],
-    providers: [provideNativeDateAdapter()]
+        selector: 'app-member',
+        templateUrl: './member.component.html',
+        styleUrls: ['./member.component.css'],
+  imports: [MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatIcon,
+    FormsModule,
+    ReactiveFormsModule,
+    MatStepper,
+    MatStep,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDatepicker,
+    MatButton,
+    MatStepperNext,
+    MatSelect,
+    MatOption,
+    MatStepperPrevious,
+    MatTooltip,
+    MatSlideToggle,
+    NgClass,
+    MatCardActions,
+    MatMiniFabButton,
+    AsyncPipe,
+    MatError,
+    JsonPipe],
+  providers: [
+    provideDateFnsAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: de },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'dd.MM.yyyy'
+        },
+        display: {
+          dateInput: 'P',
+          monthYearLabel: 'LLL y',
+          dateA11yLabel: 'MMMM d, y',
+          monthYearA11yLabel: 'MMMM y'
+        }
+      }
+    }
+  ]
 })
 export class MemberComponent implements OnInit {
 
-    private readonly store = inject(Store);
-    private readonly builder = inject(FormBuilder);
-    private readonly breakpoint = inject(BreakpointObserver);
-    private readonly snackBar = inject(MatSnackBar);
+  private readonly store = inject(Store);
+  private readonly builder = inject(FormBuilder);
+  private readonly breakpoint = inject(BreakpointObserver);
+  private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
-  private readonly router = inject(Router);
-    private readonly selectedMemberId$ = this.store.select(ResourceSelectors.selectMemberId)
-      .pipe(takeUntilDestroyed());
+  private readonly selectedMemberId$ = this.store.select(ResourceSelectors.selectMemberId)
+          .pipe(takeUntilDestroyed());
   private readonly _youthMembershipAllowed$ = this.store.select(MemberSelectors.qualifiesForYouthMembership)
     .pipe(takeUntilDestroyed());
-    readonly masterDataUpdated$ = this.store.select(MemberSelectors.dataUpdated)
-      .pipe(takeUntilDestroyed());
+  readonly masterDataUpdated$ = this.store.select(MemberSelectors.dataUpdated)
+    .pipe(takeUntilDestroyed());
   readonly membershipCancelled$ = this.store.select(MemberSelectors.membershipCancelled)
     .pipe(takeUntilDestroyed());
-    private readonly nextEndOfQuarter: Date[];
-    private memberId: string = "";
-    private isOnboarding = false;
-    orientation: StepperOrientation = "horizontal";
+  private readonly nextEndOfQuarter: Date[];
+  private memberId: string = "";
+  private isOnboarding = false;
+  orientation: StepperOrientation = "horizontal";
+  readonly minDate = new Date(1950,0,1);
+  readonly maxDate = new Date();
 
-    readonly forms = this.builder.nonNullable.group({
-        master: this.builder.nonNullable.group({
-            name: ['', Validators.required],
-            givenName: ['', Validators.required],
-            dayOfBirth: [new Date(), Validators.required],
-            entryDate: [new Date(), Validators.required],
-            exitDate: new FormControl<Date | null>(null)
-        }),
-        status: this.builder.nonNullable.group({
-            status: ['', Validators.required],
-            statusEffective: new FormControl<Date | null>(null, Validators.required)
-        }),
-        dfv: this.builder.nonNullable.group({
-            dfvNumber: [0],
-            dse: [false, Validators.required],
-            discount: [false, Validators.required],
-            gender: ['', Validators.required],
-        }),
-        contact: this.builder.nonNullable.group({
-            street: ['', Validators.required],
-            city: ['Potsdam', [Validators.required, Validators.minLength(3)]],
-            zipCode: ['14471', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
-            email: ['', [Validators.required, Validators.email]],
-            emailList: [true, Validators.required],
-            phone: ['', Validators.required]
-        })
-    });
+  readonly forms = this.builder.nonNullable.group({
+    master: this.builder.nonNullable.group({
+      name: ['', Validators.required],
+      givenName: ['', Validators.required],
+      dayOfBirth: [new Date(), Validators.required],
+      entryDate: [new Date(), Validators.required],
+      exitDate: new FormControl<Date | null>(null)
+    }),
+    status: this.builder.nonNullable.group({
+      status: ['', Validators.required],
+      statusEffective: new FormControl<Date | null>(null, Validators.required)
+    }),
+    dfv: this.builder.nonNullable.group({
+      dfvNumber: [0],
+      dse: [false, Validators.required],
+      discount: [false, Validators.required],
+      gender: ['', Validators.required],
+    }),
+    contact: this.builder.nonNullable.group({
+      street: ['', Validators.required],
+      city: ['Potsdam', [Validators.required, Validators.minLength(3)]],
+      zipCode: ['14471', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
+      email: ['', [Validators.required, Validators.email]],
+      emailList: [true, Validators.required],
+      phone: ['', Validators.required]
+    })
+  });
+  
+  invalid$ = this.forms.statusChanges.pipe(takeUntilDestroyed(), map(stat => stat !== 'VALID'));
+  readonly dobInvalid = signal(false);
 
-    invalid$ = this.forms.statusChanges.pipe(takeUntilDestroyed(), map(stat => stat !== 'VALID'));
-
-    constructor() {
-        const today = new Date();
-        const month = today.getMonth();
-        const currentQuarter = Math.ceil((month + 1) / 3);
-        let yearOffset = 0;
-        const nextQuarters: Date[] = [];
-        for (let count = 0; count < 5; count++) {
-            let effectiveQuarter;
-            if (currentQuarter + count <= 4) {
-                //within current year
-                effectiveQuarter = currentQuarter + count;
-            } else {
-                effectiveQuarter = currentQuarter + count - 4;
-                yearOffset = 1;
-            }
-            nextQuarters.push(endOfMonth(new Date(today.getFullYear() + yearOffset, (effectiveQuarter * 3) - 1, 1)));
-        }
-
-        const lastDayOfCurrentQuarter = nextQuarters[0];
-        const daysToEndOfQuarter = differenceInCalendarDays(today, lastDayOfCurrentQuarter);
-        if (daysToEndOfQuarter < 14) {
-            this.nextEndOfQuarter = nextQuarters.slice(1, 5);
-        } else {
-            this.nextEndOfQuarter = nextQuarters.slice(0, 4);
-        }
+  constructor() {
+    const today = new Date();
+    const month = today.getMonth();
+    const currentQuarter = Math.ceil((month + 1) / 3);
+    let yearOffset = 0;
+    const nextQuarters: Date[] = [];
+    for (let count = 0; count < 5; count++) {
+      let effectiveQuarter;
+      if (currentQuarter + count <= 4) {
+        //within current year
+        effectiveQuarter = currentQuarter + count;
+      } else {
+        effectiveQuarter = currentQuarter + count - 4;
+        yearOffset = 1;
+      }
+      nextQuarters.push(endOfMonth(new Date(today.getFullYear() + yearOffset, (effectiveQuarter * 3) - 1, 1)));
     }
-    private readonly bumms = this.forms.get("status.status")?.valueChanges
-        .pipe(takeUntilDestroyed(),
-            withLatestFrom(this.store.select(MemberSelectors.selectLoadedStatus)),
-            map(([newStat, oldStat]) => newStat === oldStat))
-        .subscribe((unchanged: boolean) => {
-            const control = this.forms.get("status.statusEffective");
-            if (control == null || control == undefined) { throw new Error("FormControl status.statusEffective is missing"); }
-            if (unchanged) {
-                control.disable();
-            } else {
-                control.enable({ emitEvent: true });
-                control.reset(null);
-            }
-        });
+    
+    const lastDayOfCurrentQuarter = nextQuarters[0];
+    const daysToEndOfQuarter = differenceInCalendarDays(today, lastDayOfCurrentQuarter);
+    if (daysToEndOfQuarter < 14) {
+      this.nextEndOfQuarter = nextQuarters.slice(1, 5);
+    } else {
+      this.nextEndOfQuarter = nextQuarters.slice(0, 4);
+    }
+    
+    this.forms.get('master.dayOfBirth')?.statusChanges
+      .pipe(takeUntilDestroyed(), map(s => s === 'INVALID'))
+      .subscribe(this.dobInvalid.set);
+  }
+  private readonly bumms = this.forms.get("status.status")?.valueChanges
+    .pipe(takeUntilDestroyed(),
+      withLatestFrom(this.store.select(MemberSelectors.selectLoadedStatus)),
+      map(([newStat, oldStat]) => newStat === oldStat))
+    .subscribe((unchanged: boolean) => {
+      const control = this.forms.get("status.statusEffective");
+      if (control == null || control == undefined) { throw new Error("FormControl status.statusEffective is missing"); }
+      if (unchanged) {
+        control.disable();
+      } else {
+        control.enable({ emitEvent: true });
+        control.reset(null);
+      }
+    });
   private readonly _cancelled = this.membershipCancelled$
     //    .pipe(filter(c => c === true))
     .subscribe(cancelled => cancelled ? this.forms.disable() : this.forms.enable());
-
-    private readonly userChangedSub = this.store.select(MemberSelectors.selectMember)
-        .pipe(takeUntilDestroyed(), filter(this.filterNullOrUndefined))
-        .subscribe(mem => {
-            this.forms.setValue({
-                master: {
-                    name: mem.name,
-                    givenName: mem.givenName,
-                    entryDate: mem.entryDate,
-                    dayOfBirth: mem.dayOfBirth,
-                    exitDate: mem.exitDate
-                },
-                status: {
-                    status: mem.state,
-                    statusEffective: mem.state === null ? mem.entryDate : mem.stateEffective
-                },
-                dfv: {
-                    dfvNumber: mem.dfvNumber,
-                    dse: mem.dse,
-                    discount: mem.dfvDiscount,
-                    gender: mem.gender
-                },
-                contact: {
-                    street: mem.street,
-                    zipCode: mem.zipCode,
-                    city: mem.city,
-                    phone: mem.mobile,
-                    email: mem.email,
-                    emailList: mem.emailList
-                }
-            });
-            this.isOnboarding = mem.state === null;
-        });
-    private readonly userNeedsUpdate$ = this.store.select(MemberSelectors.updateNecessary)
-        .pipe(takeUntilDestroyed(),
-            filter(up => up === true),
-            withLatestFrom(this.store.select(UserSelectors.currentUser)),
-            map(([_, user]) => LoadMemberActions.updateMemberFromUser(
-                {
-                    name: user?.family_name ?? "",
-                    givenName: user?.given_name ?? "",
-                    email: user?.email ?? ""
-                })))
-        .subscribe((action) => this.store.dispatch(action));
-
-    private readonly breakpointSub = this.breakpoint.observe(Breakpoints.Handset)
-        .pipe(takeUntilDestroyed())
-        .subscribe(state => {
-            if (state.matches) {
-                this.orientation = "vertical";
-            } else {
-                this.orientation = "horizontal";
-            }
-        });
-
-    private readonly showSnackbarSuccess = this.store.select(StoreSelectors.success)
-      .pipe(takeUntilDestroyed(),
-        filter(x => x),
-        switchMap(_ => {
-          const snackBarRef = this.snackBar.open("Änderungen erfolgreich gespeichert", "Ok", { duration: 5000 });
-          return snackBarRef.afterDismissed();
-        }))
-      .subscribe(_ => this.store.dispatch(ModifyMemberActions.navigateToStart()));
-    private readonly showSnackbarFailure = this.store.select(StoreSelectors.failure)
-        .pipe(takeUntilDestroyed(), filter(x => x))
-        .subscribe(_ => {
-            this.snackBar.open("Änderungen konnten nicht gespeichert werden", "Ok", { duration: 5000 });
-        });
-
-    ngOnInit() {
-      this.selectedMemberId$.pipe(
-        filter(this.filterNullOrUndefined),
-        take(1),
-        tap(id => this.memberId = id))
-        .subscribe(id => this.store.dispatch(LoadMemberActions.loadLoadMembers({ memberId: id })));
-    }
-
-    private filterNullOrUndefined<T>(x: T | null | undefined): x is T {
-        return typeof x !== 'undefined' && x !== null;
-    }
-
-    private toMember(): Member {
-        const raw = this.forms.getRawValue();
+  
+  private readonly userChangedSub = this.store.select(MemberSelectors.selectMember)
+    .pipe(takeUntilDestroyed(), filter(this.filterNullOrUndefined))
+    .subscribe(mem => {
+      this.forms.setValue({
+        master: {
+          name: mem.name,
+          givenName: mem.givenName,
+          entryDate: mem.entryDate,
+          dayOfBirth: mem.dayOfBirth,
+          exitDate: mem.exitDate
+        },
+        status: {
+          status: mem.state,
+          statusEffective: mem.state === null ? mem.entryDate : mem.stateEffective
+        },
+        dfv: {
+          dfvNumber: mem.dfvNumber,
+          dse: mem.dse,
+          discount: mem.dfvDiscount,
+          gender: mem.gender
+        },
+        contact: {
+          street: mem.street,
+          zipCode: mem.zipCode,
+          city: mem.city,
+          phone: mem.mobile,
+          email: mem.email,
+          emailList: mem.emailList
+        }
+      });
+      this.isOnboarding = mem.state === null;
+    });
+  private readonly userNeedsUpdate$ = this.store.select(MemberSelectors.updateNecessary)
+    .pipe(takeUntilDestroyed(),
+      filter(up => up === true),
+      withLatestFrom(this.store.select(UserSelectors.currentUser)),
+      map(([_, user]) => LoadMemberActions.updateMemberFromUser(
+        {
+          name: user?.family_name ?? "",
+          givenName: user?.given_name ?? "",
+          email: user?.email ?? ""
+        })))
+    .subscribe((action) => this.store.dispatch(action));
+  
+  private readonly breakpointSub = this.breakpoint.observe(Breakpoints.Handset)
+    .pipe(takeUntilDestroyed())
+    .subscribe(state => {
+      if (state.matches) {
+        this.orientation = "vertical";
+      } else {
+        this.orientation = "horizontal";
+      }
+    });
+  
+  private readonly showSnackbarSuccess = this.store.select(StoreSelectors.success)
+    .pipe(takeUntilDestroyed(),
+      filter(x => x),
+      switchMap(_ => {
+        const snackBarRef = this.snackBar.open("Änderungen erfolgreich gespeichert", "Ok", { duration: 5000 });
+        return snackBarRef.afterDismissed();
+      }))
+    .subscribe(_ => this.store.dispatch(ModifyMemberActions.navigateToStart()));
+  private readonly showSnackbarFailure = this.store.select(StoreSelectors.failure)
+    .pipe(takeUntilDestroyed(), filter(x => x))
+    .subscribe(_ => {
+      this.snackBar.open("Änderungen konnten nicht gespeichert werden", "Ok", { duration: 5000 });
+    });
+  
+  ngOnInit() {
+    this.selectedMemberId$.pipe(
+      filter(this.filterNullOrUndefined),
+      take(1),
+      tap(id => this.memberId = id))
+      .subscribe(id => this.store.dispatch(LoadMemberActions.loadLoadMembers({ memberId: id })));
+  }
+  
+  private filterNullOrUndefined<T>(x: T | null | undefined): x is T {
+    return typeof x !== 'undefined' && x !== null;
+  }
+  
+  private toMember(): Member {
+    const raw = this.forms.getRawValue();
+    return {
+      id: this.memberId,
+      name: raw.master.name,
+      givenName: raw.master.givenName,
+      gender: raw.dfv.gender as "male" | "female",
+      dayOfBirth: raw.master.dayOfBirth,
+      entryDate: raw.master.entryDate,
+      exitDate: raw.master.exitDate,
+      state: raw.status.status as MembershipStates,
+      stateEffective: raw.status.statusEffective ?? new Date(),
+      dfvNumber: raw.dfv.dfvNumber,
+      dfvDiscount: raw.dfv.discount,
+      dse: raw.dfv.dse,
+      street: raw.contact.street,
+      zipCode: raw.contact.zipCode,
+      city: raw.contact.city,
+      mobile: raw.contact.phone,
+      email: raw.contact.email,
+      emailList: raw.contact.emailList
+    };
+  }
+  
+  get allowedChangeDates(): { date: Date, description: string }[] {
+    const stateEffective = this.forms.get('status.stateEffective')?.value ?? new Date();
+    return this.isOnboarding ?
+      [{ date: stateEffective, description: format(stateEffective, "d.M.yyy") }] :
+      this.nextEndOfQuarter.map(d => {
         return {
-            id: this.memberId,
-            name: raw.master.name,
-            givenName: raw.master.givenName,
-            gender: raw.dfv.gender as "male" | "female",
-            dayOfBirth: raw.master.dayOfBirth,
-            entryDate: raw.master.entryDate,
-            exitDate: raw.master.exitDate,
-          state: raw.status.status as MembershipStates,
-            stateEffective: raw.status.statusEffective ?? new Date(),
-            dfvNumber: raw.dfv.dfvNumber,
-            dfvDiscount: raw.dfv.discount,
-            dse: raw.dfv.dse,
-            street: raw.contact.street,
-            zipCode: raw.contact.zipCode,
-            city: raw.contact.city,
-            mobile: raw.contact.phone,
-            email: raw.contact.email,
-            emailList: raw.contact.emailList
+          date: d, description: format(d, "d.M.yyy")
         };
-    }
-
-    get allowedChangeDates(): { date: Date, description: string }[] {
-        const stateEffective = this.forms.get('status.stateEffective')?.value ?? new Date();
-        return this.isOnboarding ?
-            [{ date: stateEffective, description: format(stateEffective, "d.M.yyy") }] :
-            this.nextEndOfQuarter.map(d => {
-                return {
-                    date: d, description: format(d, "d.M.yyy")
-                };
-            });
-    }
-
+      });
+  }
+  
   get allowedMembershipStates(): MembershipStates[] {
-    const youthMemberships:MembershipStates[] = ["passiv", "jugendliche"];
-    const adultMemberships:MembershipStates[] = ["passiv", "ermäßigt", "berufstätig"];
+    const youthMemberships: MembershipStates[] = ["passiv", "jugendliche"];
+    const adultMemberships: MembershipStates[] = ["passiv", "ermäßigt", "berufstätig"];
     const dob = this.forms.getRawValue().master.dayOfBirth;
     const parsedDob = dob != null ? new Date(dob) : null;
     const year = new Date().getFullYear();
     
-    return  parsedDob != null && year - parsedDob.getFullYear() <= 18 ? youthMemberships : adultMemberships;
+    return parsedDob != null && year - parsedDob.getFullYear() <= 18 ? youthMemberships : adultMemberships;
   }
-
-    get onBoardingMode() { return this.isOnboarding; }
-
-    openCancellationDialog() {
-        const dialogData: CancellationDialogData = {
-            allowedCancellationDate: this.nextEndOfQuarter,
-            selectedDate: null
-        };
-        const dialogRef = this.dialog.open<CancellationDialogComponent, CancellationDialogData, Date>(CancellationDialogComponent,
-            {
-                data: dialogData,
-                ariaLabel: "Mitgliedschaft kündigen",
-                ariaModal: true,
-                hasBackdrop: true,
-                disableClose: true,
-                autoFocus: true
-            });
-        dialogRef.afterClosed()
-            .pipe(filter(this.filterNullOrUndefined),
-                map(d => {
-                    const member = this.toMember();
-                    member.exitDate = d;
-                    return member;
-                }),
-                map(m => ModifyMemberActions.store({ member: m })))
-            .subscribe(action => {
-                this.store.dispatch(action);
-            });
-    }
-
-    revert() {
-        this.store.dispatch(ModifyMemberActions.revert());
-    }
-    update() {
-        this.store.dispatch(ModifyMemberActions.store({ member: this.toMember() }));
-    }
+  
+  get onBoardingMode() { return this.isOnboarding; }
+  
+  openCancellationDialog() {
+    const dialogData: CancellationDialogData = {
+      allowedCancellationDate: this.nextEndOfQuarter,
+      selectedDate: null
+    };
+    const dialogRef = this.dialog.open<CancellationDialogComponent, CancellationDialogData, Date>(CancellationDialogComponent,
+      {
+        data: dialogData,
+        ariaLabel: "Mitgliedschaft kündigen",
+        ariaModal: true,
+        hasBackdrop: true,
+        disableClose: true,
+        autoFocus: true
+      });
+    dialogRef.afterClosed()
+      .pipe(filter(this.filterNullOrUndefined),
+        map(d => {
+          const member = this.toMember();
+          member.exitDate = d;
+          return member;
+        }),
+        map(m => ModifyMemberActions.store({ member: m })))
+      .subscribe(action => {
+        this.store.dispatch(action);
+      });
+  }
+  
+  revert() {
+    this.store.dispatch(ModifyMemberActions.revert());
+  }
+  update() {
+    this.store.dispatch(ModifyMemberActions.store({ member: this.toMember() }));
+  }
 }
+

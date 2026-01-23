@@ -139,7 +139,8 @@
     "schematicCollections": [
       "@angular-eslint/schematics",
       "@ngrx/schematics"
-    ]
+    ],
+    "analytics": false
   },
   "schematics": {
     "@schematics/angular:component": {
