@@ -48,7 +48,6 @@
     "@angular/cli": "^20.3.9",
     "@angular/compiler-cli": "^20.3.10",
     "@ngrx/schematics": "^20.0.1",
-    "@storybook/angular": "^9.1.10",
     "@types/jasmine": "~5.1.12",
     "@typescript-eslint/eslint-plugin": "8.26.0",
     "@typescript-eslint/parser": "8.45.0",
