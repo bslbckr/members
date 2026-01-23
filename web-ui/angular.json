@@ -84,24 +84,11 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-  //            "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "karmaConfig": "karma.conf.js"
-          }
+            "builder": "@angular/build:unit-test",
+            "options": {
+                "reporters": ["html", "json", "dot"],
+                "browsers": ["firefox"]
+            }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
