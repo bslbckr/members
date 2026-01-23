@@ -38,10 +38,18 @@
             </mat-form-field>
 
             <mat-form-field>
-              <mat-label for="dayOfBirth">Geburtsdatum</mat-label>
-              <input id="dayOfBirth" matInput [matDatepicker]="dobPicker" formControlName="dayOfBirth">
-              <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                <mat-label for="dayOfBirth">Geburtsdatum</mat-label>
+                <input id="dayOfBirth" matInput
+                       [min]="minDate"
+                       [max]="maxDate"
+                       [matDatepicker]="dobPicker"
+                       formControlName="dayOfBirth">
+                <mat-datepicker-toggle matIconSuffix
+                                       [for]="dobPicker"></mat-datepicker-toggle>
               <mat-datepicker #dobPicker></mat-datepicker>
+              @if (dobInvalid()) {
+                <mat-error>Eingegebenes Geburtsdatum ist ungültig.</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label for="entryDate">Eintrittsdatum</mat-label>
