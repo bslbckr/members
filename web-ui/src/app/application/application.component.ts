@@ -4,8 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { de} from 'date-fns/locale';
+import { format } from 'date-fns';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {  MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -21,13 +26,16 @@ import { first, map, Observable } from 'rxjs';
     MatInputModule,
     MatSlideToggleModule,
     MatCardModule,
+    MatDatepickerModule,
     MatIconModule,
     MatButtonModule,
     MatStepperModule,
     MatStepperIcon,
     AsyncPipe],
   providers: [
-    { provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}}
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}},
+    provideDateFnsAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: de },
   ],
   templateUrl: './application.component.html',
   styleUrl: './application.component.css'
@@ -40,6 +48,7 @@ export class ApplicationComponent implements OnInit {
     firstName: this.builder.control("", Validators.required),
     name: this.builder.control("", Validators.required),
     email: this.builder.control("", [Validators.email, Validators.required]),
+    dob: new FormControl<Date | null>(null, {validators: Validators.required}),
     isChild: this.builder.control(false),
     parentFirstName: this.builder.control("", {validators: Validators.required}),
     parentName: new FormControl<string>("", {validators: Validators.required, nonNullable: true})
@@ -81,8 +90,11 @@ export class ApplicationComponent implements OnInit {
 
   private etaRender(template: string):string {
     const eta = new Eta();
-    
-    return eta.renderString(template, this.form.value);
+    const prettyPrinted = {
+      ...this.form.value,
+      dob: this.form.value.dob != null ?  format(this.form.value.dob, 'd. LLLL y', {locale: de}) : ""
+    };
+    return eta.renderString(template, prettyPrinted);
   }
 
   private createBlob(doc: string): Blob {
@@ -95,10 +107,6 @@ export class ApplicationComponent implements OnInit {
     const anchor = document.createElement("a");
     anchor.href = downloadUrl;
     anchor.target = "_blank";
-    //anchor.download = "Mitgliedsantrag-Goldfingers.html";
-
     anchor.click();
-    //URL.revokeObjectURL(downloadUrl);
-    
   }
 }

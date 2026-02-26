@@ -17,9 +17,18 @@
                         <mat-label>Name</mat-label>
                         <input matInput formControlName="name">
                     </mat-form-field>
-                    <mat-form-field class="span-form">
+                    <mat-form-field>
                         <mat-label>E-Mail</mat-label>
                         <input matInput type="email" formControlName="email">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Geburtsdatum</mat-label>
+                        <input id="dayOfBirth" matInput
+                               [matDatepicker]="dobPicker"
+                               formControlName="dob" readonly>
+                        <mat-datepicker-toggle matIconSuffix
+                                               [for]="dobPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dobPicker startView="multi-year" disabled="false"></mat-datepicker>
                     </mat-form-field>
                     <mat-slide-toggle formControlName="isChild">Neues Mitglied ist minderj&auml;hrig</mat-slide-toggle>
                     
