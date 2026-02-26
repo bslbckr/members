@@ -10,14 +10,14 @@ import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Member } from '../model/Member';
 import { differenceInCalendarDays } from 'date-fns/fp';
-import { endOfMonth, format } from 'date-fns';
+import { endOfMonth, format, parse } from 'date-fns';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { CancellationDialogComponent, CancellationDialogData } from './cancellation-dialog/cancellation-dialog.component';
 import { ResourceSelectors } from '../selectors/resources.selectors';
 import { UserSelectors } from '../selectors/user.selectors';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
-import { NgClass, AsyncPipe, JsonPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { MatStepper, MatStep, MatStepperNext, MatStepperPrevious } from '@angular/material/stepper';
@@ -68,8 +68,7 @@ declare type MembershipStates = "passiv" | "jugendliche" | "ermäßigt" | "beruf
     MatCardActions,
     MatMiniFabButton,
     AsyncPipe,
-    MatError,
-    JsonPipe],
+    MatError],
   providers: [
     provideDateFnsAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: de },
@@ -116,7 +115,7 @@ export class MemberComponent implements OnInit {
       name: ['', Validators.required],
       givenName: ['', Validators.required],
       dayOfBirth: [new Date(), Validators.required],
-      entryDate: [new Date(), Validators.required],
+      entryDate: ["", Validators.required],
       exitDate: new FormControl<Date | null>(null)
     }),
     status: this.builder.nonNullable.group({
@@ -197,7 +196,7 @@ export class MemberComponent implements OnInit {
         master: {
           name: mem.name,
           givenName: mem.givenName,
-          entryDate: mem.entryDate,
+          entryDate: format(mem.entryDate, "dd.MM.yyyy"),
           dayOfBirth: mem.dayOfBirth,
           exitDate: mem.exitDate
         },
@@ -278,7 +277,7 @@ export class MemberComponent implements OnInit {
       givenName: raw.master.givenName,
       gender: raw.dfv.gender as "male" | "female",
       dayOfBirth: raw.master.dayOfBirth,
-      entryDate: raw.master.entryDate,
+      entryDate: parse( raw.master.entryDate, "dd.MM.yyyy", new Date()),
       exitDate: raw.master.exitDate,
       state: raw.status.status as MembershipStates,
       stateEffective: raw.status.statusEffective ?? new Date(),
