@@ -8,19 +8,42 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { MatMiniFabButton } from '@angular/material/button';
+import { MatButtonModule, MatMiniFabButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { AsyncPipe } from '@angular/common';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import {de} from 'date-fns/locale';
+import { format } from 'date-fns';
 
 @Component({
-    selector: 'app-on.boarding',
-    templateUrl: './on.boarding.component.html',
-    styleUrls: ['./on.boarding.component.css'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatSlideToggle, MatCardActions, MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
+  selector: 'app-on.boarding',
+  templateUrl: './on.boarding.component.html',
+  styleUrls: ['./on.boarding.component.css'],
+  imports: [MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSlideToggle,
+    MatCardActions,
+    MatMiniFabButton,
+    MatTooltip,
+    MatIcon,
+    MatInputModule,
+    AsyncPipe],
+  providers: [
+    provideDateFnsAdapter(),
+    {provide: MAT_DATE_LOCALE, useValue: de}
+  ]
 })
 export class OnBoardingComponent {
 
@@ -29,13 +52,14 @@ export class OnBoardingComponent {
     private readonly isChild = new FormControl(false, [Validators.required]);
 
     readonly form = new FormGroup({
-        firstName: new FormControl("", Validators.required),
-        name: new FormControl("", Validators.required),
-        login: new FormControl("", [Validators.required, Validators.minLength(3)]),
-        email: new FormControl("", [Validators.email, Validators.required]),
-        isChild: this.isChild,
-        memberFirstName: this.memberFirstName,
-        memberName: this.memberName
+      firstName: new FormControl("", Validators.required),
+      name: new FormControl("", Validators.required),
+      login: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      email: new FormControl("", [Validators.email, Validators.required]),
+      dob: new FormControl<Date|null>(null, Validators.required),
+      isChild: this.isChild,
+      memberFirstName: this.memberFirstName,
+      memberName: this.memberName
     });
     private readonly store = inject(Store);
     private readonly snackBar = inject(MatSnackBar);
@@ -59,23 +83,26 @@ export class OnBoardingComponent {
             }
         });
     send(): void {
-        const firstName = this.form.get("firstName")?.value ?? "";
-        const name = this.form.get("name")?.value ?? "";
-        const login = this.form.get("login")?.value ?? "";
-        const email = this.form.get("email")?.value ?? "";
-        const isChild = this.isChild.value ?? false;
-        const memberFirstName = isChild ? this.memberFirstName.value ?? "" : "";
-        const memberName = isChild ? this.memberName.value ?? "" : "";
-        this.store.dispatch(onBoardingActions.start(
-            {
-                firstname: firstName,
-                name: name,
-                login: login,
-                email: email,
-                isChild: isChild,
-                memberFirstName: memberFirstName,
-                memberName: memberName
-            }));
+      const firstName = this.form.get("firstName")?.value ?? "";
+      const name = this.form.get("name")?.value ?? "";
+      const login = this.form.get("login")?.value ?? "";
+      const email = this.form.get("email")?.value ?? "";
+      const dobRaw = this.form.get("dob")?.value;
+      const dob = dobRaw != null ? format(dobRaw, "yyyy-MM-dd") : "";
+      const isChild = this.isChild.value ?? false;
+      const memberFirstName = isChild ? this.memberFirstName.value ?? "" : "";
+      const memberName = isChild ? this.memberName.value ?? "" : "";
+      this.store.dispatch(onBoardingActions.start(
+        {
+          firstname: firstName,
+          name: name,
+          login: login,
+          email: email,
+          dob: dob,
+          isChild: isChild,
+          memberFirstName: memberFirstName,
+          memberName: memberName
+        }));
     }
 }
 

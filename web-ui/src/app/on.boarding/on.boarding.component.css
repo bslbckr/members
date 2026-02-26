@@ -6,25 +6,33 @@
 }
 
 mat-form-field#name {
-    flex-grow: 2;
+    flex-grow: 3;
     flex-shrink: 1;
+    flex-basis: 45%;
 }
 
 mat-form-field#familyname {
-    flex-grow: 2;
+    flex-grow: 3;
     flex-shrink: 1;
+    flex-basis: 45%;
 }
 
 mat-form-field#login {
     flex-grow: 1;
-    flex-shrink: 1;
+    flex-shrink: 0;
+    flex-basis: 15%;
 }
 
 mat-form-field#email {
     flex-grow: 3;
     flex-shrink: 1;
+    flex-basis: 50%;
 }
-
+mat-form-field#dob {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 33%;
+}
 mat-form-field {
-    flex-basis: 22%;
+    flex-basis: 30%;
 }
