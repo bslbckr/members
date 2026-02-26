@@ -33,7 +33,10 @@ public class ChangeResource {
     @Transactional
     public Collection<StateChangeDto> getStateChanges() {
         final var changes = this.service.stateChanges();
-        return changes.stream().map(StateChangeDto::fromStateChange).toList();
+        return changes.stream()
+            .filter(c -> c != null)
+            .sorted((c1,c2) -> c1.stateEffective().compareTo(c2.stateEffective()))
+            .map(StateChangeDto::fromStateChange).toList();
     }
 
     @GET
