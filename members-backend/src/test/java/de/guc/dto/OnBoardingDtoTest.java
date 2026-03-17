@@ -1,5 +1,6 @@
 package de.guc.dto;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OnBoardingDtoTest {
 
-        private static final OnBoardingDto onBoardingChild = new OnBoardingDto("a", "b", "c", "d", true, "e", "f");
-        private static final OnBoardingDto onBoardingAdult = new OnBoardingDto("a", "b", "c", "d", false, null, null);
+    private static final OnBoardingDto onBoardingChild = new OnBoardingDto("a", "b", "c", "d", LocalDate.of(2018,7,6), true, "e", "f");
+    private static final OnBoardingDto onBoardingAdult = new OnBoardingDto("a", "b", "c", "d", LocalDate.of(2008,7,6), false, null, null);
 
     static List<Arguments> memberFirstNameSource = Arrays.asList(
                         arguments(onBoardingAdult, "a"),

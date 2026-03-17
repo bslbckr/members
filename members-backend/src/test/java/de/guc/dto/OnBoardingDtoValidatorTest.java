@@ -3,6 +3,8 @@ package de.guc.dto;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 public class OnBoardingDtoValidatorTest {
@@ -11,31 +13,31 @@ public class OnBoardingDtoValidatorTest {
 
     @Test
     public void testAdultValidatedCorrectly() {
-        final var dto = new OnBoardingDto("a","b","c","d",false,null,null);
+        final var dto = new OnBoardingDto("a","b","c","d",LocalDate.of(2008,7,6),false,null,null);
         assertTrue(validator.isValid(dto, null));
     }
 
     @Test
     public void testChildWithoutMemberNameIsInvalid() {
-        final var dto = new OnBoardingDto("a","b","c","d",true,null,null);
+        final var dto = new OnBoardingDto("a","b","c","d",LocalDate.of(2008,7,6),true,null,null);
         assertFalse(validator.isValid(dto, null));
     }
 
     @Test
     public void testChildWithoutMemberFirstNameIsInvalid() {
-        final var dto = new OnBoardingDto("a","b","c","d",true,"foo",null);
+        final var dto = new OnBoardingDto("a","b","c","d",LocalDate.of(2008,7,6),true,"foo",null);
         assertFalse(validator.isValid(dto, null));
     }
 
     @Test
     public void testChildWithEmptyMemberFirstNameIsInvalid() {
-        final var dto = new OnBoardingDto("a","b","c","d",true,"foo","");
+        final var dto = new OnBoardingDto("a","b","c","d",LocalDate.of(2008,7,6),true,"foo","");
         assertFalse(validator.isValid(dto, null));
     }
 
     @Test
     public void testChildWithEmptyMemberNameIsInvalid() {
-        final var dto = new OnBoardingDto("a","b","c","d",true,"","");
+        final var dto = new OnBoardingDto("a","b","c","d",LocalDate.of(2008,7,6),true,"","");
         assertFalse(validator.isValid(dto, null));
     }
 
@@ -46,7 +48,7 @@ public class OnBoardingDtoValidatorTest {
 
     @Test
     public void testCompletelyFilledChildIsValid() {
-        final var dto = new OnBoardingDto("a","b","c","d",true,"foo","bar");
+        final var dto = new OnBoardingDto("a","b","c","d",LocalDate.of(2008,7,6),true,"foo","bar");
         assertTrue(validator.isValid(dto, null));
 
     }
