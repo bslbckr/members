@@ -14,19 +14,20 @@ export class OnboardingEffects {
 
     onboardingOnboardings$ = createEffect(() => {
         return this.actions$.pipe(
-
-            ofType(onBoardingActions.start),
-            exhaustMap(action => this.service.submit(
-                {
-                    firstName: action.firstname,
-                    name: action.name,
-                    login: action.login,
-                    email: action.email,
-                    memberIsChild: action.isChild,
-                    memberFirstName: action.memberFirstName,
-                    memberName: action.memberName
-                }).pipe(map(_ => onBoardingActions.success()),
-                    catchError(_ => of(onBoardingActions.failure({ message: "on boarding failed" }))))
-            ))
+          
+          ofType(onBoardingActions.start),
+          exhaustMap(action => this.service.submit(
+            {
+              firstName: action.firstname,
+              name: action.name,
+              login: action.login,
+              email: action.email,
+              dob: action.dob,
+              memberIsChild: action.isChild,
+              memberFirstName: action.memberFirstName,
+              memberName: action.memberName
+            }).pipe(map(_ => onBoardingActions.success()),
+              catchError(_ => of(onBoardingActions.failure({ message: "on boarding failed" }))))
+          ))
     });
 }

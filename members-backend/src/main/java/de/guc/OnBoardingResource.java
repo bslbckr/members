@@ -108,7 +108,9 @@ public class OnBoardingResource {
                 isChild ? mwl.getParentFirstName() : mwl.getGivenName(),
                 isChild ? mwl.getParentLastName() : mwl.getName(),
                 mwl.getEmail(),
-                mwl.getLogin(), isChild, "", "");
+                mwl.getLogin(),
+                mwl.getDayOfBirth(),
+                isChild, "", "");
             return new ImportPair(mwl, this.registerUserAtKeycloak(dto));
         })
             .map(pair -> {
@@ -164,6 +166,7 @@ public class OnBoardingResource {
         member.givenName = newMember.consolidatedFirstName();
         member.email = newMember.email();
         member.entryDate = LocalDate.now();
+        member.dayOfBirth = newMember.dob();
         member.persist();
 
         if (!newMember.memberIsChild()) {

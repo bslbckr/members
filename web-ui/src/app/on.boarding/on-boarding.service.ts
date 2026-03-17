@@ -16,11 +16,12 @@ export class OnBoardingService {
 }
 
 export interface NewMember {
-    firstName: string;
-    name: string;
-    login: string;
-    email: string;
-    memberIsChild: boolean;
-    memberFirstName: string;
-    memberName: string;
+  firstName: string;
+  name: string;
+  login: string;
+  email: string;
+  dob: string;
+  memberIsChild: boolean;
+  memberFirstName: string;
+  memberName: string;
 }

@@ -125,7 +125,7 @@
 
             <span>Vorname: <%= it.firstName %></span>
             <span>Name: <%= it.name %></span>
-
+            <span>geboren am: <%= it.dob %></span>
             <span>E-Mail: <%= it.email %></span>
         </div>
         <% if(it.isChild) { %>

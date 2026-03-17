@@ -9,7 +9,7 @@ describe('OnBoarding Reducer', () => {
     });
 
     it('should reset success state', () => {
-        const state = OnBoardingReducer({ onBoardingSuccessful: false, errorMessage: "foo" }, onBoardingActions.start({ firstname: "foo", name: "bar", email: "test", isChild: false, memberFirstName: "", memberName: "", login: "login" }));
+      const state = OnBoardingReducer({ onBoardingSuccessful: false, errorMessage: "foo" }, onBoardingActions.start({ firstname: "foo", name: "bar", email: "test", dob: "2015-12-13", isChild: false, memberFirstName: "", memberName: "", login: "login" }));
         expect(state.onBoardingSuccessful).toBeNull();
     });
 
