@@ -42,7 +42,8 @@ describe('OnBoardingComponent', () => {
             firstName: "Foo",
             name: "Test bar",
             email: "foo@test.bar",
-            login: "foo"
+            login: "foo",
+          dob: new Date("2015-12-13")
         });
         component.send();
         expect(spy).toHaveBeenCalledTimes(1);
@@ -50,6 +51,7 @@ describe('OnBoardingComponent', () => {
             firstname: "Foo",
             name: "Test bar",
             email: "foo@test.bar",
+            dob: "2015-12-13",
             login: "foo",
             isChild: false,
             memberFirstName: "",
