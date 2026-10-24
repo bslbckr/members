@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MemberOverview, MemberOverviewService } from './member-overview.service';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -34,6 +34,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatTooltip],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [MemberOverviewService, GenericCsvService]
 })
 export class MemberOverviewComponent implements OnInit, AfterViewInit{

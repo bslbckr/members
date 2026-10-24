@@ -13,7 +13,7 @@ import { hasRoleGuard } from './has-role.guard';
 import { AppComponent } from './app.component';
 import { authInterceptor, PassedInitialConfig, provideAuth } from 'angular-auth-oidc-client';
 import { environment } from 'src/environments/environment';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { StartEffects } from './start/effects/start.effects';
 import { ResourceService } from './start/resource.service';
 import { MemberEffects } from './member/effects/member.effects';
@@ -105,7 +105,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects([]),
     provideRouter(routes),
     provideAuth(authConfig),
-    provideHttpClient(withInterceptors([authInterceptor()])),
+    provideHttpClient(withXhr(), withInterceptors([authInterceptor()])),
     provideAnimations(),
     { provide: LOCALE_ID, useValue: 'de-DE'}
   ]

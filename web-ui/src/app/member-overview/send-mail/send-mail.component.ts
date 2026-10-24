@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { SendMailService } from './send-mail.service';
 import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {map, Observable} from 'rxjs';
@@ -21,6 +21,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     AsyncPipe],
   templateUrl: './send-mail.component.html',
   styles: `form {display: flex; flex-direction: column;} mat-expansion-panel {margin-bottom: 1em;}`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [SendMailService]
 })
 export class SendMailComponent {

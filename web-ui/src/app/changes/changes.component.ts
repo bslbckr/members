@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 import { ChangeService } from './change.service';
@@ -8,6 +8,7 @@ import { ChangeService } from './change.service';
     selector: 'app-changes',
     templateUrl: './changes.component.html',
     styleUrl: './changes.component.css',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCard, MatCardHeader, MatCardContent, DatePipe]
 })
 export class ChangesComponent {

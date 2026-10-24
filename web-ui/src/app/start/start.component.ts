@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ResourceActions } from '../actions/resource.actions';
@@ -13,6 +13,7 @@ import { UserSelectors } from '../selectors/user.selectors';
     selector: 'app-start',
     templateUrl: './start.component.html',
     styleUrls: ['./start.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatButton, MatAnchor, MatCardFooter, AsyncPipe, RouterLink]
 })
 export class StartComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
@@ -40,6 +40,7 @@ import { format } from 'date-fns';
     MatIcon,
     MatInputModule,
     AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     provideDateFnsAdapter(),
     {provide: MAT_DATE_LOCALE, useValue: de}

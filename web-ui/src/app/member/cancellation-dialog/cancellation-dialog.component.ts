@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-cancel-dialog',
     templateUrl: './cancellation-dialog.component.html',
     styleUrls: ['./cancellation-dialog.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatDialogTitle, CdkScrollable, MatDialogContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatSelect, MatOption, MatSlideToggle, MatDialogActions, MatButton, AsyncPipe]
 })
 export class CancellationDialogComponent implements AfterViewInit {

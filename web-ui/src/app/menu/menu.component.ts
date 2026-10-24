@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserSelectors } from '../selectors/user.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -14,6 +14,7 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RouterModule, MatDivider, MatIconModule, MatToolbarModule, AsyncPipe]
 })
 export class MenuComponent {

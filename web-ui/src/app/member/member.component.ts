@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Store } from '@ngrx/store';
 import { LoadMemberActions } from '../actions/load-member.actions';
@@ -69,6 +69,7 @@ declare type MembershipStates = "passiv" | "jugendliche" | "ermäßigt" | "beruf
     MatMiniFabButton,
     AsyncPipe,
     MatError],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     provideDateFnsAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: de },

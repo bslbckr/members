@@ -1,7 +1,7 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { AsyncPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
@@ -38,6 +38,7 @@ import { first, map, Observable } from 'rxjs';
     { provide: MAT_DATE_LOCALE, useValue: de },
   ],
   templateUrl: './application.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './application.component.css'
 })
 export class ApplicationComponent implements OnInit {
