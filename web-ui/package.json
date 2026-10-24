@@ -49,7 +49,7 @@
     "@types/jasmine": "~5.1.12",
     "@vitest/browser-webdriverio": "^4.0.18",
     "@vitest/ui": "^4.0.18",
-    "baseline-browser-mapping": "^2.9.14",
+    "baseline-browser-mapping": "^2.11.32",
     "eslint": "^9.22.0",
     "jasmine-core": "~5.12.0",
     "jsdom": "^27.4.0",
