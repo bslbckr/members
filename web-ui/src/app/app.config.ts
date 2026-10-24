@@ -12,13 +12,12 @@ import { authenticatedGuard } from './authenticated.guard';
 import { hasRoleGuard } from './has-role.guard';
 import { AppComponent } from './app.component';
 import { authInterceptor, PassedInitialConfig, provideAuth } from 'angular-auth-oidc-client';
-import { environment } from 'src/environments/environment';
+import { environment } from './../environments/environment';
 import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { StartEffects } from './start/effects/start.effects';
 import { ResourceService } from './start/resource.service';
 import { MemberEffects } from './member/effects/member.effects';
 import { MemberService } from './member/member.service';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { OnboardingEffects } from './on.boarding/+state/onboarding.effects';
 import { OnBoardingService } from './on.boarding/on-boarding.service';
 import { ChangeService } from './changes/change.service';
@@ -106,7 +105,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAuth(authConfig),
     provideHttpClient(withXhr(), withInterceptors([authInterceptor()])),
-    provideAnimations(),
     { provide: LOCALE_ID, useValue: 'de-DE'}
   ]
 };

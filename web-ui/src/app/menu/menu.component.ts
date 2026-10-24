@@ -2,7 +2,7 @@ import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserSelectors } from '../selectors/user.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { environment } from 'src/environments/environment';
+import { environment } from './../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { MatDivider } from '@angular/material/divider';

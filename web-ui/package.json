@@ -13,7 +13,6 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^22.2.3",
     "@angular/cdk": "^22.2.4",
     "@angular/common": "^22.2.3",
     "@angular/compiler": "^22.2.3",
@@ -22,7 +21,6 @@
     "@angular/material": "^22.2.4",
     "@angular/material-date-fns-adapter": "^22.2.4",
     "@angular/platform-browser": "^22.2.3",
-    "@angular/platform-browser-dynamic": "^22.2.3",
     "@angular/router": "^22.2.3",
     "@ngrx/effects": "^22.0.1",
     "@ngrx/operators": "^22.0.1",
@@ -63,6 +61,8 @@
     "esbuild@0.27.3": true,
     "@parcel/watcher@2.6.0": true,
     "lmdb@3.5.6": true,
-    "msgpackr-extract@3.0.4": true
+    "msgpackr-extract@3.0.4": true,
+    "edgedriver@8.0.0": true,
+    "geckodriver@8.0.0": true
   }
 }
