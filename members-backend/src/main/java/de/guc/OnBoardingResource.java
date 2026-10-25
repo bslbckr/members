@@ -38,6 +38,32 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
 
+/**
+ * REST resource for managing member onboarding operations.
+ * 
+ * <p>This resource handles the onboarding of new members into the Goldfingers Ultimate Club (GUC)
+ * system by:</p>
+ * <ul>
+ *   <li>Creating and registering users in Keycloak</li>
+ *   <li>Storing member data in the database</li>
+ *   <li>Granting access to member resources</li>
+ *   <li>Sending welcome emails to new members</li>
+ * </ul>
+ * 
+ * <p>Two types of onboarding are supported:</p>
+ * <ol>
+ *   <li><strong>New Member Onboarding</strong>: Creates a completely new member
+ *       with a generated temporary password</li>
+ *   <li><strong>Import of Existing Members</strong>: Imports members who already
+ *       exist in Keycloak (e.g., child accounts, transferred members)</li>
+ * </ol>
+ * 
+ * <p>Keycloak users are automatically enabled and assigned to the "GUC Members"
+ * group once onboarding is successful.</p>
+ * 
+ * @see OnBoardingDto
+ * @see OnBoardingDtoValidator
+ */
 @Path("v1/onboarding")
 @RolesAllowed(Constants.ROLE_ON_BOARDING)
 public class OnBoardingResource {
@@ -76,6 +102,36 @@ public class OnBoardingResource {
     record imported(String firstname, String login, String password) implements TemplateInstance {
     };
 
+    /**
+     * Creates a new member by onboarding them into the GUC system.
+     * 
+     * <p>This endpoint processes a onboarding request for a new member by:</p>
+     * <ol>
+     *   <licreate the user in Keycloak with a generated temporary password</li>
+     *   <li>Creating a {@link MemberEntity} record in the database</li>
+     *   <li>Creating a resource access entry for the new member</li>
+     *   <li>Sending a welcome email with login credentials to the member</li>
+     * </ol>
+     * 
+     * <p>For child members, their parent's personal data is stored; for adult members,
+     * their own data is stored. Email changes are recorded in {@link EmailUpdateEntity}.</p>
+     * 
+     * <p>If a Keycloak user with the given email already exists, the system:</p>
+     * <ul>
+     *   <li>Enables the user if they are not yet a member</li>
+     *   <li>Adds them to the "GUC Members" group</li>
+     *   <li>Reports the existing password as "UNCHANGED"</li>
+     *   <li>Warns if attempting to create two members for the same user</li>
+     * </ul>
+     * 
+     * <p>Only allowed to users with the {@link Constants#ROLE_ON_BOARDING} role.</p>
+     * 
+     * @param newMember The validated onboarding request containing member details,
+     *                  email address, login, and birth date
+     * @throws jakarta.ws.rs.WebApplicationException if a user with the given email
+     *                                               already exists as a member
+     * @throws jakarta.ws.rs.ValidationException     if the request fails validation
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -95,6 +151,31 @@ public class OnBoardingResource {
         this.mailer.send(mail);
     }
 
+    /**
+     * Imports multiple existing members from external sources into the GUC system.
+     * 
+     * <p>This endpoint accepts a list of member DTOs representing users who already
+     * exist in Keycloak (e.g., child accounts imported along with their parent,
+     * or members transferred from another system). For each member, the operation:</p>
+     * <ol>
+     *   <licreate the member entity with provided data</li>
+     *   <li>Stores a resource access entry linking the user</li>
+     *   <li>Sending a confirmation email to the member</li>
+     * </ol>
+     * 
+     * <p>Child members are processed with their parent's personal data while maintaining
+     * the child's login and email. DSE (disabled student evidence) status and DFV numbers
+     * are preserved from the original member if applicable.</p>
+     * 
+     * <p>All imported members are enabled in Keycloak and granted "GUC Members" group
+     * membership if not already assigned.</p>
+     * 
+     * @param importedMembers The list of members to import into the system
+     *                        (must contain at least one member)
+     * @throws jakarta.ws.rs.WebApplicationException if duplicate members are being
+     *                                               imported (one user, two "SELF" roles)
+     * @throws jakarta.ws.rs.ValidationException     if the request list is empty
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -149,6 +230,22 @@ public class OnBoardingResource {
             .forEach(mail -> this.mailer.send(mail));
     }
 
+
+    /**
+     * Creates and persists a member access resource entry.
+     * 
+     * <p>This method creates a {@link ResourcesEntity} that associates a member with
+     * their Keycloak user identity. The entry tracks:</p>
+     * <ul>
+     *   <li>The Keycloak user ID for future lookups</li>
+     *   <li>The associated {@link MemberEntity}</li>
+     *   <li>The role type ("SELF" or "PARENT")</li>
+     *   <li>The member's given name</li>
+     * </ul>
+     * 
+     * @param ctxt The onboarding context containing the Keycloak ID, member entity,
+     *            and role information
+     */
     private void storeAccessResource(OnBoardingContext ctxt) {
         final var access = new ResourcesEntity();
         access.identity = UUID.fromString(ctxt.keycloakId());
@@ -159,6 +256,17 @@ public class OnBoardingResource {
         access.persist();
     }
 
+    /**
+     * Stores a new member entity and returns an updated context with the member attached.
+     * 
+     * <p>Creates a {@link MemberEntity} with the provided data and sets the entry date
+     * to the current moment. Optionally records an {@link EmailUpdateEntity} entry if
+     * this is not a child member (for email change history tracking).</p>
+     * 
+     * @param newMember The onboarding DTO containing member personal data
+     * @param ctxt The existing onboarding context containing Keycloak information
+     * @return A new context with the newly created member attached and role flag
+     */
     private OnBoardingContext storeNewMember(OnBoardingDto newMember, OnBoardingContext ctxt) {
         final var member = new MemberEntity();
 
@@ -179,6 +287,25 @@ public class OnBoardingResource {
         return ctxt.withMember(member, newMember.memberIsChild());
     }
 
+    /**
+     * Registers a new member at Keycloak and returns their initial context.
+     * 
+     * <p>Checks if a user with the given email already exists in Keycloak:</p>
+     * <ul>
+     *   <licreate the user in Keycloak by registering a new UserRepresentation, creating at
+     *       Keycloak, resetting with a temporary password, and loading the registered user</li>
+     *   <li>If user exists: enable the user, check group membership, add to "GUC Members"
+     *       group if needed, and return unchanged password indicator</li>
+     * </ul>
+     * 
+     * <p>Throws a {@link WebApplicationException} if a user exists and would create
+     * duplicate member records (one user with two SELF roles).</p>
+     * 
+     * @param dto The onboarding DTO with member email and login name
+     * @return OnBoardingContext with Keycloak ID, password, and login information
+     *         and optionally attached member entity
+     * @throws WebApplicationException if duplicate member creation would occur
+     */
     private OnBoardingContext registerUserAtKeycloak(OnBoardingDto dto) {
 
         final var userResource = this.adminClient.realm("guc").users();
@@ -221,6 +348,16 @@ public class OnBoardingResource {
         throw new WebApplicationException("User with email exists as member", Status.BAD_REQUEST);
     }
 
+    /**
+     * Resets a registered Keycloak user's password to a securely generated temporary value.
+     * 
+     * <p>Generates a 16-character password containing at least one digit, one uppercase
+     * letter, one lowercase letter, and one special character from a predefined set.
+     * The password is marked as temporary in Keycloak to require a change at first login.</p>
+     * 
+     * @param ur The Keycloak user resource to reset the password on
+     * @return OnBoardingContext with the user's ID, username, and generated temporary password
+     */
     private OnBoardingContext setInitialPassword(UserResource ur) {
         final CredentialRepresentation credentials = new CredentialRepresentation();
         credentials.setTemporary(true);
@@ -233,6 +370,18 @@ public class OnBoardingResource {
         return new OnBoardingContext(representation.getId(), password, representation.getUsername());
     }
 
+    /**
+     * Generates a cryptographically secure temporary password for new Keycloak users.
+     * 
+     * <p>Repeatedly generates 16-character random strings until one satisfies the
+     * required complexity pattern: contains digits, uppercase, lowercase, and special
+     * characters. The character set includes printable ASCII and common special symbols.</p>
+     * 
+     * <p>The returned password is intended to be a temporary password requiring
+     * initial change upon first login (configured via temporary flag in Keycloak).</p>
+     * 
+     * @return A secure temporary password with minimum complexity requirements
+     */
     private String generateSecurePassword() {
         String password;
         Matcher matcher;
@@ -244,6 +393,23 @@ public class OnBoardingResource {
         return password;
     }
 
+    /**
+     * Converts an OnBoardingDto to a Keycloak UserRepresentation for user registration.
+     * 
+     * <p>Mappings between DTO and Keycloak fields:</p>
+     * <ul>
+     *   <li><code>firstName</code> → Keycloak first name</li>
+     *   <li><code>name</code> → Keycloak last name</li>
+     *   <li><code>email</code> → Keycloak email address</li>
+     *   <li><code>login</code> → Keycloak username</li>
+     *   <li>Groups set to "GUC Members" (case-sensitive)</li>
+     * </ul>
+     * 
+     * <p>The user is enabled and email is marked as verified in Keycloak after mapping.</p>
+     * 
+     * @param d The onboarding DTO to map to Keycloak representation
+     * @return A UserRepresentation ready for Keycloak registration
+     */
     private UserRepresentation mapDto(OnBoardingDto d) {
         final UserRepresentation newUser = new UserRepresentation();
         newUser.setEnabled(true);
