@@ -8,6 +8,16 @@ The backend uses **Liquibase** for database versioning and supports **two databa
 
 The data model centers around **member management** for what appears to be a German sports club (DFV = Deutscher Fußball-Verband), with comprehensive personal data, access control, and full audit history.
 
+## Entity Classes
+
+| Table | Entity Class | Package | Notes |
+|-------|--------------|---------|-------|
+| `members` | [`MemberEntity.java`](../src/main/java/de/guc/entities/MemberEntity.java) | `de.guc.entities` | Audited with Hibernate Envers |
+| `resource_access` | [`ResourcesEntity.java`](../src/main/java/de/guc/entities/ResourcesEntity.java) | `de.guc.entities` | Extends PanacheEntity |
+| `email_update` | [`EmailUpdateEntity.java`](../src/main/java/de/guc/entities/EmailUpdateEntity.java) | `de.guc.entities` | Extends PanacheEntity |
+| `REVINFO` | (Hibernate Envers) | - | Auto-managed by Envers |
+| `members_AUD` | (Hibernate Envers) | - | Auto-managed by Envers |
+
 ---
 
 ## Database Environments
@@ -50,6 +60,8 @@ SELECT HEX(id) FROM members WHERE ...;
 
 ### 1. `members`
 
+**Entity Class:** [`MemberEntity.java`](../src/main/java/de/guc/entities/MemberEntity.java)
+
 The central entity table storing all member information.
 
 | Column | MariaDB Type | H2 Type | Nullable | Description |
@@ -80,6 +92,8 @@ The central entity table storing all member information.
 
 ### 2. `resource_access`
 
+**Entity Class:** [`ResourcesEntity.java`](../src/main/java/de/guc/entities/ResourcesEntity.java)
+
 Manages access control and permissions for members.
 
 | Column | MariaDB Type | H2 Type | Nullable | Description |
@@ -102,6 +116,8 @@ Manages access control and permissions for members.
 
 ### 3. `REVINFO`
 
+**Entity Class:** (Hibernate Envers - auto-managed)
+
 Metadata table for **Hibernate Envers** audit revisions.
 
 | Column | Type | Nullable | Description |
@@ -115,6 +131,8 @@ Metadata table for **Hibernate Envers** audit revisions.
 ---
 
 ### 4. `members_AUD`
+
+**Entity Class:** (Hibernate Envers - auto-managed, audit for [`MemberEntity.java`](../src/main/java/de/guc/entities/MemberEntity.java))
 
 **Audit history** table for the `members` entity, managed by Hibernate Envers. Tracks all changes (inserts, updates, deletes) to member records.
 
@@ -165,6 +183,8 @@ Metadata table for **Hibernate Envers** audit revisions.
 ---
 
 ### 5. `email_update`
+
+**Entity Class:** [`EmailUpdateEntity.java`](../src/main/java/de/guc/entities/EmailUpdateEntity.java)
 
 Tracks email address change requests.
 
