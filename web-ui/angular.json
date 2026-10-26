@@ -86,8 +86,21 @@
         "test": {
             "builder": "@angular/build:unit-test",
             "options": {
-                "reporters": ["html", "json", "dot"],
-                "browsers": ["firefox"]
+                "runnerConfig": true,
+                "watch": false
+            },
+            "configurations": {
+                "firefox": {
+                    "browsers": ["firefox"],
+                    "watch": false
+                },
+                "watch": {
+                    "watch": true
+                },
+                "interactive": {
+                    "browsers": ["firefox"],
+                    "watch": true
+                }
             }
         },
         "lint": {
