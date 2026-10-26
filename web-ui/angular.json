@@ -86,8 +86,7 @@
         "test": {
             "builder": "@angular/build:unit-test",
             "options": {
-                "reporters": ["html", "json", "dot"],
-                "browsers": ["firefox"]
+                "runnerConfig": true
             }
         },
         "lint": {
