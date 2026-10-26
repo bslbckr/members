@@ -137,6 +137,11 @@ src/
 
 Run `mvn compile quarkus:dev` to start the dev server.
 
+## Data Model
+
+For detailed information about the database schema, tables, relationships, and environment-specific adaptations (MariaDB vs H2, UUID handling, Liquibase contexts), see:
+- [Data Model Documentation](./doc/datamodel.md)
+
 ## Profiles
 
 - `dev` → loads resources from `src/dev/resources`
