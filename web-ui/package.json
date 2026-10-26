@@ -9,6 +9,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --watch false --browsers ChromeHeadless --progress true",
+    "test:firefox": "ng test --browsers firefox",
+    "test:watch": "ng test --watch",
+    "test:interactive": "ng test --browsers firefox --watch",
     "lint": "ng lint"
   },
   "private": true,
