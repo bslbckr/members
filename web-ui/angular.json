@@ -87,15 +87,15 @@
             "builder": "@angular/build:unit-test",
             "options": {
                 "runnerConfig": true,
-                "browsers": ["firefox"],
                 "watch": false
             },
             "configurations": {
+                "firefox": {
+                    "browsers": ["firefox"],
+                    "watch": false
+                },
                 "watch": {
                     "watch": true
-                },
-                "firefox": {
-                    "browsers": ["firefox"]
                 },
                 "interactive": {
                     "browsers": ["firefox"],
