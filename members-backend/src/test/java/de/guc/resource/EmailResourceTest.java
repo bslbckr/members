@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.transaction.Transactional;
+import jakarta.inject.Inject;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class EmailResourceTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -71,7 +72,7 @@ public class EmailResourceTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
     }
 
     // ========== POST /v1/email Tests ==========

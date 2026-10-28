@@ -36,7 +36,7 @@ public class MemberEntityTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -65,7 +65,7 @@ public class MemberEntityTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
     }
 
     @Test
@@ -257,7 +257,7 @@ public class MemberEntityTest {
         assertTrue(MemberEntity.byId(idToDelete).isPresent());
         
         // Delete
-        Panache.deleteById(MemberEntity.class, idToDelete);
+        MemberEntity.deleteById(idToDelete);
         
         // Verify it's gone
         assertFalse(MemberEntity.byId(idToDelete).isPresent());

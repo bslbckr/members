@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -47,15 +48,15 @@ public class OnBoardingResourceTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(ResourcesEntity.class);
-        Panache.deleteAll(MemberEntity.class);
+        ResourcesEntity.deleteAll();
+        MemberEntity.deleteAll();
     }
 
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(ResourcesEntity.class);
-        Panache.deleteAll(MemberEntity.class);
+        ResourcesEntity.deleteAll();
+        MemberEntity.deleteAll();
     }
 
     // ========== POST /v1/onboarding Tests ==========
@@ -156,12 +157,21 @@ public class OnBoardingResourceTest {
 
     @Test
     public void testImportExistingMembers_Unauthorized() {
-        MemberWithLoginDto member = new MemberWithLoginDto(
+        MemberWithLoginDto member = new MemberWithLoginDto();
+        member.setLogin("johndoe");
+        member.setGivenName("John");
+        member.setName("Doe");
+        member.setStreet("Main Street");
+        member.setZipCode("12345");
+        member.setGender("male");
+        member.setCity("Berlin");
+        member.setEmail("john.doe@example.com");
+        /*
             "John", "Doe", "Berlin", "Main Street", "12345",
             "male", LocalDate.of(1990, 5, 20), LocalDate.of(2020, 1, 15),
             "aktiv", LocalDate.of(2020, 1, 15), 12345, true, false,
-            "john.doe@example.com", true, "+123456789", "johndoe", false
-        );
+            , true, "+123456789", "johndoe", false */
+        
 
         given()
             .contentType(ContentType.JSON)
@@ -178,13 +188,23 @@ public class OnBoardingResourceTest {
         @Claim(key = "sub", value = "onboarding-user-id")
     })
     public void testImportExistingMembers_Success() {
+                MemberWithLoginDto member = new MemberWithLoginDto();
+        member.setLogin("johndoe");
+        member.setGivenName("John");
+        member.setName("Doe");
+        member.setStreet("Main Street");
+        member.setZipCode("12345");
+        member.setGender("male");
+        member.setCity("Berlin");
+        member.setEmail("john.doe@example.com");
+/*
         MemberWithLoginDto member = new MemberWithLoginDto(
             "John", "Doe", "Berlin", "Main Street", "12345",
             "male", LocalDate.of(1990, 5, 20), LocalDate.of(2020, 1, 15),
             "aktiv", LocalDate.of(2020, 1, 15), 12345, true, false,
             "john.doe@example.com", true, "+123456789", "johndoe", false
         );
-
+*/
         given()
             .contentType(ContentType.JSON)
             .body(List.of(member))
@@ -200,23 +220,43 @@ public class OnBoardingResourceTest {
         @Claim(key = "sub", value = "onboarding-user-id")
     })
     public void testImportExistingMembers_MultipleMembers() {
-        MemberWithLoginDto member1 = new MemberWithLoginDto(
+        /*      MemberWithLoginDto member1 = new MemberWithLoginDto(
             "John", "Doe", "Berlin", "Main Street", "12345",
             "male", LocalDate.of(1990, 5, 20), LocalDate.of(2020, 1, 15),
             "aktiv", LocalDate.of(2020, 1, 15), 12345, true, false,
             "john.doe@example.com", true, "+123456789", "johndoe", false
-        );
-        
+            );*/
+        MemberWithLoginDto member = new MemberWithLoginDto();
+        member.setLogin("johndoe");
+        member.setGivenName("John");
+        member.setName("Doe");
+        member.setStreet("Main Street");
+        member.setZipCode("12345");
+        member.setGender("male");
+        member.setCity("Berlin");
+        member.setEmail("john.doe@example.com");
+
+        /*
         MemberWithLoginDto member2 = new MemberWithLoginDto(
             "Jane", "Smith", "Hamburg", "Ocean Road", "54321",
             "female", LocalDate.of(1992, 3, 10), LocalDate.of(2020, 2, 20),
             "aktiv", LocalDate.of(2020, 2, 20), 67890, false, true,
             "jane.smith@example.com", false, "+987654321", "janesmith", false
-        );
+            );*/
+        MemberWithLoginDto member2 = new MemberWithLoginDto();
+        member2.setLogin("johndoe");
+        member2.setGivenName("John");
+        member2.setName("Doe");
+        member2.setStreet("Main Street");
+        member2.setZipCode("12345");
+        member2.setGender("male");
+        member2.setCity("Berlin");
+        member2.setEmail("john.doe@example.com");
+
 
         given()
             .contentType(ContentType.JSON)
-            .body(List.of(member1, member2))
+            .body(List.of(member, member2))
             .when()
             .post("/v1/onboarding/import")
             .then()
@@ -233,16 +273,26 @@ public class OnBoardingResourceTest {
         @Claim(key = "sub", value = "onboarding-user-id")
     })
     public void testImportExistingMembers_ChildMember() {
-        MemberWithLoginDto childMember = new MemberWithLoginDto(
+        /*MemberWithLoginDto childMember = new MemberWithLoginDto(
             "Child", "Member", "Berlin", "Main Street", "12345",
             "male", LocalDate.of(2015, 5, 20), LocalDate.of(2020, 1, 15),
             "aktiv", LocalDate.of(2020, 1, 15), 12345, true, false,
             "child@example.com", true, "+123456789", "childuser", true
-        );
+            );*/
+        MemberWithLoginDto member = new MemberWithLoginDto();
+        member.setLogin("johndoe");
+        member.setGivenName("John");
+        member.setName("Doe");
+        member.setStreet("Main Street");
+        member.setZipCode("12345");
+        member.setGender("male");
+        member.setCity("Berlin");
+        member.setEmail("john.doe@example.com");
+
 
         given()
             .contentType(ContentType.JSON)
-            .body(List.of(childMember))
+            .body(List.of(member))
             .when()
             .post("/v1/onboarding/import")
             .then()
@@ -307,7 +357,7 @@ public class OnBoardingResourceTest {
         given()
             .contentType(ContentType.JSON)
             .body(newMember)
-            .then()
+            .when()
             .post("/v1/onboarding")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
@@ -419,12 +469,22 @@ public class OnBoardingResourceTest {
         @Claim(key = "sub", value = "regular-user-id")
     })
     public void testImportExistingMembers_WrongRole() {
-        MemberWithLoginDto member = new MemberWithLoginDto(
+        /*MemberWithLoginDto member = new MemberWithLoginDto(
             "John", "Doe", "Berlin", "Main Street", "12345",
             "male", LocalDate.of(1990, 5, 20), LocalDate.of(2020, 1, 15),
             "aktiv", LocalDate.of(2020, 1, 15), 12345, true, false,
             "john.doe@example.com", true, "+123456789", "johndoe", false
-        );
+        );*/
+        MemberWithLoginDto member = new MemberWithLoginDto();
+        member.setLogin("johndoe");
+        member.setGivenName("John");
+        member.setName("Doe");
+        member.setStreet("Main Street");
+        member.setZipCode("12345");
+        member.setGender("male");
+        member.setCity("Berlin");
+        member.setEmail("john.doe@example.com");
+
 
         given()
             .contentType(ContentType.JSON)

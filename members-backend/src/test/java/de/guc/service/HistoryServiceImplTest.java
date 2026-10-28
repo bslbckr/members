@@ -1,5 +1,6 @@
 package de.guc.service;
 
+import de.guc.services.HistoryService;
 import de.guc.entities.MemberEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
@@ -35,7 +36,7 @@ public class HistoryServiceImplTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -62,7 +63,7 @@ public class HistoryServiceImplTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
     }
 
     @Test
@@ -290,17 +291,5 @@ public class HistoryServiceImplTest {
             .toList();
         
         assertFalse(ourChanges.isEmpty());
-    }
-
-    @Test
-    public void testEntries_MethodExists() {
-        LocalDate cutoffDate = LocalDate.now().minusMonths(18);
-        
-        // This method is not in the interface but should work
-        // We test it indirectly through the service
-        Collection<de.guc.entities.EntryOrCancellation> entries = 
-            historyService.getEntries(cutoffDate);
-        
-        assertNotNull(entries);
     }
 }

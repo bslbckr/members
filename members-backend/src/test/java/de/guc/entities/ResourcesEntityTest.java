@@ -38,8 +38,8 @@ public class ResourcesEntityTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(ResourcesEntity.class);
-        Panache.deleteAll(MemberEntity.class);
+        ResourcesEntity.deleteAll();
+        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -54,8 +54,8 @@ public class ResourcesEntityTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(ResourcesEntity.class);
-        Panache.deleteAll(MemberEntity.class);
+        ResourcesEntity.deleteAll();
+        MemberEntity.deleteAll();
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ResourcesEntityTest {
     public void testCreateAccessResource() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.byId(testMemberId).get();
+        access.member = MemberEntity.findById(testMemberId);
         access.role = "SELF";
         access.name = "Test";
         access.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -84,7 +84,7 @@ public class ResourcesEntityTest {
         // Create multiple resources for the same identity
         ResourcesEntity access1 = new ResourcesEntity();
         access1.identity = testIdentityId;
-        access1.member = MemberEntity.byId(testMemberId).get();
+        access1.member = MemberEntity.findById(testMemberId);
         access1.role = "SELF";
         access1.name = "Test1";
         access1.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -92,7 +92,7 @@ public class ResourcesEntityTest {
         
         ResourcesEntity access2 = new ResourcesEntity();
         access2.identity = testIdentityId;
-        access2.member = MemberEntity.byId(testMemberId).get();
+        access2.member = MemberEntity.findById(testMemberId);
         access2.role = "PARENT";
         access2.name = "Test2";
         access2.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -102,7 +102,7 @@ public class ResourcesEntityTest {
         UUID otherIdentity = UUID.randomUUID();
         ResourcesEntity access3 = new ResourcesEntity();
         access3.identity = otherIdentity;
-        access3.member = MemberEntity.byId(testMemberId).get();
+        access3.member = MemberEntity.findById(testMemberId);
         access3.role = "SELF";
         access3.name = "Test3";
         access3.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -124,7 +124,7 @@ public class ResourcesEntityTest {
     public void testHasAccess_Existing() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.byId(testMemberId).get();
+        access.member = MemberEntity.findById(testMemberId);
         access.role = "SELF";
         access.name = "Test";
         access.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -153,14 +153,14 @@ public class ResourcesEntityTest {
     public void testResourceTypes() {
         ResourcesEntity memberResource = new ResourcesEntity();
         memberResource.identity = testIdentityId;
-        memberResource.member = MemberEntity.byId(testMemberId).get();
+        memberResource.member = MemberEntity.findById(testMemberId);
         memberResource.role = "SELF";
         memberResource.rType = ResourcesEntity.ResourceType.MEMBER;
         memberResource.persist();
         
         ResourcesEntity urlResource = new ResourcesEntity();
         urlResource.identity = UUID.randomUUID();
-        urlResource.member = MemberEntity.byId(testMemberId).get();
+        urlResource.member = MemberEntity.findById(testMemberId);
         urlResource.role = "VIEWER";
         urlResource.rType = ResourcesEntity.ResourceType.URL;
         urlResource.persist();
@@ -185,17 +185,17 @@ public class ResourcesEntityTest {
     public void testListByMember() {
         ResourcesEntity access1 = new ResourcesEntity();
         access1.identity = testIdentityId;
-        access1.member = MemberEntity.byId(testMemberId).get();
+        access1.member = MemberEntity.findById(testMemberId);
         access1.role = "SELF";
         access1.persist();
         
         ResourcesEntity access2 = new ResourcesEntity();
         access2.identity = UUID.randomUUID();
-        access2.member = MemberEntity.byId(testMemberId).get();
+        access2.member = MemberEntity.findById(testMemberId);
         access2.role = "PARENT";
         access2.persist();
 
-        List<ResourcesEntity> resources = ResourcesEntity.list("member", MemberEntity.byId(testMemberId).get());
+        List<ResourcesEntity> resources = ResourcesEntity.list("member", MemberEntity.findById(testMemberId));
         
         assertNotNull(resources);
         assertEquals(2, resources.size());
@@ -211,20 +211,20 @@ public class ResourcesEntityTest {
     public void testDeleteResource() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.byId(testMemberId).get();
+        access.member = MemberEntity.findById(testMemberId);
         access.role = "SELF";
         access.persist();
         
         long id = access.id;
         
         // Verify it exists
-        assertTrue(ResourcesEntity.findById(id).isPresent());
+        assertTrue(ResourcesEntity.findByIdOptional(id).isPresent());
         
         // Delete
-        Panache.deleteById(ResourcesEntity.class, id);
+        ResourcesEntity.deleteById(id);
         
         // Verify it's gone
-        assertFalse(ResourcesEntity.findById(id).isPresent());
+        assertFalse(ResourcesEntity.findByIdOptional(id).isPresent());
     }
 
     @Test
@@ -232,7 +232,7 @@ public class ResourcesEntityTest {
     public void testUpdateResource() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.byId(testMemberId).get();
+        access.member = MemberEntity.findById(testMemberId);
         access.role = "SELF";
         access.name = "Original";
         access.persist();
@@ -248,7 +248,7 @@ public class ResourcesEntityTest {
         entityManager.clear();
         
         // Retrieve again and verify update
-        Optional<ResourcesEntity> updated = ResourcesEntity.findById(id);
+        Optional<ResourcesEntity> updated = ResourcesEntity.findByIdOptional(id);
         assertTrue(updated.isPresent());
         assertEquals("Updated", updated.get().name);
         assertEquals("ADMIN", updated.get().role);

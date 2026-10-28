@@ -3,6 +3,7 @@ package de.guc.resource;
 import de.guc.Constants;
 import de.guc.ChangeResource;
 import de.guc.entities.MemberEntity;
+import de.guc.entities.MemberOverview;
 import de.guc.entities.EntryOrCancellation;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
@@ -26,7 +27,9 @@ import java.util.Collection;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+
 
 /**
  * Integration tests for ChangeResource
@@ -46,7 +49,7 @@ public class ChangeResourceTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -73,7 +76,7 @@ public class ChangeResourceTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
     }
 
     // ========== GET /v1/changes/state Tests ==========
@@ -112,7 +115,7 @@ public class ChangeResourceTest {
             .get("/v1/changes/state")
             .then()
             .statusCode(StatusCode.OK)
-            .body(Matchers.notNullValue());
+            .body(notNullValue());
     }
 
     // ========== GET /v1/changes/cancellation Tests ==========
@@ -151,7 +154,7 @@ public class ChangeResourceTest {
             .get("/v1/changes/cancellation")
             .then()
             .statusCode(StatusCode.OK)
-            .body(Matchers.notNullValue());
+            .body(notNullValue());
     }
 
     @Test
@@ -170,7 +173,7 @@ public class ChangeResourceTest {
             .get("/v1/changes/cancellation")
             .then()
             .statusCode(StatusCode.OK)
-            .body(Matchers.notNullValue());
+            .body(notNullValue());
     }
 
     // ========== GET /v1/changes/entries Tests ==========
@@ -209,7 +212,7 @@ public class ChangeResourceTest {
             .get("/v1/changes/entries")
             .then()
             .statusCode(StatusCode.OK)
-            .body(Matchers.notNullValue());
+            .body(notNullValue());
     }
 
     @Test
@@ -224,7 +227,7 @@ public class ChangeResourceTest {
             .get("/v1/changes/entries")
             .then()
             .statusCode(StatusCode.OK)
-            .body(Matchers.notNullValue());
+            .body(notNullValue());
     }
 
     // ========== Wrong Role Tests ==========
@@ -277,9 +280,9 @@ public class ChangeResourceTest {
         
         Collection<EntryOrCancellation> entries = MemberEntity.entriesSinceDate(cutoffDate);
         
-        assertNotNull(entries);
+        assertThat(entries, notNullValue());
         // Should include the test member
-        assertTrue(entries.size() >= 1);
+        assertThat(entries.size() >= 1, is(true));
     }
 
     @Test
@@ -287,9 +290,9 @@ public class ChangeResourceTest {
     public void testActiveMembers_DirectCall() {
         Collection<MemberOverview> activeMembers = MemberEntity.activeMembers();
         
-        assertNotNull(activeMembers);
+        assertThat(activeMembers, notNullValue());
         // Should include the test member (no exit date)
-        assertTrue(activeMembers.size() >= 1);
+        assertThat(activeMembers.size() >= 1, is(true));
     }
 
     @Test
@@ -297,9 +300,9 @@ public class ChangeResourceTest {
     public void testActiveMemberEmails_DirectCall() {
         Collection<String> emails = MemberEntity.activeMemberEmails();
         
-        assertNotNull(emails);
+        assertThat(emails, notNullValue());
         // Should include the test member's email
-        assertTrue(emails.size() >= 1);
-        assertTrue(emails.contains("john.doe@example.com"));
+        assertThat(emails.size() >= 1, is(true));
+        assertThat(emails.contains("john.doe@example.com"), is(true));
     }
 }

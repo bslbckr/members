@@ -1,6 +1,5 @@
 package de.guc.entities;
 
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -28,13 +27,13 @@ public class EmailUpdateEntityTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(EmailUpdateEntity.class);
+        EmailUpdateEntity.deleteAll();
     }
 
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(EmailUpdateEntity.class);
+        EmailUpdateEntity.deleteAll();
     }
 
     @Test
@@ -154,7 +153,7 @@ public class EmailUpdateEntityTest {
         assertNotNull(EmailUpdateEntity.findById(id));
         
         // Delete
-        Panache.deleteById(EmailUpdateEntity.class, id);
+        EmailUpdateEntity.deleteById(id);
         
         // Verify it's gone
         assertNull(EmailUpdateEntity.findById(id));

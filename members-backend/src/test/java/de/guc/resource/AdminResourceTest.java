@@ -20,12 +20,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.transaction.Transactional;
+import jakarta.inject.Inject;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -47,7 +49,7 @@ public class AdminResourceTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
         
         // Create test members
         MemberEntity member1 = new MemberEntity();
@@ -94,7 +96,7 @@ public class AdminResourceTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
     }
 
     // ========== POST /v1/admin/updateDfv Tests ==========

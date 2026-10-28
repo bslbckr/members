@@ -48,7 +48,7 @@ public class MemberResourceTest {
     @Transactional
     public void setUp() {
         // Clean up before each test
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -77,7 +77,7 @@ public class MemberResourceTest {
     @AfterEach
     @Transactional
     public void tearDown() {
-        Panache.deleteAll(MemberEntity.class);
+        MemberEntity.deleteAll();
     }
 
     // ========== GET /v1/member/{id} Tests ==========
@@ -221,7 +221,7 @@ public class MemberResourceTest {
         updateDto.setDayOfBirth(LocalDate.of(1990, 5, 20));
         updateDto.setGender("male");
         updateDto.setDse(true);
-        updateDto.setDfvDiscount(false);
+        updateDto.setRabatt(false);
         updateDto.setEmailList(true);
         updateDto.setEntryDate(LocalDate.of(2020, 1, 15));
         updateDto.setDfvNumber(12345);
@@ -325,7 +325,7 @@ public class MemberResourceTest {
         updateDto.setDayOfBirth(LocalDate.of(1990, 1, 1));
         updateDto.setMobile("+123456789");
         updateDto.setDse(true);
-        updateDto.setDfvDiscount(false);
+        updateDto.setRabatt(false);
         updateDto.setEmailList(true);
         updateDto.setEntryDate(LocalDate.of(2020, 1, 1));
         updateDto.setDfvNumber(12345);
@@ -374,7 +374,7 @@ public class MemberResourceTest {
         updateDto.setState("aktiv");
         updateDto.setStateEffective(LocalDate.of(2020, 1, 1));
         updateDto.setDse(true);
-        updateDto.setDfvDiscount(false);
+        updateDto.setRabatt(false);
         updateDto.setEmailList(true);
         updateDto.setEntryDate(LocalDate.of(2020, 1, 1));
         updateDto.setDfvNumber(12345);
