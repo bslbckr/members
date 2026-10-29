@@ -99,7 +99,7 @@ public class ConfigurationResourceTest {
     public void testGetAccessibleResource_Unauthorized() {
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -112,7 +112,7 @@ public class ConfigurationResourceTest {
     public void testGetAccessibleResource_Success() {
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.OK)
             .contentType(ContentType.JSON);
@@ -126,7 +126,7 @@ public class ConfigurationResourceTest {
     public void testGetAccessibleResource_ReturnsList() {
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.OK)
             .body("size()", greaterThanOrEqualTo(1));
@@ -140,7 +140,7 @@ public class ConfigurationResourceTest {
     public void testGetAccessibleResource_ContainsMemberInfo() {
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.OK)
             .body(containsString("Doe"))
@@ -175,7 +175,7 @@ public class ConfigurationResourceTest {
     public void testGetAccessibleResource_NoResources() {
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.OK)
             .body("size()", equalTo(0));
@@ -186,6 +186,7 @@ public class ConfigurationResourceTest {
     @OidcSecurity(claims = {
         @Claim(key = "sub", value = "df8ea850-52a3-4856-aea0-79361d48ff8c")
     })
+    @Transactional
     public void testGetAccessibleResource_MultipleResources() {
         // Create another member and resource
         MemberEntity member2 = new MemberEntity();
@@ -203,7 +204,7 @@ public class ConfigurationResourceTest {
 
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.OK)
             .body("size()", greaterThanOrEqualTo(2));
@@ -219,7 +220,7 @@ public class ConfigurationResourceTest {
     public void testGetAccessibleResource_WrongRole() {
         given()
             .when()
-            .get("/v1/configuration")
+            .get("")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
@@ -232,7 +233,7 @@ public class ConfigurationResourceTest {
         
         assertThat(dto, notNullValue());
         assertThat("John Doe", equalTo(dto.getName()));
-        assertThat(123, equalTo(dto.getMemberId()));
+        assertThat("123", equalTo(dto.getMemberId()));
         assertThat("SELF", equalTo(dto.getOwner()));
     }
 
@@ -241,7 +242,7 @@ public class ConfigurationResourceTest {
         ResourceDto dto1 = new ResourceDto("John Doe", "123", "SELF");
         ResourceDto dto2 = new ResourceDto("John Doe", "123", "SELF");
         
-        assertThat(dto1, equalTo(dto2));
+        assertThat(dto1, is(equalTo(dto2)));
         assertThat(dto1.hashCode(), equalTo(dto2.hashCode()));
     }
 

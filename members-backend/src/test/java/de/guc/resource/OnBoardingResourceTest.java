@@ -72,7 +72,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -92,7 +92,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -112,7 +112,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -140,7 +140,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -177,7 +177,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(member))
             .when()
-            .post("/v1/onboarding/import")
+            .post("/import")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -209,7 +209,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(member))
             .when()
-            .post("/v1/onboarding/import")
+            .post("/import")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -258,7 +258,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(member, member2))
             .when()
-            .post("/v1/onboarding/import")
+            .post("/import")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -294,7 +294,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(member))
             .when()
-            .post("/v1/onboarding/import")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -318,7 +318,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -338,7 +338,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -358,7 +358,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -373,7 +373,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of())  // Empty list
             .when()
-            .post("/v1/onboarding/import")
+            .post("/import")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -394,7 +394,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -415,7 +415,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -436,7 +436,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -458,7 +458,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(newMember)
             .when()
-            .post("/v1/onboarding")
+            .post("/")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
@@ -490,7 +490,7 @@ public class OnBoardingResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(member))
             .when()
-            .post("/v1/onboarding/import")
+            .post("/import")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }

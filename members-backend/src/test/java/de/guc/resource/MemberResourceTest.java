@@ -86,7 +86,7 @@ public class MemberResourceTest {
     public void testGetMemberById_Unauthorized() {
         given()
             .when()
-            .get("/v1/member/{id}", testMemberId.toString())
+            .get("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -101,7 +101,7 @@ public class MemberResourceTest {
         
         given()
             .when()
-            .get("/v1/member/{id}", nonExistentId.toString())
+            .get("/{id}", nonExistentId.toString())
             .then()
             .statusCode(StatusCode.NOT_FOUND);
     }
@@ -125,7 +125,7 @@ public class MemberResourceTest {
     public void testGetAllActiveMembers_Success() {
         given()
             .when()
-            .get("/v1/member/")
+            .get("/")
             .then()
             .statusCode(StatusCode.OK)
             .contentType(ContentType.JSON)
@@ -140,7 +140,7 @@ public class MemberResourceTest {
     public void testGetAllActiveMembers_ReturnsList() {
         given()
             .when()
-            .get("/v1/member/")
+            .get("/")
             .then()
             .statusCode(StatusCode.OK)
             .body("size()", greaterThanOrEqualTo(1));
@@ -159,7 +159,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -177,7 +177,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -196,7 +196,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", nonExistentId.toString())
+            .put("/{id}", nonExistentId.toString())
             .then()
             .statusCode(StatusCode.NOT_FOUND);
     }
@@ -230,7 +230,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.OK)
             .contentType(ContentType.JSON)
@@ -257,7 +257,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -277,7 +277,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -298,7 +298,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.BAD_REQUEST);
     }
@@ -334,7 +334,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .statusCode(StatusCode.OK);
     }
@@ -349,7 +349,7 @@ public class MemberResourceTest {
     public void testGetAllActiveMembers_ContentType() {
         given()
             .when()
-            .get("/v1/member/")
+            .get("/")
             .then()
             .contentType(ContentType.JSON);
     }
@@ -383,7 +383,7 @@ public class MemberResourceTest {
             .contentType(ContentType.JSON)
             .body(updateDto)
             .when()
-            .put("/v1/member/{id}", testMemberId.toString())
+            .put("/{id}", testMemberId.toString())
             .then()
             .contentType(ContentType.JSON);
     }

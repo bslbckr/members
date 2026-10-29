@@ -111,7 +111,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(dto))
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -134,7 +134,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(dto1, dto2))
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.OK);
     }
@@ -155,7 +155,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(dto))
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.OK);
 
@@ -180,7 +180,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(dto))
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.INTERNAL_SERVER_ERROR);
     }
@@ -195,7 +195,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of())  // Empty list
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.OK);  // Empty list should be OK
     }
@@ -218,7 +218,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(dto1, dto2))
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.OK);
 
@@ -241,7 +241,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -259,7 +259,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -277,7 +277,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -302,7 +302,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -333,7 +333,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -356,7 +356,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
 
@@ -384,7 +384,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(List.of(dto))
             .when()
-            .post("/v1/admin/updateDfv")
+            .post("/updateDfv")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
@@ -402,7 +402,7 @@ public class AdminResourceTest {
             .contentType(ContentType.JSON)
             .body(dto)
             .when()
-            .post("/v1/admin/cancelMembership")
+            .post("/cancelMembership")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }

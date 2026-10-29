@@ -87,7 +87,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -106,7 +106,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -125,7 +125,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -144,7 +144,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -163,7 +163,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -191,7 +191,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -210,7 +210,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -229,7 +229,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.NO_CONTENT);
     }
@@ -250,7 +250,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
@@ -271,7 +271,7 @@ public class EmailResourceTest {
             .contentType(ContentType.JSON)
             .body(emailDto)
             .when()
-            .post("/v1/email")
+            .post("/")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }

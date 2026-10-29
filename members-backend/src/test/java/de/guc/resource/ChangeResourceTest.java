@@ -85,7 +85,7 @@ public class ChangeResourceTest {
     public void testGetStateChanges_Unauthorized() {
         given()
             .when()
-            .get("/v1/changes/state")
+            .get("/state")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -98,7 +98,7 @@ public class ChangeResourceTest {
     public void testGetStateChanges_Success() {
         given()
             .when()
-            .get("/v1/changes/state")
+            .get("/state")
             .then()
             .statusCode(StatusCode.OK)
             .contentType(ContentType.JSON);
@@ -112,7 +112,7 @@ public class ChangeResourceTest {
     public void testGetStateChanges_ReturnsArray() {
         given()
             .when()
-            .get("/v1/changes/state")
+            .get("/state")
             .then()
             .statusCode(StatusCode.OK)
             .body(notNullValue());
@@ -124,7 +124,7 @@ public class ChangeResourceTest {
     public void testGetCancellations_Unauthorized() {
         given()
             .when()
-            .get("/v1/changes/cancellation")
+            .get("/cancellation")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -137,7 +137,7 @@ public class ChangeResourceTest {
     public void testGetCancellations_Success() {
         given()
             .when()
-            .get("/v1/changes/cancellation")
+            .get("/cancellation")
             .then()
             .statusCode(StatusCode.OK)
             .contentType(ContentType.JSON);
@@ -151,7 +151,7 @@ public class ChangeResourceTest {
     public void testGetCancellations_ReturnsArray() {
         given()
             .when()
-            .get("/v1/changes/cancellation")
+            .get("/cancellation")
             .then()
             .statusCode(StatusCode.OK)
             .body(notNullValue());
@@ -170,7 +170,7 @@ public class ChangeResourceTest {
 
         given()
             .when()
-            .get("/v1/changes/cancellation")
+            .get("/cancellation")
             .then()
             .statusCode(StatusCode.OK)
             .body(notNullValue());
@@ -182,7 +182,7 @@ public class ChangeResourceTest {
     public void testGetEntries_Unauthorized() {
         given()
             .when()
-            .get("/v1/changes/entries")
+            .get("/entries")
             .then()
             .statusCode(StatusCode.UNAUTHORIZED);
     }
@@ -195,7 +195,7 @@ public class ChangeResourceTest {
     public void testGetEntries_Success() {
         given()
             .when()
-            .get("/v1/changes/entries")
+            .get("/entries")
             .then()
             .statusCode(StatusCode.OK)
             .contentType(ContentType.JSON);
@@ -209,7 +209,7 @@ public class ChangeResourceTest {
     public void testGetEntries_ReturnsArray() {
         given()
             .when()
-            .get("/v1/changes/entries")
+            .get("/entries")
             .then()
             .statusCode(StatusCode.OK)
             .body(notNullValue());
@@ -224,7 +224,7 @@ public class ChangeResourceTest {
         // The test member has entry date in the last 18 months
         given()
             .when()
-            .get("/v1/changes/entries")
+            .get("/entries")
             .then()
             .statusCode(StatusCode.OK)
             .body(notNullValue());
@@ -240,7 +240,7 @@ public class ChangeResourceTest {
     public void testGetStateChanges_WrongRole() {
         given()
             .when()
-            .get("/v1/changes/state")
+            .get("/state")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
@@ -253,7 +253,7 @@ public class ChangeResourceTest {
     public void testGetCancellations_WrongRole() {
         given()
             .when()
-            .get("/v1/changes/cancellation")
+            .get("/cancellation")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
@@ -266,7 +266,7 @@ public class ChangeResourceTest {
     public void testGetEntries_WrongRole() {
         given()
             .when()
-            .get("/v1/changes/entries")
+            .get("/entries")
             .then()
             .statusCode(StatusCode.FORBIDDEN);
     }
