@@ -3,6 +3,7 @@ package de.guc.entities;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction
 import io.quarkus.test.common.QuarkusTestResource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Uses H2 in-memory database for testing
  */
 @QuarkusTest
+@TestTransaction
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class MemberEntityTest {
 
@@ -35,8 +37,6 @@ public class MemberEntityTest {
     @BeforeEach
     @Transactional
     public void setUp() {
-        // Clean up before each test
-        MemberEntity.deleteAll();
         
         // Create a test member
         MemberEntity member = new MemberEntity();
@@ -60,12 +60,6 @@ public class MemberEntityTest {
         
         member.persist();
         testMemberId = member.id;
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        MemberEntity.deleteAll();
     }
 
     @Test
