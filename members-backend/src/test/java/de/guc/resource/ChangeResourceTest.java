@@ -8,6 +8,7 @@ import de.guc.entities.EntryOrCancellation;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.security.TestSecurity;
@@ -36,6 +37,7 @@ import static org.hamcrest.Matchers.*;
  * Tests history and change tracking endpoints with proper authentication
  */
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(ChangeResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class ChangeResourceTest {
@@ -48,9 +50,6 @@ public class ChangeResourceTest {
     @BeforeEach
     @Transactional
     public void setUp() {
-        // Clean up before each test
-        MemberEntity.deleteAll();
-        
         // Create a test member
         MemberEntity member = new MemberEntity();
         member.name = "Doe";
@@ -71,12 +70,6 @@ public class ChangeResourceTest {
         member.emailList = true;
         member.persist();
         testMemberId = member.id;
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        MemberEntity.deleteAll();
     }
 
     // ========== GET /v1/changes/state Tests ==========

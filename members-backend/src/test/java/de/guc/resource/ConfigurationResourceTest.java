@@ -8,6 +8,7 @@ import de.guc.entities.ResourcesEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.security.TestSecurity;
@@ -36,6 +37,7 @@ import static org.hamcrest.Matchers.*;
  * Tests resource access configuration endpoints with proper authentication
  */
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(ConfigurationResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class ConfigurationResourceTest {
@@ -47,12 +49,7 @@ public class ConfigurationResourceTest {
     private UUID testIdentityId;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
-        // Clean up before each test
-        ResourcesEntity.deleteAll();
-        MemberEntity.deleteAll();
-        
         // Create a test member
         MemberEntity member = new MemberEntity();
         member.name = "Doe";
@@ -72,6 +69,7 @@ public class ConfigurationResourceTest {
         member.email = "john.doe@example.com";
         member.emailList = true;
         member.persist();
+        Panache.getEntityManager().flush();
         testMemberId = member.id;
         
         testIdentityId = UUID.fromString("df8ea850-52a3-4856-aea0-79361d48ff8c");
@@ -84,13 +82,7 @@ public class ConfigurationResourceTest {
         access.name = "John";
         access.rType = ResourcesEntity.ResourceType.MEMBER;
         access.persist();
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        ResourcesEntity.deleteAll();
-        MemberEntity.deleteAll();
+        Panache.getEntityManager().flush();
     }
 
     // ========== GET /v1/configuration Tests ==========

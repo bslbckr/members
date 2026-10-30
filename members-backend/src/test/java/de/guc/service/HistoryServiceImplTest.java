@@ -5,10 +5,9 @@ import de.guc.entities.MemberEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests state change and cancellation history tracking
  */
 @QuarkusTest
+@TestTransaction
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class HistoryServiceImplTest {
 
@@ -33,11 +33,7 @@ public class HistoryServiceImplTest {
     private UUID testMemberId;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
-        // Clean up before each test
-        MemberEntity.deleteAll();
-        
         // Create a test member
         MemberEntity member = new MemberEntity();
         member.name = "Doe";
@@ -60,12 +56,6 @@ public class HistoryServiceImplTest {
         testMemberId = member.id;
     }
 
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        MemberEntity.deleteAll();
-    }
-
     @Test
     public void testStateChanges_WithNoChanges() {
         Collection<HistoryService.StateChange> stateChanges = historyService.stateChanges();
@@ -76,7 +66,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testStateChanges_WithStateChange() {
         // Change the member's state
         MemberEntity member = MemberEntity.findById(testMemberId);
@@ -97,7 +86,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testStateChanges_MultipleChanges() {
         // Change the member's state multiple times
         MemberEntity member = MemberEntity.findById(testMemberId);
@@ -113,6 +101,7 @@ public class HistoryServiceImplTest {
         member.state = "aktiv";
         member.stateEffective = LocalDate.now();
         member.persist();
+        Panache.getEntityManager().flush();
 
         Collection<HistoryService.StateChange> stateChanges = historyService.stateChanges();
         
@@ -134,7 +123,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testCancellations_WithCancellation() {
         LocalDate cutoffDate = LocalDate.now().minusMonths(18);
         
@@ -157,7 +145,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testCancellations_WithOldCancellation() {
         LocalDate cutoffDate = LocalDate.now().minusMonths(6);
         
@@ -175,7 +162,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testCancellations_WithVeryOldCancellation() {
         LocalDate cutoffDate = LocalDate.now().minusMonths(6);
         
@@ -193,7 +179,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testStateChange_RecordStructure() {
         // Change the member's state
         MemberEntity member = MemberEntity.findById(testMemberId);
@@ -218,7 +203,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testStateChange_OldAndNewStates() {
         MemberEntity member = MemberEntity.findById(testMemberId);
         String oldState = member.state;
@@ -239,7 +223,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testMultipleMembers_StateChanges() {
         // Create another member
         MemberEntity member2 = new MemberEntity();
@@ -270,7 +253,6 @@ public class HistoryServiceImplTest {
     }
 
     @Test
-    @Transactional
     public void testStateChangesForMember() {
         // Change the member's state
         MemberEntity member = MemberEntity.findById(testMemberId);

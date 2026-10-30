@@ -8,6 +8,7 @@ import de.guc.entities.MemberEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.security.TestSecurity;
@@ -35,6 +36,7 @@ import static org.hamcrest.Matchers.*;
  * Tests administrative endpoints with proper authentication
  */
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(AdminResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class AdminResourceTest {
@@ -46,11 +48,7 @@ public class AdminResourceTest {
     private UUID testMemberId2;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
-        // Clean up before each test
-        MemberEntity.deleteAll();
-        
         // Create test members
         MemberEntity member1 = new MemberEntity();
         member1.name = "Doe";
@@ -91,12 +89,6 @@ public class AdminResourceTest {
         member2.emailList = false;
         member2.persist();
         testMemberId2 = member2.id;
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        MemberEntity.deleteAll();
     }
 
     // ========== POST /v1/admin/updateDfv Tests ==========

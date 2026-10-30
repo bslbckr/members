@@ -7,6 +7,7 @@ import de.guc.entities.MemberEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.security.TestSecurity;
@@ -32,6 +33,7 @@ import static org.hamcrest.Matchers.*;
  * Tests email sending endpoints with proper authentication
  */
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(EmailResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class EmailResourceTest {
@@ -42,11 +44,7 @@ public class EmailResourceTest {
     private UUID testMemberId;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
-        // Clean up before each test
-        MemberEntity.deleteAll();
-        
         // Create a test member
         MemberEntity member = new MemberEntity();
         member.name = "Doe";
@@ -67,12 +65,6 @@ public class EmailResourceTest {
         member.emailList = true;
         member.persist();
         testMemberId = member.id;
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        MemberEntity.deleteAll();
     }
 
     // ========== POST /v1/email Tests ==========

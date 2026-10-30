@@ -9,6 +9,7 @@ import de.guc.entities.ResourcesEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.security.TestSecurity;
@@ -17,8 +18,6 @@ import io.quarkus.test.security.oidc.OidcSecurity;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -37,27 +36,13 @@ import static org.hamcrest.Matchers.*;
  * Tests onboarding endpoints with proper authentication
  */
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(OnBoardingResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class OnBoardingResourceTest {
 
     @Inject
     OnBoardingResource onBoardingResource;
-
-    @BeforeEach
-    @Transactional
-    public void setUp() {
-        // Clean up before each test
-        ResourcesEntity.deleteAll();
-        MemberEntity.deleteAll();
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        ResourcesEntity.deleteAll();
-        MemberEntity.deleteAll();
-    }
 
     // ========== POST /v1/onboarding Tests ==========
 

@@ -7,6 +7,7 @@ import de.guc.entities.MemberEntity;
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.security.TestSecurity;
@@ -34,6 +35,7 @@ import static org.hamcrest.Matchers.*;
  * Tests all endpoints with proper authentication and authorization
  */
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(MemberResource.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class MemberResourceTest {
@@ -45,11 +47,7 @@ public class MemberResourceTest {
     private UUID testIdentityId;
 
     @BeforeEach
-    @Transactional
     public void setUp() {
-        // Clean up before each test
-        MemberEntity.deleteAll();
-        
         // Create a test member
         MemberEntity member = new MemberEntity();
         member.name = "Doe";
@@ -72,12 +70,6 @@ public class MemberResourceTest {
         
         testMemberId = member.id;
         testIdentityId = UUID.fromString("df8ea850-52a3-4856-aea0-79361d48ff8c");
-    }
-
-    @AfterEach
-    @Transactional
-    public void tearDown() {
-        MemberEntity.deleteAll();
     }
 
     // ========== GET /v1/member/{id} Tests ==========
