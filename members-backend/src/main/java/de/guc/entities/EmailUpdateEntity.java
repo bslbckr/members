@@ -18,7 +18,7 @@ public class EmailUpdateEntity extends PanacheEntity {
 
     @Column(name = "email_address")
     public String emailAddress;
-    @Column(name="\"change\"")
+    @Column(name="change_")
     public ChangeType change;
     @Column(name="inserted_at")
     public LocalDateTime insertedAt = LocalDateTime.now(ZoneOffset.UTC);

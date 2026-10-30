@@ -588,4 +588,8 @@
        <column name="zipCode_MOD" valueNumeric="0" />
      </insert>
    </changeSet>
+   <changeSet author="bslbckr" id="24" >
+     <renameColumn columnDataType="TINYINT" newColumnName="change_"
+                   oldColumnName="change" tableName="email_update" />
+   </changeSet>
 </databaseChangeLog>
