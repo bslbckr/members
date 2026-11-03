@@ -43,3 +43,6 @@ jobs:
     - name: Build backend
       run: ./mvnw --no-transfer-progress clean quarkus:build
       working-directory: members-backend/
+
+    - name: Submit Dependency Snapshot
+      uses: advanced-security/maven-dependency-submission-action@v6.0.1
