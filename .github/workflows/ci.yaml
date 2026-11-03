@@ -46,3 +46,5 @@ jobs:
 
     - name: Submit Dependency Snapshot
       uses: advanced-security/maven-dependency-submission-action@v6.0.1
+      with:
+        directory: members-backend
