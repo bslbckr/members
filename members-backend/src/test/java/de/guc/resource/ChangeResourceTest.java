@@ -5,7 +5,6 @@ import de.guc.ChangeResource;
 import de.guc.entities.MemberEntity;
 import de.guc.entities.MemberOverview;
 import de.guc.entities.EntryOrCancellation;
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
@@ -157,7 +156,7 @@ public class ChangeResourceTest {
     })
     public void testGetCancellations_WithRecentCancellations() {
         // Create a member with exit date in the last 18 months
-        MemberEntity member = MemberEntity.findById(testMemberId);
+        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         member.exitDate = LocalDate.now().minusMonths(6);
         member.persist();
 
@@ -267,7 +266,7 @@ public class ChangeResourceTest {
     // ========== Integration with MemberEntity ==========
 
     @Test
-    @Transactional
+    @Test
     public void testEntriesSinceDate_DirectCall() {
         LocalDate cutoffDate = LocalDate.now().minusMonths(18);
         
@@ -279,7 +278,6 @@ public class ChangeResourceTest {
     }
 
     @Test
-    @Transactional
     public void testActiveMembers_DirectCall() {
         Collection<MemberOverview> activeMembers = MemberEntity.activeMembers();
         
@@ -289,7 +287,6 @@ public class ChangeResourceTest {
     }
 
     @Test
-    @Transactional
     public void testActiveMemberEmails_DirectCall() {
         Collection<String> emails = MemberEntity.activeMemberEmails();
         

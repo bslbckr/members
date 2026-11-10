@@ -5,7 +5,6 @@ import de.guc.Constants;
 import de.guc.dto.CancelMembershipDto;
 import de.guc.dto.SetDFVNumberDto;
 import de.guc.entities.MemberEntity;
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
@@ -152,7 +151,7 @@ public class AdminResourceTest {
             .statusCode(StatusCode.OK);
 
         // Verify the DFV number was updated
-        MemberEntity updatedMember = MemberEntity.findById(testMemberId1);
+        MemberEntity updatedMember = MemberEntity.findByIdOptional(testMemberId1).orElseThrow();
         assertThat(updatedMember.dfvNumber, equalTo(newDfvNumber));
     }
 
@@ -215,8 +214,8 @@ public class AdminResourceTest {
             .statusCode(StatusCode.OK);
 
         // Verify both DFV numbers were updated
-        MemberEntity member1 = MemberEntity.findById(testMemberId1);
-        MemberEntity member2 = MemberEntity.findById(testMemberId2);
+        MemberEntity member1 = MemberEntity.findByIdOptional(testMemberId1).orElseThrow();
+        MemberEntity member2 = MemberEntity.findByIdOptional(testMemberId2).orElseThrow();
         
         assertThat(member1.dfvNumber, equalTo(11111));
         assertThat(member2.dfvNumber, equalTo(22222));
@@ -274,7 +273,7 @@ public class AdminResourceTest {
             .statusCode(StatusCode.NO_CONTENT);
 
         // Verify the exit date was set
-        MemberEntity member = MemberEntity.findById(testMemberId1);
+        MemberEntity member = MemberEntity.findByIdOptional(testMemberId1).orElseThrow();
         assertThat(member.exitDate, equalTo(cancellationDate));
     }
 
@@ -299,8 +298,8 @@ public class AdminResourceTest {
             .statusCode(StatusCode.NO_CONTENT);
 
         // Verify both members have exit dates set
-        MemberEntity member1 = MemberEntity.findById(testMemberId1);
-        MemberEntity member2 = MemberEntity.findById(testMemberId2);
+        MemberEntity member1 = MemberEntity.findByIdOptional(testMemberId1).orElseThrow();
+        MemberEntity member2 = MemberEntity.findByIdOptional(testMemberId2).orElseThrow();
         
         assertThat(member1.exitDate, equalTo(cancellationDate));
         assertThat(member2.exitDate, equalTo(cancellationDate));
@@ -353,8 +352,8 @@ public class AdminResourceTest {
             .statusCode(StatusCode.NO_CONTENT);
 
         // Verify existing members were cancelled
-        MemberEntity member1 = MemberEntity.findById(testMemberId1);
-        MemberEntity member2 = MemberEntity.findById(testMemberId2);
+        MemberEntity member1 = MemberEntity.findByIdOptional(testMemberId1).orElseThrow();
+        MemberEntity member2 = MemberEntity.findByIdOptional(testMemberId2).orElseThrow();
         
         assertThat(member1.exitDate, equalTo(cancellationDate));
         assertThat(member2.exitDate, equalTo(cancellationDate));

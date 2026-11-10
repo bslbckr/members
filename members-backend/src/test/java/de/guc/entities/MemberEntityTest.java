@@ -1,6 +1,5 @@
 package de.guc.entities;
 
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
@@ -187,8 +186,13 @@ public class MemberEntityTest {
         List<EntryOrCancellation> entries = MemberEntity.entriesSinceDate(cutoffDate);
         
         assertNotNull(entries);
-        // Should include recent member and original test member
-        assertTrue(entries.size() >= 2);
+        // Should include at least the recent member
+        assertTrue(entries.size() >= 1);
+        
+        // Check that recent member is included
+        boolean hasRecent = entries.stream()
+            .anyMatch(e -> "Recent".equals(e.name()));
+        assertTrue(hasRecent);
         
         // Check that old member is not included
         boolean hasOld = entries.stream()

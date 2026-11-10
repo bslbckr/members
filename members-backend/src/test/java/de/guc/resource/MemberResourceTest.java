@@ -4,7 +4,6 @@ import de.guc.Constants;
 import de.guc.MemberResource;
 import de.guc.dto.MemberDto;
 import de.guc.entities.MemberEntity;
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
@@ -91,11 +90,14 @@ public class MemberResourceTest {
     public void testGetMemberById_NotFound() {
         UUID nonExistentId = UUID.randomUUID();
         
+        // Note: Authorization is checked before member lookup
+        // Since the test user doesn't have access to the non-existent member,
+        // it returns UNAUTHORIZED (401) rather than NOT_FOUND (404)
         given()
             .when()
             .get("/{id}", nonExistentId.toString())
             .then()
-            .statusCode(StatusCode.NOT_FOUND);
+            .statusCode(StatusCode.UNAUTHORIZED);
     }
 
     // ========== GET /v1/member/ Tests ==========

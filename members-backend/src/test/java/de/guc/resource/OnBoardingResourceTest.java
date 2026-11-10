@@ -6,7 +6,6 @@ import de.guc.dto.MemberWithLoginDto;
 import de.guc.dto.OnBoardingDto;
 import de.guc.entities.MemberEntity;
 import de.guc.entities.ResourcesEntity;
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;

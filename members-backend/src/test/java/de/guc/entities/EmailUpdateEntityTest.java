@@ -206,16 +206,20 @@ public class EmailUpdateEntityTest {
     @Test
     @Transactional
     public void testInsertedAtIsAutomaticallySet() {
+        LocalDateTime beforeCreation = LocalDateTime.now(ZoneOffset.UTC);
         EmailUpdateEntity emailUpdate = new EmailUpdateEntity();
         emailUpdate.emailAddress = "test@example.com";
         emailUpdate.change = EmailUpdateEntity.ChangeType.INSERT;
         
-        // insertedAt should be null before persist
-        assertNull(emailUpdate.insertedAt);
+        // insertedAt is set at construction time (field initialization)
+        assertNotNull(emailUpdate.insertedAt);
         
         emailUpdate.persist();
         
-        // insertedAt should be set after persist
+        // insertedAt should still be set after persist
         assertNotNull(emailUpdate.insertedAt);
+        // Verify it was set around the time of creation
+        assertTrue(emailUpdate.insertedAt.isAfter(beforeCreation.minusSeconds(1)));
+        assertTrue(emailUpdate.insertedAt.isBefore(LocalDateTime.now(ZoneOffset.UTC).plusSeconds(1)));
     }
 }

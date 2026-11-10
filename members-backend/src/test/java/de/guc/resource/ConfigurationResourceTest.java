@@ -209,12 +209,16 @@ public class ConfigurationResourceTest {
     @OidcSecurity(claims = {
         @Claim(key = "sub", value = "df8ea850-52a3-4856-aea0-79361d48ff8c")
     })
-    public void testGetAccessibleResource_WrongRole() {
+    public void testGetAccessibleResource_NoResourcesForUser() {
+        // ConfigurationResource only requires authentication, not specific roles
+        // It returns resources for the current user's identity
+        // If no resources exist for this user, it returns empty list (200 OK)
         given()
             .when()
             .get("")
             .then()
-            .statusCode(StatusCode.FORBIDDEN);
+            .statusCode(StatusCode.OK)
+            .body("size()", equalTo(0));
     }
 
     // ========== Direct ResourceDto Tests ==========

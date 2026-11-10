@@ -1,6 +1,5 @@
 package de.guc.entities;
 
-import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -55,7 +54,7 @@ public class ResourcesEntityTest {
     public void testCreateAccessResource() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.findById(testMemberId);
+        access.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access.role = "SELF";
         access.name = "Test";
         access.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -76,7 +75,7 @@ public class ResourcesEntityTest {
         // Create multiple resources for the same identity
         ResourcesEntity access1 = new ResourcesEntity();
         access1.identity = testIdentityId;
-        access1.member = MemberEntity.findById(testMemberId);
+        access1.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access1.role = "SELF";
         access1.name = "Test1";
         access1.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -84,7 +83,7 @@ public class ResourcesEntityTest {
         
         ResourcesEntity access2 = new ResourcesEntity();
         access2.identity = testIdentityId;
-        access2.member = MemberEntity.findById(testMemberId);
+        access2.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access2.role = "PARENT";
         access2.name = "Test2";
         access2.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -94,7 +93,7 @@ public class ResourcesEntityTest {
         UUID otherIdentity = UUID.randomUUID();
         ResourcesEntity access3 = new ResourcesEntity();
         access3.identity = otherIdentity;
-        access3.member = MemberEntity.findById(testMemberId);
+        access3.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access3.role = "SELF";
         access3.name = "Test3";
         access3.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -116,7 +115,7 @@ public class ResourcesEntityTest {
     public void testHasAccess_Existing() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.findById(testMemberId);
+        access.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access.role = "SELF";
         access.name = "Test";
         access.rType = ResourcesEntity.ResourceType.MEMBER;
@@ -145,14 +144,14 @@ public class ResourcesEntityTest {
     public void testResourceTypes() {
         ResourcesEntity memberResource = new ResourcesEntity();
         memberResource.identity = testIdentityId;
-        memberResource.member = MemberEntity.findById(testMemberId);
+        memberResource.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         memberResource.role = "SELF";
         memberResource.rType = ResourcesEntity.ResourceType.MEMBER;
         memberResource.persist();
         
         ResourcesEntity urlResource = new ResourcesEntity();
         urlResource.identity = UUID.randomUUID();
-        urlResource.member = MemberEntity.findById(testMemberId);
+        urlResource.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         urlResource.role = "VIEWER";
         urlResource.rType = ResourcesEntity.ResourceType.URL;
         urlResource.persist();
@@ -177,17 +176,17 @@ public class ResourcesEntityTest {
     public void testListByMember() {
         ResourcesEntity access1 = new ResourcesEntity();
         access1.identity = testIdentityId;
-        access1.member = MemberEntity.findById(testMemberId);
+        access1.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access1.role = "SELF";
         access1.persist();
         
         ResourcesEntity access2 = new ResourcesEntity();
         access2.identity = UUID.randomUUID();
-        access2.member = MemberEntity.findById(testMemberId);
+        access2.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access2.role = "PARENT";
         access2.persist();
 
-/*        List<ResourcesEntity> resources = ResourcesEntity.list("member", MemberEntity.findById(testMemberId));
+/*        List<ResourcesEntity> resources = ResourcesEntity.list("member", MemberEntity.findByIdOptional(testMemberId).orElseThrow());
         
         assertNotNull(resources);
         assertEquals(2, resources.size());
@@ -203,7 +202,7 @@ public class ResourcesEntityTest {
     public void testDeleteResource() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.findById(testMemberId);
+        access.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access.role = "SELF";
         access.persist();
         
@@ -224,7 +223,7 @@ public class ResourcesEntityTest {
     public void testUpdateResource() {
         ResourcesEntity access = new ResourcesEntity();
         access.identity = testIdentityId;
-        access.member = MemberEntity.findById(testMemberId);
+        access.member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
         access.role = "SELF";
         access.name = "Original";
         access.persist();
