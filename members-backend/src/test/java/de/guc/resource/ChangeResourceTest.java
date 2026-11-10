@@ -156,7 +156,7 @@ public class ChangeResourceTest {
     })
     public void testGetCancellations_WithRecentCancellations() {
         // Create a member with exit date in the last 18 months
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         member.exitDate = LocalDate.now().minusMonths(6);
         member.persist();
 
@@ -266,7 +266,7 @@ public class ChangeResourceTest {
     // ========== Integration with MemberEntity ==========
 
     @Test
-    @Test
+    
     public void testEntriesSinceDate_DirectCall() {
         LocalDate cutoffDate = LocalDate.now().minusMonths(18);
         

@@ -8,6 +8,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,7 +74,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testStateChanges_WithStateChange() {
         // Change the member's state
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         member.state = "passiv";
         member.stateEffective = LocalDate.now();
         member.persist();
@@ -93,7 +94,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testStateChanges_MultipleChanges() {
         // Change the member's state multiple times
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         
         member.state = "passiv";
         member.stateEffective = LocalDate.now().minusDays(10);
@@ -132,7 +133,7 @@ public class HistoryServiceImplTest {
         LocalDate cutoffDate = LocalDate.now().minusMonths(18);
         
         // Cancel the member
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         member.exitDate = LocalDate.now().minusDays(1);
         member.persist();
 
@@ -154,7 +155,7 @@ public class HistoryServiceImplTest {
         LocalDate cutoffDate = LocalDate.now().minusMonths(6);
         
         // Cancel the member with an old date (before cutoff)
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         member.exitDate = LocalDate.now().minusMonths(12);
         member.persist();
 
@@ -171,7 +172,7 @@ public class HistoryServiceImplTest {
         LocalDate cutoffDate = LocalDate.now().minusMonths(6);
         
         // Cancel the member with a very old date (before cutoff)
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         member.exitDate = LocalDate.now().minusMonths(24);
         member.persist();
 
@@ -186,7 +187,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testStateChange_RecordStructure() {
         // Change the member's state
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         String oldState = member.state;
         member.state = "passiv";
         member.stateEffective = LocalDate.now();
@@ -209,7 +210,7 @@ public class HistoryServiceImplTest {
 
     @Test
     public void testStateChange_OldAndNewStates() {
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         String oldState = member.state;
         String newState = "passiv";
         
@@ -241,7 +242,7 @@ public class HistoryServiceImplTest {
         member2.persist();
         
         // Change both members' states
-        MemberEntity member1 = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member1 = MemberEntity.byId(testMemberId).orElseThrow();
         member1.state = "passiv";
         member1.stateEffective = LocalDate.now();
         member1.persist();
@@ -260,7 +261,7 @@ public class HistoryServiceImplTest {
     @Test
     public void testStateChangesForMember() {
         // Change the member's state
-        MemberEntity member = MemberEntity.findByIdOptional(testMemberId).orElseThrow();
+        MemberEntity member = MemberEntity.byId(testMemberId).orElseThrow();
         member.state = "passiv";
         member.stateEffective = LocalDate.now();
         member.persist();
